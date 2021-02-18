@@ -3,7 +3,7 @@ import Props from './types';
 
 import useStyles from './styles';
 
-const Header: React.FC<Props> = ({ title }) => {
+const Header: React.FC<Props> = ({ title }: Props) => {
   const classes = useStyles();
   return (
     <>
