@@ -6,8 +6,9 @@ import React, {
   useState,
 } from 'react';
 
-import { UserProviderProps as Props, UserContextType } from './types';
-import { User } from '../types';
+import { UserContextType } from './types';
+import { ProviderProps as Props } from '../types';
+import { User } from '../../utils/types';
 
 const UserContext = createContext<UserContextType | null>(null);
 

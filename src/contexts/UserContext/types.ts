@@ -1,8 +1,4 @@
-import { User } from '../types';
-
-export interface UserProviderProps {
-  children: React.ReactNode;
-}
+import { User } from '../../utils/types';
 
 export interface UserContextType {
   user: User;

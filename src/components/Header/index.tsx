@@ -1,9 +1,15 @@
 import React from 'react';
+import { Button, Typography } from '@material-ui/core';
 
 import { HeaderProps as Props } from './types';
 import useStyles from './styles';
 import { useUserContext } from '../../contexts/UserContext';
 
+/*
+ * SINCE WE DONT HAVE A REAL HEADER COMPONENT FOR NOW, THIS WILL BE A SAMPLE COMPONENT FOR TESTING.
+ * YOU CAN SEE HOW THE UserContext IS CONSUMED, AS WELL AS HOW TO USE THE GLOBAL THEME BY
+ * PASSING THE PROP color="primary" IF YOU WANT AN ELEMENT TO HAVE THE NAVY BLUE.
+ */
 const Header: React.FC<Props> = ({ title }: Props) => {
   const { user, loginUser, logoutUser } = useUserContext();
 
@@ -13,15 +19,19 @@ const Header: React.FC<Props> = ({ title }: Props) => {
     <>
       <h1 className={classes.root}>{title}</h1>
       {user ? (
-        <h2>
+        <Typography variant="h4" color="primary">
           The current user is: {user.id}, {user.name}, {user.bio}, {user.phone}
-        </h2>
+        </Typography>
       ) : (
-        <h2>not currently logged in</h2>
+        <Typography variant="h4">not currently logged in</Typography>
       )}
-      <button onClick={user ? logoutUser : loginUser}>
+      <Button
+        variant="contained"
+        color="primary" // this is how you make MUI components navy blue
+        onClick={user ? logoutUser : loginUser}
+      >
         {user ? 'Log out' : 'Log in'}
-      </button>
+      </Button>
     </>
   );
 };

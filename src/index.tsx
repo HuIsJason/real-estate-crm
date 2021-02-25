@@ -3,16 +3,18 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './App';
-import UserProvider from './contexts/UserContext';
+import { ThemeProvider, UserProvider } from './contexts';
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
-      <Router>
-        <App />
-      </Router>
-    </UserProvider>
+    <ThemeProvider>
+      <UserProvider>
+        <Router>
+          <App />
+        </Router>
+      </UserProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
