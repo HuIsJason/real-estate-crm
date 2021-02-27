@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   Box,
   Collapse,
@@ -60,31 +60,31 @@ const Row: React.FC<Props> = ({ name, email, tags }: Props) => {
 
 const ClientList = () => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState<RowProps[]>(fullRows);
-  const [searched, setSearched] = React.useState<string>("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rows, setRows] = useState<RowProps[]>(fullRows);
+  const [searched, setSearched] = useState<string>("");
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage);
-  };
+  },[]);
   
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
+  },[]);
 
-  const requestSearch = (searchedVal: string) => {
+  const requestSearch = useCallback((searchedVal: string) => {
     const filteredRows = fullRows.filter((row) => {
       return row.name.toLowerCase().includes(searchedVal.toLowerCase());
     });
     setRows(filteredRows);
-  };
+  },[]);
 
-  const cancelSearch = () => {
+  const cancelSearch = useCallback(() => {
     setSearched("");
     requestSearch(searched);
-  };
+  },[searched, requestSearch]);
 
   return (
     <Paper className={classes.table}>
@@ -104,9 +104,6 @@ const ClientList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {rows.map((row) => (
-              <Row key={row.name} {...row} />
-            ))} */}
 
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
