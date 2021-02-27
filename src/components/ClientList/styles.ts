@@ -9,7 +9,7 @@ export default makeStyles((theme: Theme) => ({
   table: {
     position: "absolute",
     width: "75%",
-    transform: 'translate(30%, 10%)'
+    transform: 'translate(30%, 10%)',
   },
   cellHead: {
       backgroundColor: "#737373",
