@@ -8,8 +8,14 @@ export default makeStyles((theme: Theme) => ({
   },
   table: {
     position: "absolute",
-    width: "60%",
-    transform: 'translate(65%, 40%)',
-    borderTop: '100px gray'
+    width: "75%",
+    transform: 'translate(30%, 20%)'
+  },
+  cellHead: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+  },
+  cellBody: {
+      fontSize: 14,
   },
 }));

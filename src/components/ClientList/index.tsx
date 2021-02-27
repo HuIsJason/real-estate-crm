@@ -7,10 +7,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import { withStyles, Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
@@ -24,6 +24,28 @@ function createData(name: string, email: string, tags: string[]) {
     tags
   };
 }
+
+const rows = [
+  createData('George Smith', "GeorgeS@Outlook.com", ["Active", "expensive"]),
+  createData('Johnny Smith', "JohnnyeS@Outlook.com", ["Active", "expensive"]),
+  createData('Jill Smith', "JillS@Outlook.com", ["Active", "expensive"]),
+  createData('Jenny Smith', "JennyS@Outlook.com", ["Active", "expensive"]),
+  createData('Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('2Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('3Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('4Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('5Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('6Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('7Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('8Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('9Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('0Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('11Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('12Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('13Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('14Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+  createData('15Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
+];
 
 const Row: React.FC<Props> = ({ name, email, tags }: Props) => {
   const [open, setOpen] = React.useState(false);
@@ -59,34 +81,55 @@ const Row: React.FC<Props> = ({ name, email, tags }: Props) => {
   );
 }
 
-const rows = [
-  createData('George Smith', "GeorgeS@Outlook.com", ["Active", "expensive"]),
-  createData('Johnny Smith', "JohnnyeS@Outlook.com", ["Active", "expensive"]),
-  createData('Jill Smith', "JillS@Outlook.com", ["Active", "expensive"]),
-  createData('Jenny Smith', "JennyS@Outlook.com", ["Active", "expensive"]),
-  createData('Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
-];
-
 const ClientList = () => {
   const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+  
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   return (
-    <TableContainer component={Paper} className={classes.table}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>CLIENT</TableCell>
-            <TableCell align="left">TAGS</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} {...row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper className={classes.table}>
+      <TableContainer>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell classes={{ head: classes.cellHead, body: classes.cellBody }} />
+              <TableCell classes={{ head: classes.cellHead, body: classes.cellBody }}>CLIENT</TableCell>
+              <TableCell align="left" classes={{ head: classes.cellHead, body: classes.cellBody }}>TAGS</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {/* {rows.map((row) => (
+              <Row key={row.name} {...row} />
+            ))} */}
+
+            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              return (
+                <Row key = {row.name} {...row} />
+              );
+            })}
+            
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }
 
