@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
     Drawer,
     CssBaseline,
@@ -12,8 +11,7 @@ import {
     ListItemIcon,
     ListItemText,
     Button
-  } from '@material-ui/core';
-
+} from '@material-ui/core';
 import {
     SupervisorAccount as SupervisorAccountIcon,
     AccountCircle as AccountCircleIcon
@@ -21,7 +19,7 @@ import {
 
 import useStyles from './styles';
 
-const PermNavBar = () => {
+const PermNavBar: React.FC = () => {
   const classes = useStyles();
 
   return (

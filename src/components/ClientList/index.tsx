@@ -13,19 +13,18 @@ import {
   Typography,
   Paper
 } from '@material-ui/core';
-
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon
 } from '@material-ui/icons';
-
 import SearchBar from "material-ui-search-bar";
-import { RowProps as Props, RowProps } from './types';
+
+import { RowProps } from './types';
 import useStyles from './styles';
 import fullRows from './data';
 
-const Row: React.FC<Props> = ({ name, email, tags }: Props) => {
-  const [open, setOpen] = React.useState(false);
+const Row: React.FC<RowProps> = ({ name, email, tags }: RowProps) => {
+  const [open, setOpen] = useState<boolean>(false);
   const classes = useStyles();
 
   return (
@@ -58,10 +57,10 @@ const Row: React.FC<Props> = ({ name, email, tags }: Props) => {
   );
 }
 
-const ClientList = () => {
+const ClientList: React.FC = () => {
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [rows, setRows] = useState<RowProps[]>(fullRows);
   const [searched, setSearched] = useState<string>("");
 
