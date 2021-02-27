@@ -18,18 +18,34 @@ export const useUserContext = (): UserContextType =>
 const UserProvider: React.FC<Props> = ({ children }: Props) => {
   const [user, setUser] = useState<User>(null);
 
-  const loginUser = useCallback(() => {
-    setUser({
-      id: 1,
-      name: 'Jason Hu',
-      bio: "I'll sell your house ASAP",
-      yearCreated: 2021,
-      address: '18 Rainsford Road',
-      phone: '416-909-3633',
-      email: 'jasonn.hu@mail.utoronto.ca',
-      brokerage: 'Remax',
-      specialization: 'SELLER',
-    });
+  const loginUser = useCallback((username: string, password: string) => {
+    if (username === 'admin' && password === 'admin') {
+      setUser({
+        id: 1,
+        name: 'Admin',
+        bio: 'Application administrator.',
+        yearCreated: 2021,
+        address: "27 King's College Circle",
+        phone: '416-978-2011',
+        email: 'admin@mail.utoronto.ca',
+        brokerage: '',
+        specialization: 'SELLER',
+      });
+    } else if (username === 'user' && password === 'user') {
+      setUser({
+        id: 1,
+        name: 'Jason Hu',
+        bio: 'Selling your house ASAP!',
+        yearCreated: 2021,
+        address: '18 Rainsford Road',
+        phone: '416-909-3633',
+        email: 'jasonn.hu@mail.utoronto.ca',
+        brokerage: 'Remax',
+        specialization: 'SELLER',
+      });
+    } else {
+      alert('Invalid credentials!');
+    }
   }, []);
 
   const logoutUser = useCallback(() => {
