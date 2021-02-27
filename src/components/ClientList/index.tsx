@@ -13,8 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import SearchBar from "material-ui-search-bar";
 
-import { RowProps as Props } from './types';
+import { RowProps as Props, RowProps } from './types';
 import useStyles from './styles';
 
 function createData(name: string, email: string, tags: string[]) {
@@ -25,7 +26,7 @@ function createData(name: string, email: string, tags: string[]) {
   };
 }
 
-const rows = [
+const fullRows = [
   createData('George Smith', "GeorgeS@Outlook.com", ["Active", "expensive"]),
   createData('Johnny Smith', "JohnnyeS@Outlook.com", ["Active", "expensive"]),
   createData('Jill Smith', "JillS@Outlook.com", ["Active", "expensive"]),
@@ -71,7 +72,7 @@ const Row: React.FC<Props> = ({ name, email, tags }: Props) => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                Contact Information: . . .  Link to profile 
               </Typography>
             </Box>
           </Collapse>
@@ -85,6 +86,8 @@ const ClientList = () => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rows, setRows] = React.useState<RowProps[]>(fullRows);
+  const [searched, setSearched] = React.useState<string>("");
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -95,8 +98,26 @@ const ClientList = () => {
     setPage(0);
   };
 
+  const requestSearch = (searchedVal: string) => {
+    const filteredRows = fullRows.filter((row) => {
+      return row.name.toLowerCase().includes(searchedVal.toLowerCase());
+    });
+    setRows(filteredRows);
+  };
+
+  const cancelSearch = () => {
+    setSearched("");
+    requestSearch(searched);
+  };
+
   return (
     <Paper className={classes.table}>
+      <SearchBar
+        value={searched}
+        onChange={(searchVal) => requestSearch(searchVal)}
+        onCancelSearch={() => cancelSearch()}
+        className={classes.searchBar}
+      />
       <TableContainer>
         <Table aria-label="collapsible table">
           <TableHead>

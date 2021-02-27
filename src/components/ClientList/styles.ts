@@ -9,13 +9,16 @@ export default makeStyles((theme: Theme) => ({
   table: {
     position: "absolute",
     width: "75%",
-    transform: 'translate(30%, 20%)'
+    transform: 'translate(30%, 10%)'
   },
   cellHead: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: "#737373",
       color: theme.palette.common.white,
   },
   cellBody: {
       fontSize: 14,
   },
+  searchBar : {
+    border: "1px solid #737373"
+  }
 }));
