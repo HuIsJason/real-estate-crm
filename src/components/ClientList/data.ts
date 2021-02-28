@@ -28,4 +28,5 @@ const fullRows = [
     createData('15Joey Smith', "JoeyS@Outlook.com", ["Active", "expensive"]),
   ];
 
-export default fullRows;
+export {createData};
+export {fullRows};

@@ -9,8 +9,7 @@ import {
     Divider,
     ListItem,
     ListItemIcon,
-    ListItemText,
-    Button
+    ListItemText
 } from '@material-ui/core';
 import {
     SupervisorAccount as SupervisorAccountIcon,
