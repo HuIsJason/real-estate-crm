@@ -97,9 +97,9 @@ const ClientList: React.FC = () => {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell classes={{ head: classes.cellHead, body: classes.cellBody }} />
-              <TableCell classes={{ head: classes.cellHead, body: classes.cellBody }}>CLIENT</TableCell>
-              <TableCell align="left" classes={{ head: classes.cellHead, body: classes.cellBody }}>TAGS</TableCell>
+              <TableCell classes={{ head: classes.emptyCellHead, body: classes.cellBody}} />
+              <TableCell classes={{ head: classes.clientCellHead, body: classes.cellBody }}>CLIENT</TableCell>
+              <TableCell align="left" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>TAGS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

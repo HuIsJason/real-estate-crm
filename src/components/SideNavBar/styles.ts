@@ -10,7 +10,8 @@ export default makeStyles((theme: Theme) => ({
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
         color: theme.palette.common.black,
-        backgroundColor: theme.palette.common.white
+        backgroundColor: theme.palette.common.white,
+        zIndex: 0
     },
     drawer: {
         width: drawerWidth,

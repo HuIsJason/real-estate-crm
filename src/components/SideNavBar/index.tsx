@@ -27,18 +27,18 @@ const PermNavBar: React.FC = () => {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" noWrap>
+          <Typography color="primary"variant="h6" noWrap>
             CLIENTS
           </Typography>
         </Toolbar>
         
-        <Button variant="outlined" color="primary" classes={{ root: classes.listButtonsHead}} className={classes.listButtons + " " + classes.editButton}>
+        {/* <Button variant="outlined" color="primary" classes={{ root: classes.listButtonsHead}} className={classes.listButtons + " " + classes.editButton}>
             Edit Clients
         </Button>
         
         <Button variant="contained" color="primary" classes={{ root: classes.listButtonsHead}} className={classes.listButtons + " " + classes.addButton}>
             + Add Client
-        </Button>
+        </Button> */}
 
       </AppBar>
       <Drawer
@@ -54,17 +54,17 @@ const PermNavBar: React.FC = () => {
         <List>
 
             <ListItem button key={'Clients'}>
-                <ListItemIcon> <SupervisorAccountIcon /> </ListItemIcon>
-                <ListItemText primary={'Clients'} />
+                <ListItemIcon> <SupervisorAccountIcon color="primary" /> </ListItemIcon>
+                <ListItemText primary={'Clients'} color="primary" />
             </ListItem>
 
             <ListItem button key={'Profile'}>
-                <ListItemIcon> <AccountCircleIcon /> </ListItemIcon>
-                <ListItemText primary={'Profile'} />
+                <ListItemIcon> <AccountCircleIcon color="primary" /> </ListItemIcon>
+                <ListItemText primary={'Profile'} color="primary" />
             </ListItem>
 
         </List>
-        <Divider />
+        <Divider color="primary" />
       </Drawer>
     </div>
   );
