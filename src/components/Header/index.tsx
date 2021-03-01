@@ -11,7 +11,7 @@ import { useUserContext } from '../../contexts/UserContext';
  * PASSING THE PROP color="primary" IF YOU WANT AN ELEMENT TO HAVE THE NAVY BLUE.
  */
 const Header: React.FC<Props> = ({ title }: Props) => {
-  const { user, loginUser, logoutUser } = useUserContext();
+  const { user, logoutUser } = useUserContext();
 
   const classes = useStyles();
 
@@ -25,13 +25,12 @@ const Header: React.FC<Props> = ({ title }: Props) => {
       ) : (
         <Typography variant="h4">not currently logged in</Typography>
       )}
-      <Button
-        variant="contained"
-        color="primary" // this is how you make MUI components navy blue
-        onClick={user ? logoutUser : loginUser}
-      >
-        {user ? 'Log out' : 'Log in'}
-      </Button>
+      {user && (
+        <Button variant="contained" color="primary" onClick={logoutUser}>
+          {' '}
+          {user ? 'Log out' : 'Log in'}
+        </Button>
+      )}
     </>
   );
 };
