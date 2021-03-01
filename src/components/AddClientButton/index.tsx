@@ -21,19 +21,19 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
     const [emailField, setEmailField] = useState("");
     const [tagField, setTagField] = useState("");
 
-    const handleClickOpen = () => {
+    const handleClickOpen = useCallback(() => {
         setOpen(true);
-    };
+    },[]);
     
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-    };
+    },[]);
 
-    const handleClientAdditon = () => {
+    const handleClientAdditon = useCallback(() => {
         fullRows.push(createData(nameField, emailField, tagField));
         setRows(fullRows);
         setOpen(false);
-    };
+    },[nameField, emailField, tagField, setRows, setOpen]);
     
     const handleChange = useCallback(
         (
