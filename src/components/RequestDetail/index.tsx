@@ -2,7 +2,11 @@ import React from 'react';
 import RequestDetailProps from './types'
 
 
-const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, account }: RequestDetailProps) => {
+const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteRequest, account, requestId }: RequestDetailProps) => {
+
+    const handleDenyRequest = () => {
+        deleteRequest(requestId); 
+    }
 
     return (
         <div>
@@ -30,12 +34,10 @@ const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, account }: 
             <div>
                 Brokerage Phone: {account.brokeragePhone}
             </div>
-            <button> Deny Request </button>
-            <button> Activate Account </button>
+            <button onClick={handleDenyRequest}> Deny Request </button>
+            <button onClick={handleDenyRequest}> Activate Account </button>
         </div>
     )
-
-
 }
 
 export default RequestDetails;

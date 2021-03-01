@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Header } from '../../../components';
 import SearchBar from '../../../components/SearchBar/index';
 import SimpleTable from '../../../components/SimpleTable/index';
 import RequestDetails from "../../../components/RequestDetail/index";
@@ -29,7 +27,7 @@ const accounts : Account[] = [
 
 const AuthRequestsView: React.FC = () => {
 
-  const newRequests = [
+  const [requests, setRequests] = useState([
     { requestId: "R12234", 
       accountEmail: "joe@gmail.com",
       dateOfRequest: "10-02-2021" },
@@ -38,31 +36,39 @@ const AuthRequestsView: React.FC = () => {
       accountEmail: "maryg@gmail.com",
       dateOfRequest: "11-02-2021" 
     }
-  ]
+  ]);
 
   const [requestDetails, setRequestDetails] = useState('');
   const [account, setAccount] = useState(accounts[0]);
 
   const openRequestDetails = (requestId: string) => {
 
-    const selectedRequest = newRequests.filter(request => request.requestId === requestId)[0];
+    const selectedRequest = requests.filter(request => request.requestId === requestId)[0];
     const associatedAccount = accounts.filter(account => account.email === selectedRequest.accountEmail)[0];
 
     setAccount(associatedAccount);
     setRequestDetails(requestId);
 
   }
-  
-  // if (requestDetails) {
-  //   return (<Redirect to={"/"} />)
-  // }
+
+  const deleteRequest = (requestId: string) => {
+    const newRequests = requests.filter(request => request.requestId !== requestId);
+    setRequests(newRequests);
+    setRequestDetails('');
+  }
+
   return (
     <div className='App'>
       <h1 style={{ margin: 10}}>Authorization Requests</h1>
-      { requestDetails ? <div> <RequestDetails account={account} hideDetails={() => setRequestDetails('')} > Details: {requestDetails} </RequestDetails></div> : (<div>
+      { requestDetails ? 
+        (<div> 
+          <RequestDetails deleteRequest={deleteRequest} requestId={requestDetails} account={account} hideDetails={() => setRequestDetails('')} > Details: {requestDetails} 
+          </RequestDetails>
+        </div>)
+      : (<div>
           <SearchBar />
-          <SimpleTable requests={newRequests} selectRequest={openRequestDetails}/>
-          </div>)
+          <SimpleTable requests={requests} selectRequest={openRequestDetails}/>
+        </div>)
       } 
     </div>
   );
