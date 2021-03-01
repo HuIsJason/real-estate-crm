@@ -42,7 +42,7 @@ const Row: React.FC<RowProps> = ({ name, email, tags }: RowProps) => {
           {name}
         </TableCell>
         <TableCell align="left">
-          {tags[0]}, {tags[1]}
+          {tags}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -80,6 +80,7 @@ const ClientList: React.FC = () => {
     const filteredRows = fullRows.filter((row) => {
       return row.name.toLowerCase().includes(searchedVal.toLowerCase());
     });
+    setPage(0);
     setRows(filteredRows);
   },[]);
 

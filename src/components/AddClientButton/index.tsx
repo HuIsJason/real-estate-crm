@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent, useCallback, useState}from 'react';
 import {
     Button,
     TextField,
@@ -11,15 +11,15 @@ import {
 
 import AddClientButtonProps from './types';
 
-import { createData } from '../ClientList/data';
+import { createData, fullRows } from '../ClientList/data';
 
 import useStyles from './styles';
 
 const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddClientButtonProps)=> {
-    const [open, setOpen] = React.useState(false);
-    const [nameField, setNameField] = React.useState("");
-    const [emailField, setEmailField] = React.useState("");
-    const [tagField, setTagField] = React.useState([]);
+    const [open, setOpen] = useState(false);
+    const [nameField, setNameField] = useState("");
+    const [emailField, setEmailField] = useState("");
+    const [tagField, setTagField] = useState("");
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -30,14 +30,30 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
     };
 
     const handleClientAdditon = () => {
-        const newRows = rows;
-        newRows.push(createData(nameField, emailField, tagField))
-        setRows(newRows);
+        fullRows.push(createData(nameField, emailField, tagField));
+        setRows(fullRows);
+        setOpen(false);
     };
     
-    const handleNameChange = () => {
-        setNameField(nameField);
-    }
+    const handleChange = useCallback(
+        (
+          e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+          type: 'name' | 'email' | 'tags'
+        ) => {
+          switch (type) {
+            case 'name':
+                setNameField(e.currentTarget.value);
+                break;
+            case 'email':
+                setEmailField(e.currentTarget.value);
+                break;
+            case 'tags':
+                setTagField(e.currentTarget.value);
+                break;
+          }
+        },
+        []
+    );
   
     const classes = useStyles();
 
@@ -54,7 +70,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
                         </DialogContentText>
 
                     <TextField
-                        onChange={handleNameChange}
+                        onChange={(e) => handleChange(e, 'name')}
                         autoFocus
                         margin="dense"
                         id="name"
@@ -64,6 +80,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
                     />
 
                     <TextField
+                        onChange={(e) => handleChange(e, 'email')}
                         margin="dense"
                         id="name"
                         label="Email Address"
@@ -72,6 +89,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
                     />
 
                     <TextField
+                        onChange={(e) => handleChange(e, 'tags')}
                         margin="dense"
                         id="name"
                         label="Tags"

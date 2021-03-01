@@ -3,5 +3,6 @@ import { RowProps } from "../ClientList/types"
 
 export default interface AddClientButtonProps {
     rows: RowProps[],
-    setRows: Dispatch<SetStateAction<RowProps[]>>
+    setRows: Dispatch<SetStateAction<RowProps[]>>,
+    
 }
