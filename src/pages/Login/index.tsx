@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {
   Button,
   FormControl,
-  Grid,
   Paper,
   TextField,
   Typography,
@@ -42,36 +41,46 @@ const Login: React.FC = () => {
   }, [username, password, loginUser]);
 
   return (
-    <Grid className={classes.root} container>
-      <Paper className={classes.paper} elevation={5}>
-        <Typography color="primary" variant="h3">
-          Login
+    <Paper className={classes.paper} elevation={5}>
+      <Typography color="primary" variant="h3">
+        Login
+      </Typography>
+      <FormControl
+        onSubmit={handleSubmit}
+        fullWidth={true}
+        component="form"
+        variant="filled"
+      >
+        <TextField
+          className={classes.textField}
+          fullWidth={true}
+          value={username}
+          onChange={(e) => handleChange(e, 'username')}
+          label="Username"
+          required
+        />
+        <TextField
+          className={classes.textField}
+          fullWidth={true}
+          value={password}
+          onChange={(e) => handleChange(e, 'password')}
+          label="Password"
+          type="password"
+          required
+        />
+        <Typography align="center" variant="body1">
+          Don't have an account? Sign up <Link to="/signup">here</Link>.
         </Typography>
-        <FormControl onSubmit={handleSubmit} component="form" variant="filled">
-          <TextField
-            className={classes.textField}
-            value={username}
-            onChange={(e) => handleChange(e, 'username')}
-            label="Username"
-            required
-          />
-          <TextField
-            className={classes.textField}
-            value={password}
-            onChange={(e) => handleChange(e, 'password')}
-            label="Password"
-            type="password"
-            required
-          />
-          <Typography variant="body1">
-            Don't have an account? Sign up <Link to="/signup">here</Link>.
-          </Typography>
-          <Button fullWidth={false} type="submit" variant="outlined">
-            Login
-          </Button>
-        </FormControl>
-      </Paper>
-    </Grid>
+        <Button
+          color="primary"
+          className={classes.button}
+          variant="contained"
+          type="submit"
+        >
+          Login
+        </Button>
+      </FormControl>
+    </Paper>
   );
 };
 

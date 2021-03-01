@@ -43,7 +43,7 @@ export interface Agent extends Account {
 }
 
 export interface Client extends Account {
-  agent: Agent;
+  agent?: Agent;
 }
 
 export type User = Agent | Client | null;
