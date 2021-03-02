@@ -11,11 +11,14 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Paper
+  Paper,
+  Button
 } from '@material-ui/core';
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
-  KeyboardArrowUp as KeyboardArrowUpIcon
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  DeleteForever as DeleteForeverIcon,
+  Edit as EditIcon
 } from '@material-ui/icons';
 import SearchBar from "material-ui-search-bar";
 
@@ -43,6 +46,12 @@ const Row: React.FC<RowProps> = ({ name, email, tags }: RowProps) => {
         </TableCell>
         <TableCell align="left">
           {tags}
+        </TableCell>
+        <TableCell>
+          <Button color="primary" className={classes.EButton} onClick={} ><EditIcon /></Button>
+        </TableCell>
+        <TableCell>
+          <Button color="primary" className={classes.EButton}><DeleteForeverIcon /></Button>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -105,7 +114,9 @@ const ClientList: React.FC = () => {
               <TableRow>
                 <TableCell classes={{ head: classes.emptyCellHead, body: classes.cellBody}} />
                 <TableCell classes={{ head: classes.clientCellHead, body: classes.cellBody }}>CLIENT</TableCell>
-                <TableCell align="left" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>TAGS</TableCell>
+                <TableCell classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>TAGS</TableCell>
+                <TableCell align="center" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>EDIT</TableCell>
+                <TableCell align="center" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>DELETE</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
