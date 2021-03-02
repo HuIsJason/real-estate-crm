@@ -19,9 +19,12 @@ import {
 } from '@material-ui/icons';
 import SearchBar from "material-ui-search-bar";
 
+
+import { AddClientButton } from '../.';
+
 import { RowProps } from './types';
 import useStyles from './styles';
-import fullRows from './data';
+import { fullRows } from './data';
 
 const Row: React.FC<RowProps> = ({ name, email, tags }: RowProps) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -39,7 +42,7 @@ const Row: React.FC<RowProps> = ({ name, email, tags }: RowProps) => {
           {name}
         </TableCell>
         <TableCell align="left">
-          {tags[0]}, {tags[1]}
+          {tags}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -77,6 +80,7 @@ const ClientList: React.FC = () => {
     const filteredRows = fullRows.filter((row) => {
       return row.name.toLowerCase().includes(searchedVal.toLowerCase());
     });
+    setPage(0);
     setRows(filteredRows);
   },[]);
 
@@ -86,43 +90,46 @@ const ClientList: React.FC = () => {
   },[searched, requestSearch]);
 
   return (
-    <Paper className={classes.table}>
-      <SearchBar
-        value={searched}
-        onChange={(searchVal) => requestSearch(searchVal)}
-        onCancelSearch={() => cancelSearch()}
-        className={classes.searchBar}
-      />
-      <TableContainer>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell classes={{ head: classes.cellHead, body: classes.cellBody }} />
-              <TableCell classes={{ head: classes.cellHead, body: classes.cellBody }}>CLIENT</TableCell>
-              <TableCell align="left" classes={{ head: classes.cellHead, body: classes.cellBody }}>TAGS</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+    <>
+      <AddClientButton rows={rows} setRows={setRows}/>
+      <Paper className={classes.table}>
+        <SearchBar
+          value={searched}
+          onChange={(searchVal) => requestSearch(searchVal)}
+          onCancelSearch={() => cancelSearch()}
+          className={classes.searchBar}
+        />
+        <TableContainer>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell classes={{ head: classes.emptyCellHead, body: classes.cellBody}} />
+                <TableCell classes={{ head: classes.clientCellHead, body: classes.cellBody }}>CLIENT</TableCell>
+                <TableCell align="left" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>TAGS</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
 
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <Row key = {row.name} {...row} />
-              );
-            })}
-            
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination classes={{ root: classes.pagination }}
-            rowsPerPageOptions={[5, 10]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    </Paper>
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                return (
+                  <Row key = {row.name} {...row} />
+                );
+              })}
+              
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination classes={{ root: classes.pagination }}
+              rowsPerPageOptions={[5, 10]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </>
   );
 }
 
