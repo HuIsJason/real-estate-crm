@@ -17,21 +17,30 @@ import {
 import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
-  DeleteForever as DeleteForeverIcon,
-  Edit as EditIcon
+  DeleteForever as DeleteForeverIcon
 } from '@material-ui/icons';
 import SearchBar from "material-ui-search-bar";
 
 
 import { AddClientButton } from '../.';
 
-import { RowProps } from './types';
+import { RowProps, DataFields} from './types';
 import useStyles from './styles';
 import { fullRows } from './data';
 
-const Row: React.FC<RowProps> = ({ name, email, tags }: RowProps) => {
+const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, setRows}: RowProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const classes = useStyles();
+
+  const handleDelete = useCallback((id: string) => {
+    var indexOfRow = fullRows.findIndex(i => i.id === id)
+    fullRows.splice(indexOfRow, 1);
+    const newRows = fullRows.filter((row) => {
+      return row.id !== id;
+    });
+
+    setRows(newRows);
+  },[setRows]);
 
   return (
     <>
@@ -48,10 +57,7 @@ const Row: React.FC<RowProps> = ({ name, email, tags }: RowProps) => {
           {tags}
         </TableCell>
         <TableCell>
-          <Button color="primary" className={classes.EButton} onClick={} ><EditIcon /></Button>
-        </TableCell>
-        <TableCell>
-          <Button color="primary" className={classes.EButton}><DeleteForeverIcon /></Button>
+          <Button color="primary" className={classes.EButton} onClick={() => handleDelete(id)} ><DeleteForeverIcon /></Button>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -73,7 +79,7 @@ const ClientList: React.FC = () => {
   const classes = useStyles();
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [rows, setRows] = useState<RowProps[]>(fullRows);
+  const [rows, setRows] = useState<DataFields[]>(fullRows);
   const [searched, setSearched] = useState<string>("");
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
@@ -115,7 +121,6 @@ const ClientList: React.FC = () => {
                 <TableCell classes={{ head: classes.emptyCellHead, body: classes.cellBody}} />
                 <TableCell classes={{ head: classes.clientCellHead, body: classes.cellBody }}>CLIENT</TableCell>
                 <TableCell classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>TAGS</TableCell>
-                <TableCell align="center" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>EDIT</TableCell>
                 <TableCell align="center" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>DELETE</TableCell>
               </TableRow>
             </TableHead>
@@ -123,7 +128,7 @@ const ClientList: React.FC = () => {
 
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 return (
-                  <Row key = {row.name} {...row} />
+                  <Row key = {row.name} {...row} rows={rows} setRows={setRows}/>
                 );
               })}
               

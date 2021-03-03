@@ -9,6 +9,8 @@ import {
     DialogTitle
 } from '@material-ui/core';
 
+import {v4 as uuid} from 'uuid'
+
 import AddClientButtonProps from './types';
 
 import { createData, fullRows } from '../ClientList/data';
@@ -30,8 +32,13 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
     },[]);
 
     const handleClientAdditon = useCallback(() => {
-        fullRows.push(createData(nameField, emailField, tagField));
-        setRows(fullRows);
+        fullRows.push(createData(nameField, emailField, tagField, uuid()));
+
+        const newRows = fullRows.filter((row) => {
+            return row.id !== "jason is dummy";
+        });
+
+        setRows(newRows);
         setOpen(false);
     },[nameField, emailField, tagField, setRows, setOpen]);
     
