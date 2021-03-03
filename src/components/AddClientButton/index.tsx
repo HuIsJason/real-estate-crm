@@ -35,7 +35,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
         fullRows.push(createData(nameField, emailField, tagField, uuid()));
 
         const newRows = fullRows.filter((row) => {
-            return row.id !== "jason is dummy";
+            return row.id !== "xxx";
         });
 
         setRows(newRows);
