@@ -37,8 +37,12 @@ export default makeStyles((theme: Theme) => ({
     border: "1px solid #0C3A77",
   },
   pagination: {
-    position: "absolute",
+
     bottom: "0px",
     right: "0px"
+  },
+  EButton: {
+    height: "10px",
+    width: "10px"
   }
 }));
