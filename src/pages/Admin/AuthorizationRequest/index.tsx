@@ -5,6 +5,7 @@ import RequestDetails from "../../../components/RequestDetail/index";
 import { Account } from '../../../components/SimpleTable/types'
 
 const accounts : Account[] = [
+  
   { email: "joe@gmail.com",
     firstName: "joe",
     lastName: "brown",
@@ -38,32 +39,33 @@ const AuthRequestsView: React.FC = () => {
     }
   ]);
 
-  const [requestDetails, setRequestDetails] = useState('');
+  const [selectedRequest, setSelectedRequest] = useState(''); // Request Id of the selected row in the table
   const [account, setAccount] = useState(accounts[0]);
 
+  /* Opens the RequestDetails view showing the account associated with requestId */
   const openRequestDetails = (requestId: string) => {
 
     const selectedRequest = requests.filter(request => request.requestId === requestId)[0];
     const associatedAccount = accounts.filter(account => account.email === selectedRequest.accountEmail)[0];
 
     setAccount(associatedAccount);
-    setRequestDetails(requestId);
+    setSelectedRequest(requestId);
 
   }
 
+  /* Removes the request with requestId from the table */
   const deleteRequest = (requestId: string) => {
     const newRequests = requests.filter(request => request.requestId !== requestId);
     setRequests(newRequests);
-    setRequestDetails('');
+    setSelectedRequest('');
   }
 
   return (
-    <div className='App'>
+    <div>
       <h1 style={{ margin: 10}}>Authorization Requests</h1>
-      { requestDetails ? 
+      { selectedRequest ? 
         (<div> 
-          <RequestDetails deleteRequest={deleteRequest} requestId={requestDetails} account={account} hideDetails={() => setRequestDetails('')} > Details: {requestDetails} 
-          </RequestDetails>
+          <RequestDetails deleteRequest={deleteRequest} requestId={selectedRequest} account={account} hideDetails={() => setSelectedRequest('')} />
         </div>)
       : (<div>
           <SearchBar />
