@@ -5,7 +5,7 @@ import { uid } from 'react-uid';
 import TableRow from './tablerow';
 import { makeStyles, Theme } from '@material-ui/core';
 
-const SimpleTable: React.FC<Props> = ({ requests, selectRequest }: Props) => {
+const SimpleTable: React.FC<Props> = ({ accountSummaries, onSelectRow }: Props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -13,24 +13,20 @@ const SimpleTable: React.FC<Props> = ({ requests, selectRequest }: Props) => {
         <thead>
           <tr>
             <th>
-              Request Number
-            </th>
-            <th>
               Account Email
             </th>
             <th>
-              Date of Request
+              Date of Last Login
             </th>
           </tr>
         </thead>
         <tbody>
-          {requests.map(request => (
+          {accountSummaries.map(account => (
             <TableRow 
-              key={request.requestId} 
-              requestId={request.requestId}
-              email={request.accountEmail} 
-              dateOfRequest={request.dateOfRequest} 
-              onClick={() => selectRequest(request.requestId)}/> ))}
+              key={account.accountEmail} 
+              email={account.accountEmail} 
+              lastLogin={account.lastLogin} 
+              onClick={() => onSelectRow(account.accountEmail)}/> ))}
         </tbody>
 
       </table>
