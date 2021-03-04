@@ -20,7 +20,8 @@ const Header: React.FC<Props> = ({ title }: Props) => {
       <h1 className={classes.root}>{title}</h1>
       {user ? (
         <Typography variant="h4" color="primary">
-          The current user is: {user.id}, {user.name}, {user.bio}, {user.phone}
+          The current user is: {user.id}, {user.firstName}, {user.bio},{' '}
+          {user.phone}
         </Typography>
       ) : (
         <Typography variant="h4">not currently logged in</Typography>

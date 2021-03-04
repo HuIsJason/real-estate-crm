@@ -29,7 +29,8 @@ export interface Project {
 
 interface Account {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
   bio: string;
   yearCreated: number;
   address: string;
@@ -38,7 +39,10 @@ interface Account {
 }
 
 export interface Agent extends Account {
+  licenseId: string;
   brokerage: string;
+  brokerageAddress: string;
+  brokeragePhone: string;
   specialization: Specialization;
 }
 

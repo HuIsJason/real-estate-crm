@@ -22,7 +22,8 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
     if (username === 'admin' && password === 'admin') {
       setUser({
         id: 1,
-        name: 'Admin',
+        firstName: 'Mr',
+        lastName: 'Admin',
         bio: 'Application administrator.',
         yearCreated: 2021,
         address: "27 King's College Circle",
@@ -34,13 +35,17 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
     } else if (username === 'user' && password === 'user') {
       setUser({
         id: 1,
-        name: 'Jason Hu',
+        firstName: 'Jason',
+        lastName: 'Hu',
         bio: 'Selling your house ASAP!',
         yearCreated: 2021,
         address: '18 Rainsford Road',
         phone: '416-909-3633',
         email: 'jasonn.hu@mail.utoronto.ca',
+        licenseId: '232-324234-32432',
         brokerage: 'Remax',
+        brokerageAddress: '100 Fundy Bay Blvd',
+        brokeragePhone: '416-867-1111',
         specialization: 'SELLER',
       });
     } else {
