@@ -6,6 +6,9 @@ import AdminDashboard from './pages/Admin/Dashboard/index';
 import AdminAuthRequestView from './pages/Admin/AuthorizationRequest/index';
 import { Agent, Home, Login } from './pages';
 
+import AdminAccountManagerView from './pages/Admin/AccountManager/index';
+
+
 const App: React.FC = () => {
   const { user } = useUserContext();
 
@@ -13,6 +16,7 @@ const App: React.FC = () => {
     <Switch>
       <Route exact path="/admin" component={AdminDashboard} />
       <Route exact path="/admin/auth-requests" component={AdminAuthRequestView} />
+      <Route exact path="/admin/accounts" component={AdminAccountManagerView} />
       <Route
         exact
         path="/"
@@ -24,6 +28,7 @@ const App: React.FC = () => {
         render={() => (user ? <Redirect to="/" /> : <Login />)}
       />
       <Route exact path="/ClientList" component={Agent} />
+
     </Switch>
   );
 };
