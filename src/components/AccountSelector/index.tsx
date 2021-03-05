@@ -15,15 +15,15 @@ export default function AccountSelector({selection, setSelection}: AccountSelect
     };
 
     return (
-        <div>
-            <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Account Type </InputLabel>
+        <div className={classes.root}>
+            <FormControl variant='outlined' className={classes.formControl}>
+            <InputLabel id="demo-simple-select-outlined-label">Account Type </InputLabel>
             <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={selection}
                 onChange={handleChange}
-                label="Age"
+                label="Account Type"
             >
             <MenuItem value="agent">Agent</MenuItem>
             <MenuItem value="client">Client</MenuItem>
@@ -35,12 +35,14 @@ export default function AccountSelector({selection, setSelection}: AccountSelect
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      display: 'inline-block',
+      position: 'absolute',
+      right: '10%'
+    }, 
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
     },
   }),
 );

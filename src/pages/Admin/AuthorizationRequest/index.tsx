@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SearchBar from '../../../components/SearchBar/index';
 import SimpleTable from '../../../components/SimpleTable/index';
 import RequestDetails from "../../../components/RequestDetail/index";
-import { Account } from '../../../components/SimpleTable/types'
+import { Account } from '../../../components/SimpleTable/types';
 
 const accounts : Account[] = [
   

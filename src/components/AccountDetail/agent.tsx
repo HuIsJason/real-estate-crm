@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { AgentAccount } from '../AccountListTable/types';
 import AccountDetailProps from './types';
 import ResetPasswordModal from '../ResetPasswordModal/index';
+import ConfirmationModal from '../ConfirmationModal/index';
 import generateRandomPassword from './generatePassword';
 
 const agentAccounts : AgentAccount[] = [
@@ -33,17 +34,17 @@ const agentAccounts : AgentAccount[] = [
 const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, accountEmail}: AccountDetailProps) => {
 
     const classes = useStyles();
-    const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(0);
     const [newPassword, setNewPassword] = React.useState('');
 
     const handleDeleteAccount = () => {
-        deleteAccount(accountEmail); 
+        deleteAccount(accountEmail);
+        setModalOpen(0);
     }
 
     const resetPassword = () => {
         setNewPassword(generateRandomPassword());
-        setModalOpen(true);
-
+        setModalOpen(1);
     }
 
     const account = agentAccounts.filter(account => account.email === accountEmail)[0];
@@ -78,9 +79,11 @@ const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccou
             </div>
             <br/>
             Actions:
-            <button onClick={handleDeleteAccount}> Delete Account </button>
-            <button onClick={resetPassword}> Reset Password </button>
-            <ResetPasswordModal open={modalOpen} onClose={() => setModalOpen(false)} newPassword={newPassword} />
+            <button onClick={() => setModalOpen(2)}> Delete Account </button>
+            <button onClick={() => setModalOpen(3)}> Reset Password </button>
+            <ResetPasswordModal open={modalOpen === 1} onClose={() => setModalOpen(0)} newPassword={newPassword} />
+            <ConfirmationModal open={modalOpen === 2} onCancel={() => setModalOpen(0)} onContinue={handleDeleteAccount} actionDescription="delete this account" />
+            <ConfirmationModal open={modalOpen === 3} onCancel={() => setModalOpen(0)} onContinue={resetPassword} actionDescription="reset this account's password" />
         </div>
     )
 }

@@ -1,17 +1,22 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
-import RequestDetailProps from './types'
+import RequestDetailProps from './types';
+import ConfirmationModal from '../ConfirmationModal/index';
+
 
 
 const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteRequest, account, requestId }: RequestDetailProps) => {
 
     const classes = useStyles();
+    const [openModal, setOpenModal] = React.useState(0);
 
     const handleDenyRequest = () => {
+        setOpenModal(0);
         deleteRequest(requestId); 
     }
 
     const activateAccount = () => {
+        setOpenModal(0);
         deleteRequest(requestId);
     }
 
@@ -43,8 +48,10 @@ const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteReque
                 <span className={classes.bold}>Brokerage Phone:</span> {account.brokeragePhone}
             </div>
             <br/>
-            <button onClick={handleDenyRequest}> Deny Request </button>
-            <button onClick={activateAccount}> Activate Account </button>
+            <button onClick={() => setOpenModal(1)}> Deny Request </button>
+            <button onClick={() => setOpenModal(2)}> Activate Account </button>
+            <ConfirmationModal open={openModal === 1} onCancel={() => setOpenModal(0)} onContinue={handleDenyRequest} actionDescription="deny this request"/>
+            <ConfirmationModal open={openModal === 2} onCancel={() => setOpenModal(0)} onContinue={activateAccount} actionDescription="activate this account"/>
         </div>
     )
 }
