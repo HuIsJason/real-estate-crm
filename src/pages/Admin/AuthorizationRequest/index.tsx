@@ -26,10 +26,8 @@ const accounts : Account[] = [
   }
 ]
 
-const AuthRequestsView: React.FC = () => {
-
-  const [requests, setRequests] = useState([
-    { requestId: "R12234", 
+const requests = [
+  { requestId: "R12234", 
       accountEmail: "joe@gmail.com",
       dateOfRequest: "10-02-2021" },
     {
@@ -37,27 +35,41 @@ const AuthRequestsView: React.FC = () => {
       accountEmail: "maryg@gmail.com",
       dateOfRequest: "11-02-2021" 
     }
-  ]);
+]
+
+const AuthRequestsView: React.FC = () => {
+
+  const [activeRequests, setRequests] = useState(requests);
+  const [displayRequests, setDisplayRequests] = useState(requests);
 
   const [selectedRequest, setSelectedRequest] = useState(''); // Request Id of the selected row in the table
   const [account, setAccount] = useState(accounts[0]);
+  const [searchValue, setSearchValue] = useState('');
 
   /* Opens the RequestDetails view showing the account associated with requestId */
   const openRequestDetails = (requestId: string) => {
 
-    const selectedRequest = requests.filter(request => request.requestId === requestId)[0];
+    const selectedRequest = activeRequests.filter(request => request.requestId === requestId)[0];
     const associatedAccount = accounts.filter(account => account.email === selectedRequest.accountEmail)[0];
 
     setAccount(associatedAccount);
     setSelectedRequest(requestId);
+    setSearchValue('');
 
   }
 
   /* Removes the request with requestId from the table */
   const deleteRequest = (requestId: string) => {
-    const newRequests = requests.filter(request => request.requestId !== requestId);
+    const newRequests = activeRequests.filter(request => request.requestId !== requestId);
     setRequests(newRequests);
+    setDisplayRequests(newRequests);
     setSelectedRequest('');
+  }
+
+  const filterSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+    const newRequests = activeRequests.filter(request => request.accountEmail.includes(event.target.value));
+    setDisplayRequests(newRequests);
   }
 
   return (
@@ -68,8 +80,8 @@ const AuthRequestsView: React.FC = () => {
           <RequestDetails deleteRequest={deleteRequest} requestId={selectedRequest} account={account} hideDetails={() => setSelectedRequest('')} />
         </div>)
       : (<div>
-          <SearchBar />
-          <SimpleTable requests={requests} selectRequest={openRequestDetails}/>
+          <SearchBar value={searchValue} onChange={filterSearch}/>
+          <SimpleTable requests={displayRequests} selectRequest={openRequestDetails}/>
         </div>)
       } 
     </div>

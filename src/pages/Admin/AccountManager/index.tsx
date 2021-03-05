@@ -29,25 +29,39 @@ const accountSummaries: AccountSummary[] = [
 const  AccountManagerView: React.FC = () => {
 
     const [selectedAccount, setSelectedAccount] = useState('');
+    const [searchValue, setSearchValue] = useState('');
     const [accountType, setAccountType] = useState('agent');
     const [openDetails, toggleOpenDetails]=  useState(false);
-    const [accountsList, setAccountsList] = useState(accountSummaries.filter(account => account.accountType === 'agent'));
+    const [activeAccounts, setActiveAccounts] = useState(accountSummaries);
+    const [displayAccounts, setDisplayAccounts] = useState(activeAccounts.filter(account => account.accountType === accountType));
 
     const openAccountDetails = (accountEmail: string) => {
         setSelectedAccount(accountEmail); 
+        setSearchValue('');
         toggleOpenDetails(true);
     }
 
     const deleteAccount = (accountEmail: string) => {
-        const newAccountsList = accountsList.filter(account => account.accountEmail !== accountEmail);
-        setAccountsList(newAccountsList);
+        const newAccountsList = activeAccounts.filter(account => account.accountEmail !== accountEmail);
+        setActiveAccounts(newAccountsList);
+
+        const newDisplay = activeAccounts.filter(account => account.accountEmail !== accountEmail && account.accountType === accountType);
+        setDisplayAccounts(newDisplay);
         toggleOpenDetails(false);
     }
 
     const filterByType = (type: string) => {
         setAccountType(type);
-        const newAccountsList = accountSummaries.filter(account => account.accountType === type);
-        setAccountsList(newAccountsList);
+        const newAccountsList = activeAccounts.filter(account => account.accountType === type);
+        setDisplayAccounts(newAccountsList);
+        setSearchValue('');
+    }
+
+    const searchFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+        const newAccountsList = activeAccounts.filter(account => account.accountEmail.includes(event.target.value) && account.accountType === accountType);
+        setDisplayAccounts(newAccountsList);
+        
     }
 
 
@@ -59,9 +73,9 @@ const  AccountManagerView: React.FC = () => {
             deleteAccount={deleteAccount}/> : <ClientAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} deleteAccount={deleteAccount} />)
             :
             (<div> 
-                <SearchBar />
+                <SearchBar onChange={searchFilter} value={searchValue}/>
                 <AccountSelector selection={accountType} setSelection={filterByType}/>
-                <AccountListTable accountSummaries={accountsList} onSelectRow={openAccountDetails}/>
+                <AccountListTable accountSummaries={displayAccounts} onSelectRow={openAccountDetails}/>
             </div>)
             }
         </div>

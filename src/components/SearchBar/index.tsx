@@ -3,10 +3,11 @@ import Props from './types';
 
 import { makeStyles, Theme } from '@material-ui/core';
 
-const SearchBar: React.FC<Props> = ({ placeholder }: Props) => {
+const SearchBar: React.FC<Props> = ({ placeholder, onChange, value }: Props) => {
   const classes = useStyles();
   return (
-    <input className={classes.root} placeholder={placeholder || 'Search'}/>
+    <input className={classes.root} type='text' onChange={onChange} value={value}
+    placeholder={placeholder || 'Search'}/>
   );
 };
 
