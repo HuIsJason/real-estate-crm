@@ -1,7 +1,9 @@
 import { makeStyles, Theme } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { AgentAccount } from '../AccountListTable/types';
-import AccountDetailProps from './types'
+import AccountDetailProps from './types';
+import ResetPasswordModal from '../ResetPasswordModal/index';
+import generateRandomPassword from './generatePassword';
 
 const agentAccounts : AgentAccount[] = [
 
@@ -31,12 +33,16 @@ const agentAccounts : AgentAccount[] = [
 const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, accountEmail}: AccountDetailProps) => {
 
     const classes = useStyles();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [newPassword, setNewPassword] = React.useState('');
 
     const handleDeleteAccount = () => {
         deleteAccount(accountEmail); 
     }
 
     const resetPassword = () => {
+        setNewPassword(generateRandomPassword());
+        setModalOpen(true);
 
     }
 
@@ -74,6 +80,7 @@ const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccou
             Actions:
             <button onClick={handleDeleteAccount}> Delete Account </button>
             <button onClick={resetPassword}> Reset Password </button>
+            <ResetPasswordModal open={modalOpen} onClose={() => setModalOpen(false)} newPassword={newPassword} />
         </div>
     )
 }
