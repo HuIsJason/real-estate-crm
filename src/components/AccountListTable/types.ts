@@ -12,18 +12,27 @@ interface TableRowProps {
 interface AccountSummary {
   accountEmail: string,
   lastLogin: string,
+  accountType: 'client' | 'agent',
 }
 
-interface Account { 
+interface Account {
   email: string,
   firstName: string,
   lastName: string,
-  licenseId: string,
   phone: string,
+}
+
+interface AgentAccount extends Account {
+  type: 'agent', 
+  licenseId: string,
   brokerage: string,
   brokerageAddress: string,
   brokeragePhone: string
 }
 
+interface ClientAccount extends Account {
+  type: 'client',
+}
+
 export default TableProps;
-export type { TableRowProps, AccountSummary, Account } ;
+export type { TableRowProps, AccountSummary, AgentAccount, ClientAccount } ;

@@ -1,51 +1,40 @@
 import React, { useState } from 'react';
 import AccountListTable from '../../../components/AccountListTable/index';
 import SearchBar from '../../../components/SearchBar/index';
-import { Account, AccountSummary } from '../../../components/AccountListTable/types';
-import AccountDetail from "../../../components/AccountDetail/index";
+import { AgentAccount, ClientAccount, AccountSummary } from '../../../components/AccountListTable/types';
+import AgentAccountDetail from "../../../components/AccountDetail/agent";
+import ClientAccountDetail from "../../../components/AccountDetail/client";
 
-const accounts : Account[] = [
+import AccountSelector from '../../../components/AccountSelector/index';
 
-    { email: "joe@gmail.com",
-      firstName: "joe",
-      lastName: "brown",
-      licenseId: "H123456",
-      phone: "647-123-4567",
-      brokerage: "Royal LePage",
-      brokerageAddress: "123 Sesame St",
-      brokeragePhone: "905-798-1000"
-    },
-    { email: "maryg@gmail.com",
-      firstName: "Mary",
-      lastName: "Green",
-      licenseId: "H898009",
-      phone: "905-888-9999",
-      brokerage: "Homelife Miracle",
-      brokerageAddress: "88 Pacific Ave",
-      brokeragePhone: "905-798-2222"
-    }
-]
 
 const accountSummaries: AccountSummary[] = [
     { 
         accountEmail: 'joe@gmail.com',
         lastLogin: '2021-01-22', 
+        accountType: 'agent'
     },
     { 
         accountEmail: 'maryg@gmail.com',
         lastLogin: '2021-02-22', 
+        accountType: 'agent'
+    },
+    {
+        accountEmail: 'jenny@hotmail.com',
+        lastLogin: '2021-02-28',
+        accountType: 'client'
     }
 ]
 
 const  AccountManagerView: React.FC = () => {
 
-    const [selectedAccount, setSelectedAccount] = useState(accounts[0]);
+    const [selectedAccount, setSelectedAccount] = useState('');
+    const [accountType, setAccountType] = useState('agent');
     const [openDetails, toggleOpenDetails]=  useState(false);
-    const [accountsList, setAccountsList] = useState(accountSummaries);
+    const [accountsList, setAccountsList] = useState(accountSummaries.filter(account => account.accountType === 'agent'));
 
     const openAccountDetails = (accountEmail: string) => {
-        const account = accounts.filter(account => account.email === accountEmail)[0];
-        setSelectedAccount(account); 
+        setSelectedAccount(accountEmail); 
         toggleOpenDetails(true);
     }
 
@@ -55,16 +44,23 @@ const  AccountManagerView: React.FC = () => {
         toggleOpenDetails(false);
     }
 
+    const filterByType = (type: string) => {
+        setAccountType(type);
+        const newAccountsList = accountSummaries.filter(account => account.accountType === type);
+        setAccountsList(newAccountsList);
+    }
+
 
     return (
         <div>
             <h1 style={{ margin: 10}}>Account Manager</h1>
-            {openDetails ?
-            ( <AccountDetail account={selectedAccount} hideDetails={() => toggleOpenDetails(false)} 
-            deleteAccount={deleteAccount}/> )
+            { openDetails ?
+            ( accountType === 'agent' ? <AgentAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} 
+            deleteAccount={deleteAccount}/> : <ClientAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} deleteAccount={deleteAccount} />)
             :
             (<div> 
                 <SearchBar />
+                <AccountSelector selection={accountType} setSelection={filterByType}/>
                 <AccountListTable accountSummaries={accountsList} onSelectRow={openAccountDetails}/>
             </div>)
             }

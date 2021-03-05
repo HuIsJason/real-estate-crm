@@ -1,19 +1,47 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
+import { AgentAccount } from '../AccountListTable/types';
 import AccountDetailProps from './types'
 
+const agentAccounts : AgentAccount[] = [
 
-const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, account }: AccountDetailProps) => {
+    { email: "joe@gmail.com",
+      firstName: "joe",
+      lastName: "brown",
+      licenseId: "H123456",
+      phone: "647-123-4567",
+      brokerage: "Royal LePage",
+      brokerageAddress: "123 Sesame St",
+      brokeragePhone: "905-798-1000",
+      type: 'agent'
+    },
+    { email: "maryg@gmail.com",
+      firstName: "Mary",
+      lastName: "Green",
+      licenseId: "H898009",
+      phone: "905-888-9999",
+      brokerage: "Homelife Miracle",
+      brokerageAddress: "88 Pacific Ave",
+      brokeragePhone: "905-798-2222",
+      type: 'agent'
+    },
+
+]
+
+const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, accountEmail}: AccountDetailProps) => {
 
     const classes = useStyles();
 
     const handleDeleteAccount = () => {
-        deleteAccount(account.email); 
+        deleteAccount(accountEmail); 
     }
 
     const resetPassword = () => {
 
     }
+
+    const account = agentAccounts.filter(account => account.email === accountEmail)[0];
+
 
     return (
         <div className={classes.root}>

@@ -1,10 +1,9 @@
-import { Account } from '../AccountListTable/types';
+import { AgentAccount, ClientAccount } from '../AccountListTable/types';
 
 interface AccountDetailProps {
   hideDetails: () => void;
   deleteAccount: (accountEmail: string) => void; 
-  account: Account;
-
+  accountEmail: string
 }
 
 export default AccountDetailProps;
