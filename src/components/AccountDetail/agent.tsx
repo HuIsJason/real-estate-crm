@@ -9,8 +9,8 @@ import generateRandomPassword from './generatePassword';
 const agentAccounts : AgentAccount[] = [
 
     { email: "joe@gmail.com",
-      firstName: "joe",
-      lastName: "brown",
+      firstName: "Joe",
+      lastName: "Brown",
       licenseId: "H123456",
       phone: "647-123-4567",
       brokerage: "Royal LePage",
@@ -28,7 +28,56 @@ const agentAccounts : AgentAccount[] = [
       brokeragePhone: "905-798-2222",
       type: 'agent'
     },
-
+    { email: "harrym@gmail.com",
+      firstName: "Harry",
+      lastName: "Mills",
+      licenseId: "H987654",
+      phone: "647-999-8888",
+      brokerage: "Homelife Miracle",
+      brokerageAddress: "88 Pacific Ave",
+      brokeragePhone: "905-798-2222",
+      type: 'agent'
+    },
+    { email: "georgeli@gmail.com",
+      firstName: "George",
+      lastName: "Li",
+      licenseId: "H5613576",
+      phone: "647-777-1234",
+      brokerage: "Homelife Miracle",
+      brokerageAddress: "88 Pacific Ave",
+      brokeragePhone: "905-798-2222",
+      type: 'agent'
+    },
+    { email: "james@gmail.com",
+      firstName: "James",
+      lastName: "Li",
+      licenseId: "H823910",
+      phone: "416-000-0001",
+      brokerage: "Homelife Miracle",
+      brokerageAddress: "88 Pacific Ave",
+      brokeragePhone: "905-798-2222",
+      type: 'agent'
+    },
+    { email: "miranda@gmail.com",
+      firstName: "Mirande",
+      lastName: "Redwood",
+      licenseId: "H162751",
+      phone: "416-882-9829",
+      brokerage: "Homelife Miracle",
+      brokerageAddress: "88 Pacific Ave",
+      brokeragePhone: "905-798-2222",
+      type: 'agent'
+    },
+    { email: "taylor.white@gmail.com",
+      firstName: "Taylor",
+      lastName: "White",
+      licenseId: "H128926",
+      phone: "647-345-678",
+      brokerage: "Remax",
+      brokerageAddress: "456 Sesame St",
+      brokeragePhone: "905-111-2021",
+      type: 'agent'
+    },
 ]
 
 const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, accountEmail}: AccountDetailProps) => {

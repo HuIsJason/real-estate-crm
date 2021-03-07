@@ -1,6 +1,9 @@
 interface TableProps {
   accountSummaries: AccountSummary[];
   onSelectRow: (accountEmail: string) => void;
+  displayPage: number;
+  onClickNext: () => void;
+  onClickPrev: () => void;
 }
 
 interface TableRowProps {

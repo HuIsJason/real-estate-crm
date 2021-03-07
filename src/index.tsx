@@ -4,7 +4,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './App';
 import { ThemeProvider, UserProvider } from './contexts';
+import './index.css';
 // import reportWebVitals from './reportWebVitals';
+import 'fontsource-roboto';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,6 +14,7 @@ ReactDOM.render(
       <UserProvider>
         <Router>
           <App />
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         </Router>
       </UserProvider>
     </ThemeProvider>

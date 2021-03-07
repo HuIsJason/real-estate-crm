@@ -4,8 +4,12 @@ import SearchBar from '../../../components/SearchBar/index';
 import { AgentAccount, ClientAccount, AccountSummary } from '../../../components/AccountListTable/types';
 import AgentAccountDetail from "../../../components/AccountDetail/agent";
 import ClientAccountDetail from "../../../components/AccountDetail/client";
-
 import AccountSelector from '../../../components/AccountSelector/index';
+import AppBar from "../../../components/AppBar";
+
+
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, Theme } from '@material-ui/core';
 
 
 const accountSummaries: AccountSummary[] = [
@@ -23,10 +27,42 @@ const accountSummaries: AccountSummary[] = [
         accountEmail: 'jenny@hotmail.com',
         lastLogin: '2021-02-28',
         accountType: 'client'
+    },
+    {
+        accountEmail: 'harrym@gmail.com',
+        lastLogin: '2021-02-28',
+        accountType: 'agent'
+    },
+    {
+        accountEmail: 'georgeli@gmail.com',
+        lastLogin: '2021-02-28',
+        accountType: 'agent'
+    },
+    {
+        accountEmail: 'james@gmail.com',
+        lastLogin: '2021-02-28',
+        accountType: 'agent'
+    },
+    {
+        accountEmail: 'miranda@gmail.com',
+        lastLogin: '2021-02-28',
+        accountType: 'agent'
+    },
+    {
+        accountEmail: 'taylor.white@gmail.com',
+        lastLogin: '2021-02-28',
+        accountType: 'agent'
+    },
+    {
+        accountEmail: 'miranda@gmail.com',
+        lastLogin: '2021-02-28',
+        accountType: 'agent'
     }
 ]
 
 const  AccountManagerView: React.FC = () => {
+
+    const classes = useStyles();
 
     const [selectedAccount, setSelectedAccount] = useState('');
     const [searchValue, setSearchValue] = useState('');
@@ -34,11 +70,13 @@ const  AccountManagerView: React.FC = () => {
     const [openDetails, toggleOpenDetails]=  useState(false);
     const [activeAccounts, setActiveAccounts] = useState(accountSummaries);
     const [displayAccounts, setDisplayAccounts] = useState(activeAccounts.filter(account => account.accountType === accountType));
+    const [displayPage, setDisplayPage] = useState(1);
 
     const openAccountDetails = (accountEmail: string) => {
         setSelectedAccount(accountEmail); 
         setSearchValue('');
         toggleOpenDetails(true);
+        setDisplayPage(1);
     }
 
     const deleteAccount = (accountEmail: string) => {
@@ -55,27 +93,34 @@ const  AccountManagerView: React.FC = () => {
         const newAccountsList = activeAccounts.filter(account => account.accountType === type);
         setDisplayAccounts(newAccountsList);
         setSearchValue('');
+        setDisplayPage(1);
     }
 
     const searchFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
         const newAccountsList = activeAccounts.filter(account => account.accountEmail.includes(event.target.value) && account.accountType === accountType);
         setDisplayAccounts(newAccountsList);
-        
+        setDisplayPage(1);
     }
 
 
     return (
         <div>
-            <h1 style={{ margin: 10}}>Account Manager</h1>
+            <AppBar title="Account Manager" />
             { openDetails ?
             ( accountType === 'agent' ? <AgentAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} 
             deleteAccount={deleteAccount}/> : <ClientAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} deleteAccount={deleteAccount} />)
             :
-            (<div> 
+            (<div className={classes.root} > 
+                <div> <Typography variant="h6" gutterBottom color='primary'> Account Manager </Typography> </div> 
+
                 <SearchBar onChange={searchFilter} value={searchValue}/>
                 <AccountSelector selection={accountType} setSelection={filterByType}/>
-                <AccountListTable accountSummaries={displayAccounts} onSelectRow={openAccountDetails}/>
+                <AccountListTable displayPage={displayPage} accountSummaries={displayAccounts} 
+                    onSelectRow={openAccountDetails}
+                    onClickNext={() => setDisplayPage(displayPage + 1)}
+                    onClickPrev={() => setDisplayPage(displayPage - 1)}
+                    />
             </div>)
             }
         </div>
@@ -83,6 +128,12 @@ const  AccountManagerView: React.FC = () => {
     )
 
 }
+
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+      margin: theme.spacing(2),
+    },
+  }));
 
 
 export default AccountManagerView;

@@ -1,5 +1,8 @@
 import React from 'react';
 import Props from './types';
+import Typography from '@material-ui/core/Typography';
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
 
 import { makeStyles, Theme } from '@material-ui/core';
 
@@ -14,22 +17,22 @@ const SearchBar: React.FC<Props> = ({ placeholder, onChange, value }: Props) => 
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    margin: theme.spacing(2),
-    background: '#F1F2F5',
-    borderRadius: 10,
-    padding: '12px 15px',
+    margin: 0,
+    // background: '#F1F2F5',
+    borderRadius: 5,
+    borderColor: "#F1F2F5",
+    padding: '10px 12px',
     display: 'inline-block',
+    // outline: '1px solid grey',
     width: '300px',
     color: '#A2AEB8',
     fontWeight: 500,
-    fontSize: '11px',
-    border: 'none'
+    fontSize: '12px',
+    border: '1px solid grey', 
+    '&:focus': {
+      outline: 'none',
+    }
   },
-  text: {
-    color: '#98A0A7, 100%',
-    fontWeight: 500,
-    fontSize: '11px',
-  }
 }));
 
 export default SearchBar;

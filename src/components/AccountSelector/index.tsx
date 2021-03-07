@@ -1,34 +1,22 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
 import AccountSelectorProps from './types';
 
 
 export default function AccountSelector({selection, setSelection}: AccountSelectorProps) {
     const classes = useStyles();
   
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setSelection(event.target.value as string);
+    const handleChange = (value: string) => {
+      setSelection(value);
     };
 
     return (
         <div className={classes.root}>
-            <FormControl variant='outlined' className={classes.formControl}>
-            <InputLabel id="demo-simple-select-outlined-label">Account Type </InputLabel>
-            <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={selection}
-                onChange={handleChange}
-                label="Account Type"
-            >
-            <MenuItem value="agent">Agent</MenuItem>
-            <MenuItem value="client">Client</MenuItem>
-            </Select>
-            </FormControl>
+            <div className={classes.buttonContainer} >
+            <button onClick={() => handleChange('agent')} className={selection === 'agent' ? classes.buttonSelected : classes.buttonUnselected}>Agents</button> 
+            <button onClick={() => handleChange('client')} className={selection !== 'agent' ? classes.buttonSelected : classes.buttonUnselected}>Clients</button>
+            </div>
         </div>
     )
 }
@@ -37,12 +25,38 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'inline-block',
-      position: 'absolute',
-      right: '10%'
+      // position: 'relative',
+      // marginLeft: "100px"
+      float: 'right',
     }, 
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
     },
+    buttonContainer: {
+      display: 'inline-block',
+    },
+    buttonUnselected: {
+      background: "white",
+      color: "#0C3A77",
+      padding: '8px 10px',
+      border: '1px solid #F1F2F5',
+      borderRadius: '5%',
+      outline: 'none',
+      '&:hover' : {
+        opacity: .7,
+      }
+    },
+    buttonSelected: {
+      background: "#0C3A77",
+      color: "white",
+      borderRadius: '5%',
+      padding: '8px 10px',
+      border: '1px solid #0C3A77',
+      outline: 'none',
+      '&:hover' : {
+        
+      }
+    }
   }),
 );

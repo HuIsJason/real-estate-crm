@@ -3,6 +3,8 @@ import Props from './types';
 
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 
 const DashboardButton: React.FC<Props> = ({ title, link }: Props) => {
@@ -10,7 +12,7 @@ const DashboardButton: React.FC<Props> = ({ title, link }: Props) => {
   return (
     <Link to={link}>
       <button className={classes.button}>
-        <h3 className={classes.text}>{title}</h3>
+        <Typography variant="body1">{title}</Typography>
       </button>
     </Link>
   );
@@ -20,16 +22,15 @@ const DashboardButton: React.FC<Props> = ({ title, link }: Props) => {
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
     margin: theme.spacing(2),
-    background: '#E7EFFF',
-    borderRadius: 20,
-    boxShadow: '2px 4px 10px 5px rgba(247, 249, 253, 0.63)',
+    background: "white",
+    color: "#0C3A77",
+    boxShadow: '1px 4px 2px rgba(229, 229, 229, 0.5)',
     padding: '30px 50px',
     display: 'inline-block',
     border: 'none',
     outline: 'none', 
     '&:hover' : {
       opacity: .7,
-
     }
   },
   text: {
