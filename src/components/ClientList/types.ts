@@ -13,7 +13,7 @@ export interface RowProps {
   tags: string,
   id: string,
   rows: DataFields[],
-  setRows: Dispatch<SetStateAction<DataFields[]>>,
+  handleSetRows: (newRows : DataFields[]) => void // Dispatch<SetStateAction<DataFields[]>>,
   // page: number,
   // setPage: Dispatch<SetStateAction<number>>
 }

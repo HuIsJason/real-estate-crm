@@ -28,7 +28,7 @@ import { RowProps, DataFields} from './types';
 import useStyles from './styles';
 import { fullRows } from './data';
 
-const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, setRows}: RowProps) => {
+const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, handleSetRows}: RowProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const classes = useStyles();
 
@@ -39,8 +39,8 @@ const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, setRows}: RowPro
       return row.id !== id;
     });
 
-    setRows(newRows);
-  },[setRows]);
+    handleSetRows(newRows);
+  },[handleSetRows]);
 
   return (
     <>
@@ -81,6 +81,10 @@ const ClientList: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [rows, setRows] = useState<DataFields[]>(fullRows);
   const [searched, setSearched] = useState<string>("");
+
+  const handleSetRows = useCallback((newRows: DataFields[]) => {
+    setRows(newRows);
+  },[]);
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage);
@@ -128,9 +132,9 @@ const ClientList: React.FC = () => {
 
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 return (
-                  <Row key = {row.name} {...row} rows={rows} setRows={setRows}/>
+                  <Row key = {row.id} {...row} rows={rows} handleSetRows={handleSetRows}/>
                 );
-              })}
+              })} 
               
             </TableBody>
           </Table>
