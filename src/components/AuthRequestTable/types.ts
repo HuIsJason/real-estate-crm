@@ -1,6 +1,9 @@
 interface TableProps {
   requests: Request[];
   selectRequest: (requestId: string) => void;
+  displayPage: number;
+  onClickNext: () => void;
+  onClickPrev: () => void;
 }
 
 interface TableRowProps {

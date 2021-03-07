@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ModalProps from './types';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import { Typography } from '@material-ui/core';
 
 const ResetPasswordModal: React.FC<ModalProps> = ({ open, onClose, newPassword }: ModalProps) => {
     const classes = useStyles();
@@ -14,7 +15,7 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ open, onClose, newPassword }
                 <br/><br/>
                 {newPassword}
             </p>
-            <button type="button" onClick={onClose}>close</button>
+            <button type="button" onClick={onClose}><Typography variant='button'>close</Typography></button>
         </div>
 
     );

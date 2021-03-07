@@ -1,5 +1,5 @@
 interface AppBarProps {
-    title: string
+    showDashboardbtn: boolean
 }
 
 export default AppBarProps;

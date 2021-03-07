@@ -1,4 +1,4 @@
-import { Account } from '../SimpleTable/types';
+import { Account } from '../AuthRequestTable/types';
 
 interface RequestDetailsProps {
   hideDetails: () => void;

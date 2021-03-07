@@ -106,23 +106,24 @@ const  AccountManagerView: React.FC = () => {
 
     return (
         <div>
-            <AppBar title="Account Manager" />
-            { openDetails ?
-            ( accountType === 'agent' ? <AgentAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} 
-            deleteAccount={deleteAccount}/> : <ClientAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} deleteAccount={deleteAccount} />)
-            :
-            (<div className={classes.root} > 
-                <div> <Typography variant="h6" gutterBottom color='primary'> Account Manager </Typography> </div> 
+            <AppBar showDashboardbtn/>
+            <div className={classes.root} > 
+                <div> <Typography variant="h6" gutterBottom color='primary'> Account Manager </Typography> </div>
+                { openDetails ?
+                ( accountType === 'agent' ? <AgentAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} 
+                deleteAccount={deleteAccount}/> : <ClientAccountDetail accountEmail={selectedAccount} hideDetails={() => toggleOpenDetails(false)} deleteAccount={deleteAccount} />)
+                :
+                (<div> 
+                    <SearchBar onChange={searchFilter} value={searchValue}/>
+                    <AccountSelector selection={accountType} setSelection={filterByType}/>
+                    <AccountListTable displayPage={displayPage} accountSummaries={displayAccounts} 
+                        onSelectRow={openAccountDetails}
+                        onClickNext={() => setDisplayPage(displayPage + 1)}
+                        onClickPrev={() => setDisplayPage(displayPage - 1)}
+                        />
+                </div>) }
 
-                <SearchBar onChange={searchFilter} value={searchValue}/>
-                <AccountSelector selection={accountType} setSelection={filterByType}/>
-                <AccountListTable displayPage={displayPage} accountSummaries={displayAccounts} 
-                    onSelectRow={openAccountDetails}
-                    onClickNext={() => setDisplayPage(displayPage + 1)}
-                    onClickPrev={() => setDisplayPage(displayPage - 1)}
-                    />
-            </div>)
-            }
+            </div>
         </div>
 
     )
@@ -131,7 +132,7 @@ const  AccountManagerView: React.FC = () => {
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-      margin: theme.spacing(2),
+      margin: theme.spacing(5),
     },
   }));
 

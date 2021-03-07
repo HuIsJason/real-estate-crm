@@ -2,6 +2,7 @@ import React from 'react';
 import ModalProps from './types';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import { Typography } from '@material-ui/core';
 
 const ConfirmationModal: React.FC<ModalProps> = ({ open, onCancel, onContinue, actionDescription }: ModalProps) => {
     const classes = useStyles();
@@ -12,8 +13,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({ open, onCancel, onContinue, a
             <p id="simple-modal-description">
                 Are you sure you want to {actionDescription}?
             </p>
-            <button type="button" onClick={onCancel}>Cancel</button>
-            <button type="button" onClick={onContinue}>Continue</button>
+            <button type="button" onClick={onCancel}><Typography variant='button'> Cancel </Typography> </button>
+            <button type="button" onClick={onContinue} style={{ marginLeft: 10 }}><Typography variant='button' > Continue </Typography> </button>
         </div>
 
     );

@@ -12,7 +12,7 @@ const DashboardButton: React.FC<Props> = ({ title, link }: Props) => {
   return (
     <Link to={link}>
       <button className={classes.button}>
-        <Typography variant="body1">{title}</Typography>
+        <Typography variant="button">{title}</Typography>
       </button>
     </Link>
   );
