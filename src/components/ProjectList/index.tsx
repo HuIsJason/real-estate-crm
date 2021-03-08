@@ -41,7 +41,8 @@ const ProjectList = () => {
   }
 
   const openProject = (projectId: number) => {
-      console.log(`Opening project ${projectId}`);
+    /* TODO: update to navigate to detailed project view */
+    console.log(`Opening project ${projectId}`);
   }
 
   return (
