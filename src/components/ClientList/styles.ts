@@ -10,7 +10,8 @@ export default makeStyles((theme: Theme) => ({
     position: "absolute",
     width: "75%",
     height: "90%",
-    transform: 'translate(30%, 10%)',
+    transform: 'translate(0%, 10%)',
+    marginLeft: "15%"
   },
   cellBody: {
       fontSize: 14
