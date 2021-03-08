@@ -7,7 +7,7 @@ import { makeStyles, Theme, Typography } from '@material-ui/core';
 
 const entriesPerPage = 2;
 
-const SimpleTable: React.FC<Props> = ({ accountSummaries, onSelectRow, displayPage, onClickNext, onClickPrev }: Props) => {
+const ProjectList: React.FC<Props> = ({ accountSummaries, onSelectRow, displayPage, onClickNext, onClickPrev }: Props) => {
   const classes = useStyles();
 
   return (
@@ -87,4 +87,4 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default SimpleTable;
+export default ProjectList;
