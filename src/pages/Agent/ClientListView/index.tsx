@@ -2,7 +2,7 @@ import React from 'react';
 import { ClientList } from '../../../components';
 import { PermNavBar } from '../../../components';
 
-const Agent: React.FC = () => {
+const ClientListPage: React.FC = () => {
   return (
     <>
         <PermNavBar />
@@ -11,4 +11,4 @@ const Agent: React.FC = () => {
   );
 };
 
-export default Agent;
+export default ClientListPage;
