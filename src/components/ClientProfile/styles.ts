@@ -28,7 +28,7 @@ export default makeStyles((theme: Theme) => ({
     float: "left"
   },
   linkButton: {
-    marginLeft: "20px"
+    marginLeft: "50px"
   },
   editButton: {
     float: "left",

@@ -54,23 +54,23 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
 
           
             <Typography className={classes.contactInfo}>
-              Phone 1: {phoneOne}
+              <strong>Phone 1: </strong>{phoneOne}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              Phone 2: {phoneTwo}
+              <strong>Phone 2: </strong> {phoneTwo}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              Email: {email}
+              <strong>Email: </strong> {email}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              Linked Account: NOT LINKED <Button variant="contained" color="primary" className={classes.linkButton}> LINK ACCOUNT </Button>
+              <strong>Linked Account:</strong> NOT LINKED <Button variant="contained" color="primary" className={classes.linkButton}> INVITE</Button>
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              Address: {address}
+              <strong>Address: </strong>{address}
             </Typography>
       </div>
         <Button variant="contained" color="primary" className={classes.editButton} onClick={handleClickOpen}> EDIT </Button>
