@@ -13,7 +13,8 @@ interface Property {
     province: string,
     postalCode: string,
     favourited: boolean,
-    activities: Activity[] | [];
+    activities: Activity[] | [],
+    notes: string,
 }
 
 interface addPropertyProps { 

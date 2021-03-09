@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import DetailedHistoryProps from './types';
 import BinarySelector from '../BinarySelector/index';
 import ActivityTable from '../ActivityTable/index';
+import NotesSection from './NotesSection/index';
 
 const tabOptions = [
   {
@@ -17,9 +18,12 @@ const tabOptions = [
 ]
 
 
-export default function DetailedHistory ( { property, toggleFavourite, addActivity } : DetailedHistoryProps) {
+const DetailedHistory: React.FC<DetailedHistoryProps> = ( { property, toggleFavourite, addActivity, updateNotes, currTab, setCurrTab } : DetailedHistoryProps) => {
     const classes = useStyles();
-    const [currTab, setCurrTab] = useState('activity');
+
+    const saveNotes = (notes: string) => {
+      updateNotes(notes);
+    }
 
     return (
         <div className={classes.root}>
@@ -34,7 +38,7 @@ export default function DetailedHistory ( { property, toggleFavourite, addActivi
           </div>
           {
             currTab === 'activity' ? 
-            (<ActivityTable activities={property.activities} addActivity={addActivity}> </ActivityTable>) : null
+            (<ActivityTable activities={property.activities} addActivity={addActivity}> </ActivityTable>) : (<NotesSection notes={property.notes} onSave={saveNotes}/>)
           }
           
         </div>
@@ -91,4 +95,6 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     },
   }),
-);
+)
+
+export default DetailedHistory;

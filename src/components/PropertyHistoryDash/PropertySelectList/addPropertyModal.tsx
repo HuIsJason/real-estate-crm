@@ -25,7 +25,8 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
         province: prov,
         postalCode: postalCode,
         favourited: false,
-        activities: []
+        activities: [],
+        notes: ''
       }
 
       // Reset Modal values

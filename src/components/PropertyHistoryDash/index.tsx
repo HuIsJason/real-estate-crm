@@ -12,7 +12,8 @@ const properties = [
        province: 'ON',
        postalCode: 'L6X6X6', 
        favourited: true,
-       activities: [{ id: 1, title: 'Showing', description: '', date: '2021-02-21' }]
+       activities: [{ id: 1, title: 'Showing', description: '', date: '2021-02-21' }],
+       notes: 'Really liked this house. Should follow up in a week.',
     },
     {
         addrLineOne: '99 Fern Blvd',
@@ -20,7 +21,8 @@ const properties = [
         province: 'ON',
         postalCode: 'L6X6X6', 
         favourited: false,
-        activities: [{ id: 1, title: 'Follow-up', description: '', date: '2021-02-01' }] 
+        activities: [{ id: 1, title: 'Follow-up', description: '', date: '2021-02-01' }],
+        notes: 'Ya',
     },
     {
         addrLineOne: '123 John Street',
@@ -28,7 +30,8 @@ const properties = [
         province: 'ON',
         postalCode: 'L6X6X6',  
         favourited: true,
-        activities: [{ id: 1, title: 'Phone Call w/ Client', description: '', date: '2021-01-01' }] 
+        activities: [{ id: 1, title: 'Phone Call w/ Client', description: '', date: '2021-01-01' }],
+        notes: 'Ya',
     }
 ]
 
@@ -37,6 +40,7 @@ export default function PropertyHistoryDash() {
     const [selectedProperty, setSelectedProperty] = React.useState(properties[0]);
     const [modalOpen, setModalOpen] = React.useState(false);
     const [allProperties, setAllProperties] = React.useState(properties);
+    const [currTab, setCurrTab] = React.useState('activity');
 
     const saveProperty = (property: Property) => {
         allProperties.push(property);
@@ -78,15 +82,29 @@ export default function PropertyHistoryDash() {
   
     }
 
+    const updateNotes = (notes: string) => {
+        selectedProperty.notes = notes;
+        console.log(selectedProperty.notes);
+        setSelectedProperty(selectedProperty);
+        setAllProperties(allProperties);
+        console.log(allProperties);
+    }
+
+    const handleSelect = (property: Property) => {
+        setCurrTab('activity');
+        setSelectedProperty(property);
+    }
+
     return (
         <div style={{ width: "fit-content", margin: "auto"}}>
         <PropertySelectList 
         properties={allProperties} 
         selected={selectedProperty} 
-        onSelect={(property) => setSelectedProperty(property)}
+        onSelect={handleSelect}
         onClickAdd={ () => setModalOpen(true) }/>
 
-        <DetailedHistory property={selectedProperty} toggleFavourite={toggleFavourite} addActivity={addActivity}/>
+        <DetailedHistory currTab={currTab} setCurrTab={(value) => setCurrTab(value)}
+        property={selectedProperty} toggleFavourite={toggleFavourite} addActivity={addActivity} updateNotes={updateNotes} />
         <AddPropertyModal open={modalOpen} onCancel={() => setModalOpen(false)} onSave={saveProperty}/>
         </div>
     )
