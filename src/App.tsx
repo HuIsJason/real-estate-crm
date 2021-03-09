@@ -7,6 +7,7 @@ import AdminAuthRequestView from './pages/Admin/AuthorizationRequest/index';
 import { ClientListPage, ClientProfilePage, Home, Login } from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
+import ProjectList from './components/ProjectList/index';
 
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
       <Route exact path="/admin" component={AdminDashboard} />
       <Route exact path="/admin/auth-requests" component={AdminAuthRequestView} />
       <Route exact path="/admin/accounts" component={AdminAccountManagerView} />
+      <Route exact path="/project-list" component={ProjectList} />
       <Route
         exact
         path="/"
