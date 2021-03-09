@@ -28,12 +28,10 @@ export default function BinarySelector({ options, selection, setSelection}: Bina
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: 10
+      margin: 10,
+      // width: '100%',
+      // borderBottom: '1px solid grey'
     }, 
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
     buttonContainer: {
       display: 'inline-block',
     },

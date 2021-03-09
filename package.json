@@ -17,6 +17,7 @@
     "fontsource-roboto": "^4.0.0",
     "material-ui-search-bar": "^1.0.0",
     "react": "^17.0.1",
+    "react-datepicker": "^3.6.0",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
@@ -48,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-datepicker": "^3.1.7"
   }
 }
