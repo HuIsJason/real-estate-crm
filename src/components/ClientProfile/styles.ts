@@ -14,7 +14,7 @@ export default makeStyles((theme: Theme) => ({
     backgroundColor: "#F7F9FD",
     top: "25%",
     left: "18%",
-    width: "100%",
+    width: "80%",
   },
   header: {
     fontSize: "30px"
