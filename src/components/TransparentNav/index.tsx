@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: 'translate(20%, 180%)',
       // boxShadow: "0px 10px 10px -10px",
       boxShadow: "0px 0px 0px 0px",
-      borderBottom: "2px solid lightgrey"
+      borderBottom: "2px solid lightgrey",
       
     },
     listButtonsHead: {
@@ -48,9 +48,15 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: "100px",
       top: "14px",
       backgroundColor: "transparent",
-      color: "black",
+      color: "grey",
       borderRadius: "0px",
-      boxShadow: "0px 0px 0px 0px"
+      boxShadow: "0px 0px 0px 0px",
+      borderBottom: "2px solid lightgrey",
+      '&:hover': {
+        backgroundColor: "transparent",
+        boxShadow: "0px 0px 0px 0px",
+        borderBottom: "2px solid #0C3A77"
+      }
     },
     profileButton: {
     },
@@ -58,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     favProjectsButton: {
       width: "250px",
+      color: "#0C3A77",
       borderBottom: "2px solid #0C3A77",
       borderRadius: "0px"
     }
