@@ -1,8 +1,6 @@
 interface TableProps {
-  displayPage: number;
-  onClickNext: () => void;
-  onClickPrev: () => void;
   addActivity: (activity: Activity) => void;
+  activities: Activity[];
 }
 
 interface TableRowProps {
@@ -31,5 +29,4 @@ interface AddModalProps {
 
 }
 
-export default TableProps;
-export type { TableRowProps, Activity, ActivityDetailModalProps, AddModalProps } ;
+export type { TableProps, TableRowProps, Activity, ActivityDetailModalProps, AddModalProps } ;

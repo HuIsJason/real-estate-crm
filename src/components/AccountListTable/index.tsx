@@ -36,7 +36,7 @@ const ProjectList: React.FC<Props> = ({ accountSummaries, onSelectRow, displayPa
       <span style={{ float: 'right', marginRight: 10}}> <Typography variant='caption'> Displaying {accountSummaries.length / entriesPerPage < displayPage ? accountSummaries.length % entriesPerPage : entriesPerPage} of {accountSummaries.length} entries. </Typography> </span> 
       <div className={classes.buttonContainer}>
         { displayPage === 1 ? null : (<button className={classes.button} onClick={onClickPrev}> Previous </button>) }
-        { displayPage === Math.ceil(accountSummaries.length / entriesPerPage) ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
+        { displayPage === Math.ceil(accountSummaries.length / entriesPerPage) || accountSummaries.length === 0 ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
       </div>
     </div>
   );

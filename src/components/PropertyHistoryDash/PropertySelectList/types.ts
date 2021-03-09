@@ -1,3 +1,5 @@
+import { Activity } from "../../ActivityTable/types";
+
 interface Props { 
     properties: Property[],
     selected: Property,
@@ -10,7 +12,8 @@ interface Property {
     city: string,
     province: string,
     postalCode: string,
-    favourited: boolean
+    favourited: boolean,
+    activities: Activity[] | [];
 }
 
 interface addPropertyProps { 

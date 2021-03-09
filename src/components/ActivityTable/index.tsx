@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Props, { Activity } from './types';
-import { uid } from 'react-uid';
+import { Activity, TableProps } from './types';
 
 
 import TableRow from './tablerow';
@@ -9,17 +8,13 @@ import ActivityDetailModal from './modal';
 import AddActivityModal from './addActivityModal';
 
 const entriesPerPage = 10;
-const activities: Activity[] = [ 
-  { id: 1, title: 'Showing', description: '', date: '2021-01-01' }
-]
 
 const defaultActivity = { id: -1, title: '', description: '', date: ''}
 
-const ActivityTable: React.FC = () => {
+const ActivityTable: React.FC<TableProps> = ({ addActivity, activities }: TableProps) => {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(0);
   const [displayPage, setDisplayPage] = useState(1);
-  const [allActivities, setAllActivities] = useState(activities);
   const [selectedActivity, setSelectedActivity] = useState(defaultActivity);
 
   const openActivityDetails = (activity: Activity) => {
@@ -27,22 +22,8 @@ const ActivityTable: React.FC = () => {
     setOpenModal(1);
   }
 
-  const addActivity = (activity: Activity) => {
-    activity.id = allActivities.length + 1;
-    allActivities.push(activity);
-
-    // Sort by reverse chronological order
-    allActivities.sort((a, b) => {
-      const aDateParts = a.date.split('-').map(part => parseInt(part));
-      const aDate = new Date(aDateParts[0], aDateParts[1] - 1, aDateParts[2]);
-
-      const bDateParts = b.date.split('-').map(part => parseInt(part));
-      const bDate = new Date(bDateParts[0], bDateParts[1] - 1, bDateParts[2]);
-
-      return aDate < bDate ? 1 : -1;
-    })
-    
-    setAllActivities(allActivities);
+  const handleAddActivity = (activity: Activity) => {
+    addActivity(activity);
     setOpenModal(0);
   }
 
@@ -60,7 +41,7 @@ const ActivityTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          { allActivities.slice((displayPage - 1) * entriesPerPage, displayPage * entriesPerPage).map(activity => (
+          { activities.slice((displayPage - 1) * entriesPerPage, displayPage * entriesPerPage).map(activity => (
             <TableRow 
               key={activity.id} 
               date={activity.date}
@@ -75,10 +56,10 @@ const ActivityTable: React.FC = () => {
     
       <div className={classes.buttonContainer}>
         { displayPage === 1 ? null : (<button className={classes.button} onClick={()=> setDisplayPage(displayPage - 1)}> Previous </button>) }
-        { displayPage === Math.ceil(allActivities.length / entriesPerPage) ? null : (<button className={classes.button} onClick={()=> setDisplayPage(displayPage + 1)}> Next </button>)} 
+        { displayPage === Math.ceil(activities.length / entriesPerPage) || activities.length === 0? null : (<button className={classes.button} onClick={()=> setDisplayPage(displayPage + 1)}> Next </button>)} 
       </div>
       <ActivityDetailModal open={openModal === 1} activity={selectedActivity} onClose={() => setOpenModal(0)}/>
-      <AddActivityModal open={openModal === 2} onCancel={() => setOpenModal(0)} onContinue={addActivity} />
+      <AddActivityModal open={openModal === 2} onCancel={() => setOpenModal(0)} onContinue={handleAddActivity} />
     </div>
   );
 };

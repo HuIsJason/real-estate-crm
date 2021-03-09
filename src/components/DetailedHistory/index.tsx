@@ -17,9 +17,9 @@ const tabOptions = [
 ]
 
 
-export default function DetailedHistory ( { property, toggleFavourite } : DetailedHistoryProps) {
+export default function DetailedHistory ( { property, toggleFavourite, addActivity } : DetailedHistoryProps) {
     const classes = useStyles();
-    const [currTab, setCurrTab] = useState('activity')
+    const [currTab, setCurrTab] = useState('activity');
 
     return (
         <div className={classes.root}>
@@ -34,7 +34,7 @@ export default function DetailedHistory ( { property, toggleFavourite } : Detail
           </div>
           {
             currTab === 'activity' ? 
-            (<ActivityTable> </ActivityTable>) : null
+            (<ActivityTable activities={property.activities} addActivity={addActivity}> </ActivityTable>) : null
           }
           
         </div>
