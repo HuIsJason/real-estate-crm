@@ -7,10 +7,22 @@ export default makeStyles((theme: Theme) => ({
         display: 'flex',
     },
     appBar: {
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+        marginLeft: drawerWidth,
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.common.white,
+        zIndex: 0
+    },
+    appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
-        color: theme.palette.common.black,
-        backgroundColor: theme.palette.common.white
+        transition: theme.transitions.create(['margin', 'width'], {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
     },
     drawer: {
         width: drawerWidth,
@@ -42,5 +54,11 @@ export default makeStyles((theme: Theme) => ({
     },
     editButton: {
         right: "180px"
-    }
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    hide: {
+        display: 'none',
+    },
 }));
