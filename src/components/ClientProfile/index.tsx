@@ -9,16 +9,14 @@ import { ClientProfileProps } from './types';
 
 const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps) => {
   const classes = useStyles();
-  const [phoneOne, setPhoneOne] = useState<string>("416-666-8888");
-  const [phoneTwo, setPhoneTwo] = useState<string>("657-123-3210");
+  const [phone, setPhone] = useState<string>("416-666-8888");
   const [email, setEmail] = useState<string>("joeySmith@outlook.com");
   const [address, setAddress] = useState<string>("123 joey land drive");
   const [open, setOpen] = useState(false);
 
   const render = page == "profile";
 
-  const phoneOneRef = useRef();
-  const phoneTwoRef = useRef();
+  const phoneRef = useRef();
   const emailRef = useRef();
   const addressRef = useRef();
 
@@ -31,17 +29,15 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
   },[]);
 
   const handleEdit = useCallback(() => {
-    const phone1 = phoneOneRef.current as any;
-    const phone2 = phoneTwoRef.current as any;
+    const phone = phoneRef.current as any;
     const email = emailRef.current as any;
     const address = addressRef.current as any;
 
-    setPhoneOne(phone1.value);
-    setPhoneTwo(phone2.value);
+    setPhone(phone.value);
     setEmail(email.value);
     setAddress(address.value);
     setOpen(false);
-  },[setPhoneOne, setPhoneTwo, setEmail, setAddress, setOpen]);
+  },[setPhone, setEmail, setAddress, setOpen]);
 
   return (
     <>
@@ -54,11 +50,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
 
           
             <Typography className={classes.contactInfo}>
-              <strong>Phone 1: </strong>{phoneOne}
-            </Typography>
-
-            <Typography className={classes.contactInfo}>
-              <strong>Phone 2: </strong> {phoneTwo}
+              <strong>Phone: </strong>{phone}
             </Typography>
 
             <Typography className={classes.contactInfo}>
@@ -80,21 +72,11 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
 
                     <TextField
                         autoFocus
-                        defaultValue={phoneOne}
-                        inputRef={phoneOneRef}
+                        defaultValue={phone}
+                        inputRef={phoneRef}
                         margin="dense"
                         id="phone1"
                         label="Phone 1"
-                        type="phone"
-                        fullWidth
-                    />
-
-                    <TextField
-                        defaultValue={phoneTwo}
-                        inputRef={phoneTwoRef}
-                        margin="dense"
-                        id="phone2"
-                        label="Phone 2"
                         type="phone"
                         fullWidth
                     />
