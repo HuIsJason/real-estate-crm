@@ -40,7 +40,7 @@ const SimpleTable: React.FC<Props> = ({ requests, selectRequest, displayPage, on
       <span style={{ float: 'right', marginRight: 10}}> <Typography variant='caption'> Displaying {requests.length / entriesPerPage < displayPage ? requests.length % entriesPerPage : entriesPerPage} of {requests.length} entries. </Typography> </span> 
       <div className={classes.buttonContainer}>
         { displayPage === 1 ? null : (<button className={classes.button} onClick={onClickPrev}> Previous </button>) }
-        { displayPage === Math.ceil(requests.length / entriesPerPage) ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
+        { displayPage === Math.ceil(requests.length / entriesPerPage) || requests.length === 0 ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
       </div>
     </div>
   );
