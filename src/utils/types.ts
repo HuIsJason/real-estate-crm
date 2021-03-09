@@ -28,8 +28,17 @@ export interface Project {
 }
 
 interface Account {
-  id: number;
-  name: string;
+  username: string;
+  password: string;
+  id: string;
+  type: 'ADMIN' | 'CLIENT' | 'AGENT';
+}
+
+interface Admin extends Account {}
+
+interface NonAdminAccount extends Account {
+  firstName: string;
+  lastName: string;
   bio: string;
   yearCreated: number;
   address: string;
@@ -37,13 +46,17 @@ interface Account {
   email: string;
 }
 
-export interface Agent extends Account {
+export interface Agent extends NonAdminAccount {
+  licenseId: string;
   brokerage: string;
+  brokerageAddress: string;
+  brokeragePhone: string;
   specialization: Specialization;
+  clients: Client[];
 }
 
-export interface Client extends Account {
+export interface Client extends NonAdminAccount {
   agent?: Agent;
 }
 
-export type User = Agent | Client | null;
+export type User = Agent | Client | Admin | null;

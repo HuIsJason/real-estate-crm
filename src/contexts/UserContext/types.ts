@@ -1,7 +1,10 @@
 import { User } from '../../utils/types';
 
-export interface UserContextType {
+interface UserContextType {
   user: User;
   loginUser: (username: string, password: string) => void;
   logoutUser: () => void;
+  createUser: (newUser: any) => void;
 }
+
+export default UserContextType;

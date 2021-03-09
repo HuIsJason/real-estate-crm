@@ -4,12 +4,11 @@ import { useUserContext } from './contexts/UserContext';
 
 import AdminDashboard from './pages/Admin/Dashboard/index';
 import AdminAuthRequestView from './pages/Admin/AuthorizationRequest/index';
-import { ClientListPage, ClientProfilePage, Home, Login } from './pages';
+import { ClientListPage, ClientProfilePage, Home, Login, Signup } from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
 import ProjectList from './components/ProjectList/index';
 import PropertyHistoryDash from './components/PropertyHistoryDash/index';
-
 
 const App: React.FC = () => {
   const { user } = useUserContext();
@@ -31,6 +30,8 @@ const App: React.FC = () => {
         path="/login"
         render={() => (user ? <Redirect to="/" /> : <Login />)}
       />
+      <Route exact path="/clientlist" component={Agent} />
+      <Route exact path="/signup" component={Signup} />
       <Route exact path="/ClientList" component={ClientListPage} />
       <Route exact path="/ClientProfile" component={ClientProfilePage} />
 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
@@ -21,15 +21,17 @@ const Login: React.FC = () => {
 
   const handleChange = useCallback(
     (
-      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       type: 'username' | 'password'
     ) => {
+      const input = e.currentTarget.value;
+
       switch (type) {
         case 'username':
-          setUsername(e.currentTarget.value);
+          setUsername(input);
           break;
         case 'password':
-          setPassword(e.currentTarget.value);
+          setPassword(input);
           break;
       }
     },
@@ -47,13 +49,13 @@ const Login: React.FC = () => {
       </Typography>
       <FormControl
         onSubmit={handleSubmit}
-        fullWidth={true}
+        fullWidth
         component="form"
         variant="filled"
       >
         <TextField
           className={classes.textField}
-          fullWidth={true}
+          fullWidth
           value={username}
           onChange={(e) => handleChange(e, 'username')}
           label="Username"
@@ -61,7 +63,7 @@ const Login: React.FC = () => {
         />
         <TextField
           className={classes.textField}
-          fullWidth={true}
+          fullWidth
           value={password}
           onChange={(e) => handleChange(e, 'password')}
           label="Password"
