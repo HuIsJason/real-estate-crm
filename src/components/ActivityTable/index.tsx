@@ -68,8 +68,8 @@ const ActivityTable: React.FC = () => {
               onClick={() => openActivityDetails(activity)}/> ))}
         </tbody>
       </table>
-      <div style={ {margin: 10 }}>
-        <button onClick={() => setOpenModal(2)}> Add </button>
+      <div style={ {marginTop: 10 }}>
+        <button className={classes.clearBtn} onClick={() => setOpenModal(2)}> <Typography variant="button">+ Add </Typography> </button>
       </div>
       <br/>
     
@@ -88,7 +88,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(2),
     background: 'white',
     border: '2px solid #F1F2F5',
-    padding: '10px 20px'
+    padding: '10px 20px',
+    width: '500px'
   },
   table: {
     borderCollapse: 'collapse', 
@@ -123,8 +124,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   buttonContainer: {
     marginBottom: 0,
-    minHeight: '35px'
+    minHeight: '10px'
   },
+  clearBtn: {
+    border: 'none',
+    outline: 'none',
+    background: 'none',
+    color: "#202021",
+    opacity: .3,
+    '&:hover' : {
+      color: "#0C3A77",
+      opacity: 1,
+    }
+
+  }
 }));
 
 export default ActivityTable;

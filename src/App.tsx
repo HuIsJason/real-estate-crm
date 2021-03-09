@@ -8,7 +8,7 @@ import { Agent, Home, Login } from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
 import ProjectList from './components/ProjectList/index';
-import ActivityTable from './components/ActivityTable/index';
+import PropertyHistoryDash from './components/PropertyHistoryDash/index';
 
 
 const App: React.FC = () => {
@@ -20,7 +20,7 @@ const App: React.FC = () => {
       <Route exact path="/admin/auth-requests" component={AdminAuthRequestView} />
       <Route exact path="/admin/accounts" component={AdminAccountManagerView} />
       <Route exact path="/project-list" component={ProjectList} />
-      <Route exact path="/activity" component={ActivityTable} />
+      <Route exact path="/project/history-dash" component={PropertyHistoryDash} />
       <Route
         exact
         path="/"

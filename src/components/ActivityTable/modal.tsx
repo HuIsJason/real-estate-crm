@@ -13,7 +13,7 @@ const ActivityDetailModal: React.FC<ActivityDetailModalProps> = ({ open, onClose
             <p id="simple-modal-description">
               <Typography variant='overline'> Date: </Typography> {activity.date}
               <br/>
-                <Typography variant='overline'> Description </Typography>
+                <Typography variant='overline'> Description: </Typography>
                 {activity.description}
             </p>
             <button type="button" onClick={onClose}><Typography variant='button'> Close </Typography> </button>

@@ -55,9 +55,6 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '8px 12px',
       border: 'none',
       outline: 'none',
-      '&:hover' : {
-        
-      }
     }
   }),
 );

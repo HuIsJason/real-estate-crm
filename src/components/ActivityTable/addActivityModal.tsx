@@ -63,12 +63,12 @@ const AddActivityModal: React.FC<AddModalProps> = ({ open, onCancel, onContinue 
                   Please enter activity title.
               </Typography>
             </div>
-            <div style={{marginBottom: 30, marginTop: 10}}>
+            <div style={{marginBottom: 20, marginTop: 10}}>
               <input id="title-field" className={classes.inputField} type='text' placeholder="Activity Name" value={title} onChange={handleChange} />
             </div> 
-            <div style={{height: '20px'}}>
-              <Typography variant="caption">
-                Select Date.
+            <div style={{ marginBottom: 20 }}>
+              <Typography style={{ marginRight: 10 }}variant="caption">
+                Select Date:
               </Typography>
               <DatePicker selected={selectedDate} onChange={(date: Date) => setSelectedDate(date)}/>
             </div>
