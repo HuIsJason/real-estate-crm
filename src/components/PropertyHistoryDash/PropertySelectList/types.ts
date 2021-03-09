@@ -4,7 +4,6 @@ interface Props {
     properties: Property[],
     selected: Property,
     onSelect: (property: Property) => void;
-    onClickAdd: () => void;
 }
 
 interface Property { 
