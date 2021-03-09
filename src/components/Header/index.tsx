@@ -19,10 +19,16 @@ const Header: React.FC<Props> = ({ title }: Props) => {
     <>
       <h1 className={classes.root}>{title}</h1>
       {user ? (
-        <Typography variant="h4" color="primary">
-          The current user is: {user.id}, {user.firstName}, {user.bio},{' '}
-          {user.phone}
-        </Typography>
+        user.type !== 'ADMIN' ? (
+          <Typography variant="h4" color="primary">
+            The current user is: {(user as any).id}, {(user as any).firstName},{' '}
+            {(user as any).bio}, {(user as any).phone}
+          </Typography>
+        ) : (
+          <Typography variant="h4" color="primary">
+            ADMIN LOGGED IN monkaS
+          </Typography>
+        )
       ) : (
         <Typography variant="h4">not currently logged in</Typography>
       )}

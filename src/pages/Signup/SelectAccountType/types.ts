@@ -1,5 +1,5 @@
 interface SelectAccountTypeProps {
-  handleAccountTypeChange: () => void;
+  handleAccountTypeChange: (agent: boolean) => void;
   prevStep: () => void;
   nextStep: () => void;
 }

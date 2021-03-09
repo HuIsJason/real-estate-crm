@@ -1,15 +1,15 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useSignupStyles = makeStyles((theme: Theme) => ({
   paper: {
-    //textAlign: 'center',
     padding: theme.spacing(8),
-    margin: theme.spacing(10),
-    marginLeft: theme.spacing(50),
-    marginRight: theme.spacing(50),
+    margin: theme.spacing(8),
+    marginLeft: theme.spacing(40),
+    marginRight: theme.spacing(40),
     justifyContent: 'center',
-    //display: 'flex',
-    //alignItems: 'center',
+  },
+  title: {
+    marginBottom: theme.spacing(2),
   },
   textField: {
     display: 'block',
@@ -19,9 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   button: {
     width: theme.spacing(20),
     marginTop: theme.spacing(3),
-    //marginLeft: theme.spacing(22),
-    //marginRight: theme.spacing(100),
   },
 }));
 
-export default useStyles;
+export default useSignupStyles;

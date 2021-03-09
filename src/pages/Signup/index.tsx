@@ -1,23 +1,30 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Paper, Typography } from '@material-ui/core';
 
+import { ISignupState } from './types';
 import InitialSignup from './InitialSignup';
 import SelectAccountType from './SelectAccountType';
+import AgentSignup from './AgentSignup';
+import Confirmation from './Confirmation';
 
 const UserForm: React.FC = () => {
   const [step, setStep] = useState<number>(1);
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [isAgent, setIsAgent] = useState<boolean>(false);
-
-  const signupState = useMemo(
-    () => ({ firstName, lastName, email, password, confirmPassword }),
-    [firstName, lastName, email, password, confirmPassword]
+  const [signupState, setSignupState] = useState<ISignupState>(
+    {} as ISignupState
   );
+
+  const handleStateChange = useCallback(
+    (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      type: string
+    ) => {
+      setSignupState({ ...signupState, [type]: e.currentTarget.value });
+      // console.log(signupState, type, e.currentTarget.value);
+    },
+    [signupState]
+  );
+
+  const signupStateValues = useMemo(() => signupState, [signupState]);
 
   const prevStep = useCallback(() => {
     setStep(step - 1);
@@ -27,39 +34,25 @@ const UserForm: React.FC = () => {
     setStep(step + 1);
   }, [step]);
 
-  const handleFormChange = useCallback(
-    (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      type: 'firstName' | 'lastName' | 'email' | 'password' | 'confirmPassword'
-    ) => {
-      const input = e.currentTarget.value;
-
-      switch (type) {
-        case 'firstName':
-          setFirstName(input);
-          break;
-        case 'lastName':
-          setLastName(input);
-          break;
-        case 'email':
-          setEmail(input);
-          break;
-        case 'password':
-          setPassword(input);
-          break;
-        case 'confirmPassword':
-          setConfirmPassword(input);
-          break;
-      }
+  const handleAccountTypeChange = useCallback(
+    (agent: boolean) => {
+      setIsAgent(agent);
+      nextStep();
     },
-    []
+    [nextStep]
   );
-
-  const handleAccountTypeChange = useCallback(() => setIsAgent(true), []);
 
   switch (step) {
     case 1:
-      return <InitialSignup {...{ signupState, handleFormChange, nextStep }} />;
+      return (
+        <InitialSignup
+          {...{
+            signupStateValues,
+            handleStateChange,
+            nextStep,
+          }}
+        />
+      );
     case 2:
       return (
         <SelectAccountType
@@ -67,26 +60,17 @@ const UserForm: React.FC = () => {
         />
       );
     case 3:
-      return (
-        <>
-          <Paper>
-            <Typography variant="h4">Agent sign up</Typography>
-            <Button onClick={prevStep}>Back</Button>
-            <Button onClick={nextStep}>Next</Button>
-          </Paper>
-        </>
-      );
+      if (isAgent) {
+        return (
+          <AgentSignup
+            {...{ signupStateValues, handleStateChange, prevStep, nextStep }}
+          />
+        );
+      } else {
+        return <Confirmation />;
+      }
     case 4:
-      return (
-        <>
-          <Paper>
-            <Typography variant="h4">Thank you</Typography>
-            <Typography variant="body1">
-              Return to <Link to="/login">Login Page</Link>
-            </Typography>
-          </Paper>
-        </>
-      );
+      return <Confirmation />;
     default:
       return <></>;
   }

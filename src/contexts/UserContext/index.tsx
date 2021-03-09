@@ -5,10 +5,38 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { v4 as uuid } from 'uuid';
 
-import { UserContextType } from './types';
+import UserContextType from './types';
 import { ProviderProps as Props } from '../types';
 import { User } from '../../utils/types';
+
+const users: User[] = [
+  {
+    id: '1',
+    username: 'admin',
+    password: 'admin',
+    type: 'ADMIN',
+  },
+  {
+    username: 'user',
+    password: 'user',
+    id: '2',
+    firstName: 'Jason',
+    lastName: 'Hu',
+    bio: 'Selling your house ASAP!',
+    yearCreated: 2021,
+    address: '18 Rainsford Road',
+    phone: '416-909-3633',
+    email: 'jasonn.hu@mail.utoronto.ca',
+    licenseId: '232-324234-32432',
+    brokerage: 'Remax',
+    brokerageAddress: '100 Fundy Bay Blvd',
+    brokeragePhone: '416-867-1111',
+    specialization: 'SELLER',
+    type: 'AGENT',
+  },
+];
 
 const UserContext = createContext<UserContextType | null>(null);
 
@@ -20,34 +48,9 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
 
   const loginUser = useCallback((username: string, password: string) => {
     if (username === 'admin' && password === 'admin') {
-      setUser({
-        id: 1,
-        firstName: 'Mr',
-        lastName: 'Admin',
-        bio: 'Application administrator.',
-        yearCreated: 2021,
-        address: "27 King's College Circle",
-        phone: '416-978-2011',
-        email: 'admin@mail.utoronto.ca',
-        brokerage: '',
-        specialization: 'SELLER',
-      });
+      setUser(users[0]);
     } else if (username === 'user' && password === 'user') {
-      setUser({
-        id: 1,
-        firstName: 'Jason',
-        lastName: 'Hu',
-        bio: 'Selling your house ASAP!',
-        yearCreated: 2021,
-        address: '18 Rainsford Road',
-        phone: '416-909-3633',
-        email: 'jasonn.hu@mail.utoronto.ca',
-        licenseId: '232-324234-32432',
-        brokerage: 'Remax',
-        brokerageAddress: '100 Fundy Bay Blvd',
-        brokeragePhone: '416-867-1111',
-        specialization: 'SELLER',
-      });
+      setUser(users[1]);
     } else {
       alert('Invalid credentials!');
     }
@@ -57,9 +60,15 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
     setUser(null);
   }, []);
 
+  const createUser = useCallback((newUser: any) => {
+    newUser.id = uuid();
+    newUser.yearCreated = '2021';
+    users.push(newUser);
+  }, []);
+
   const providerValue = useMemo(
-    (): UserContextType => ({ user, loginUser, logoutUser }),
-    [user, loginUser, logoutUser]
+    (): UserContextType => ({ user, loginUser, logoutUser, createUser }),
+    [user, loginUser, logoutUser, createUser]
   );
 
   return (

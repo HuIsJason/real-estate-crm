@@ -1,12 +1,13 @@
 import { ISignupState } from '../types';
 
-interface InitialSignupProps {
+interface AgentSignupProps {
   signupStateValues: ISignupState;
   handleStateChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     type: string
   ) => void;
+  prevStep: () => void;
   nextStep: () => void;
 }
 
-export default InitialSignupProps;
+export default AgentSignupProps;
