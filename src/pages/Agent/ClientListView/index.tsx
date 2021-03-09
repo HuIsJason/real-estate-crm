@@ -5,7 +5,7 @@ import { PermNavBar } from '../../../components';
 const ClientListPage: React.FC = () => {
   return (
     <>
-        <PermNavBar />
+        <PermNavBar title="CLIENTS"/>
         <ClientList />
     </>
   );

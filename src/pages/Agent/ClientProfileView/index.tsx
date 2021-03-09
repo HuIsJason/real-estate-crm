@@ -1,13 +1,18 @@
-import React from 'react';
-import { PermNavBar } from '../../../components';
-import { TransparentAppBar } from '../../../components';
+import React, {useCallback, useState} from 'react';
+import { PermNavBar, TransparentAppBar, ClientProfile } from '../../../components';
 
 const ClientProfilePage: React.FC = () => {
+  const [page, setPage] = useState<string>("profile");
+
+  const handlePageChange = useCallback((newPage: string) => {
+    setPage(newPage);
+  },[page, setPage]);
+
   return (
     <>
-        <PermNavBar />
-        <TransparentAppBar />
-
+        <PermNavBar title="Joey Smith"/>
+        <TransparentAppBar page={page} handlePageChange={handlePageChange}/>
+        <ClientProfile page={page}/> 
     </>
   );
 };

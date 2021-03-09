@@ -21,10 +21,12 @@ import {
     ChevronRight as ChevronRightIcon
 } from '@material-ui/icons';
 
+import { PermBarProps } from './types';
+
 import { useTheme } from '@material-ui/core/styles';
 import useStyles from './styles';
 
-const PermNavBar: React.FC = () => {
+const PermNavBar: React.FC<PermBarProps> = ({title} : PermBarProps) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -57,7 +59,7 @@ const PermNavBar: React.FC = () => {
             <MenuIcon />
           </IconButton>
           <Typography color="primary"variant="h6" noWrap>
-            CLIENTS
+            {title}
           </Typography>
         </Toolbar>
 
