@@ -1,8 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export default makeStyles((theme: Theme) => ({
-  root: {
-  },
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20),
@@ -12,7 +10,7 @@ export default makeStyles((theme: Theme) => ({
   profileInfoContainer : {
     position: "absolute",
     backgroundColor: "#F7F9FD",
-    top: "25%",
+    top: "230px",
     left: "18%",
     width: "80%",
   },

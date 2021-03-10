@@ -4,6 +4,7 @@ import { Button, Typography } from '@material-ui/core';
 import { HeaderProps as Props } from './types';
 import useStyles from './styles';
 import { useUserContext } from '../../contexts/UserContext';
+import { Redirect } from 'react-router';
 
 /*
  * SINCE WE DONT HAVE A REAL HEADER COMPONENT FOR NOW, THIS WILL BE A SAMPLE COMPONENT FOR TESTING.
@@ -20,14 +21,16 @@ const Header: React.FC<Props> = ({ title }: Props) => {
       <h1 className={classes.root}>{title}</h1>
       {user ? (
         user.type !== 'ADMIN' ? (
-          <Typography variant="h4" color="primary">
-            The current user is: {(user as any).id}, {(user as any).firstName},{' '}
-            {(user as any).bio}, {(user as any).phone}
-          </Typography>
+          // <Typography variant="h4" color="primary">
+          //   The current user is: {(user as any).id}, {(user as any).firstName},{' '}
+          //   {(user as any).bio}, {(user as any).phone}
+          // </Typography>
+          <Redirect to='/client-list'></Redirect>
         ) : (
-          <Typography variant="h4" color="primary">
-            ADMIN LOGGED IN monkaS
-          </Typography>
+          // <Typography variant="h4" color="primary">
+          //   ADMIN LOGGED IN monkaS
+          // </Typography>
+          <Redirect to='/admin'></Redirect>
         )
       ) : (
         <Typography variant="h4">not currently logged in</Typography>

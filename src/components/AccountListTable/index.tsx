@@ -4,7 +4,7 @@ import Props from './types';
 import TableRow from './tablerow';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 
-const entriesPerPage = 2;
+const entriesPerPage = 10;
 
 const ProjectList: React.FC<Props> = ({ accountSummaries, onSelectRow, displayPage, onClickNext, onClickPrev }: Props) => {
   const classes = useStyles();
