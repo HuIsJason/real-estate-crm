@@ -1,17 +1,23 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export default makeStyles((theme: Theme) => ({
+  main: {
+    margin: theme.spacing(4)
+  },
   root: {
     '& > *': {
       borderBottom: 'unset',
     },
   },
+  buttonContainer: {
+    height: '10px',
+    marginTop: '100px',
+    marginRight: '20px'
+  },
   table: {
-    position: "absolute",
     width: "75%",
-    height: "84%",
-    transform: 'translate(0%, 15%)',
-    marginLeft: "15%"
+    marginLeft: "15%",
+    marginTop: "5%"
   },
   cellBody: {
       fontSize: 14
@@ -35,7 +41,9 @@ export default makeStyles((theme: Theme) => ({
     left: "66%"
   },
   searchBar: {
-    border: "1px solid #0C3A77",
+    border: 'none',
+    boxShadow: 'none',
+    width: '25%'
   },
   pagination: {
 
