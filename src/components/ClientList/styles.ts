@@ -2,7 +2,8 @@ import { makeStyles, Theme } from '@material-ui/core';
 
 export default makeStyles((theme: Theme) => ({
   main: {
-    margin: theme.spacing(4)
+    margin: theme.spacing(4),
+    position: 'absolute',
   },
   root: {
     '& > *': {
@@ -46,7 +47,6 @@ export default makeStyles((theme: Theme) => ({
     width: '25%'
   },
   pagination: {
-
     bottom: "0px",
     right: "0px"
   },

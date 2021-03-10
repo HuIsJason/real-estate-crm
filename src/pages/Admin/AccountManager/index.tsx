@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AccountListTable from '../../../components/AccountListTable/index';
 import SearchBar from '../../../components/SearchBar/index';
-import { AgentAccount, ClientAccount, AccountSummary } from '../../../components/AccountListTable/types';
+import { AccountSummary } from '../../../components/AccountListTable/types';
 import AgentAccountDetail from "../../../components/AccountDetail/agent";
 import ClientAccountDetail from "../../../components/AccountDetail/client";
 import AccountSelector from '../../../components/AccountSelector/index';
@@ -53,11 +53,6 @@ const accountSummaries: AccountSummary[] = [
         lastLogin: '2021-02-28',
         accountType: 'agent'
     },
-    {
-        accountEmail: 'miranda@gmail.com',
-        lastLogin: '2021-02-28',
-        accountType: 'agent'
-    }
 ]
 
 const  AccountManagerView: React.FC = () => {
@@ -68,9 +63,12 @@ const  AccountManagerView: React.FC = () => {
     const [searchValue, setSearchValue] = useState('');
     const [accountType, setAccountType] = useState('agent');
     const [openDetails, toggleOpenDetails]=  useState(false);
-    const [activeAccounts, setActiveAccounts] = useState(accountSummaries);
-    const [displayAccounts, setDisplayAccounts] = useState(activeAccounts.filter(account => account.accountType === accountType));
     const [displayPage, setDisplayPage] = useState(1);
+
+    // Need to get list of summaries of all active accounts from the server
+    const [activeAccounts, setActiveAccounts] = useState<AccountSummary[]>(accountSummaries);
+    const [displayAccounts, setDisplayAccounts] = useState(activeAccounts.filter(account => account.accountType === accountType));
+    
 
     const openAccountDetails = (accountEmail: string) => {
         setSelectedAccount(accountEmail); 
@@ -80,6 +78,7 @@ const  AccountManagerView: React.FC = () => {
     }
 
     const deleteAccount = (accountEmail: string) => {
+        // TODO: Send request to server to delete account associated with accountEmail
         const newAccountsList = activeAccounts.filter(account => account.accountEmail !== accountEmail);
         setActiveAccounts(newAccountsList);
 

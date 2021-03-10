@@ -4,7 +4,7 @@ interface RequestDetailsProps {
   hideDetails: () => void;
   deleteRequest: (requestId: string) => void; 
   requestId: string;
-  account: Account;
+  account: Account|null;
 
 }
 

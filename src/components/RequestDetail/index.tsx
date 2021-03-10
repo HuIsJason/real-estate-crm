@@ -13,15 +13,19 @@ const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteReque
     const handleDenyRequest = () => {
         setOpenModal(0);
         deleteRequest(requestId); 
+        // TODO: Send request to server to delete the account <account> 
     }
 
     const activateAccount = () => {
         setOpenModal(0);
         deleteRequest(requestId);
+        // TODO: Send request to server to update the account <account> to be activated
     }
 
     return (
         <div className={classes.root}>
+            {account !== null ? 
+            (<div>
             <button className={classes.button} onClick={() => hideDetails()}> <Typography variant='button'> Return </Typography> </button>
             <Typography variant='h6'> Review Account Details for Request {requestId}</Typography>
             <div>
@@ -52,6 +56,7 @@ const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteReque
             <button className={classes.buttonFilled} onClick={() => setOpenModal(2)}> <Typography variant='button'> Activate Account </Typography></button>
             <ConfirmationModal open={openModal === 1} onCancel={() => setOpenModal(0)} onContinue={handleDenyRequest} actionDescription="deny this request"/>
             <ConfirmationModal open={openModal === 2} onCancel={() => setOpenModal(0)} onContinue={activateAccount} actionDescription="activate this account"/>
+            </div>) : null }
         </div>
     )
 }

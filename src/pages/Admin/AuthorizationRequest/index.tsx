@@ -6,7 +6,7 @@ import { Account } from '../../../components/AuthRequestTable/types';
 import AppBar from '../../../components/AppBar';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 
-const accounts : Account[] = [
+const mockAccounts : Account[] = [
   
   { email: "joe@gmail.com",
     firstName: "joe",
@@ -104,11 +104,14 @@ const requests = [
 
 const AuthRequestsView: React.FC = () => {
 
+  // Get all active account authorization requests from server
   const [activeRequests, setRequests] = useState(requests);
   const [displayRequests, setDisplayRequests] = useState(requests);
-
   const [selectedRequest, setSelectedRequest] = useState(''); // Request Id of the selected row in the table
-  const [account, setAccount] = useState(accounts[0]);
+
+  // Get all the accounts that are pending authorization from server
+  const accounts = mockAccounts;
+  const [account, setAccount] = useState<Account|null>(null);
   const [searchValue, setSearchValue] = useState('');
   const [displayPage, setDisplayPage] = useState(1);
 
@@ -129,6 +132,7 @@ const AuthRequestsView: React.FC = () => {
 
   /* Removes the request with requestId from the table */
   const deleteRequest = (requestId: string) => {
+    // TODO: Send request to server to delete the request with id requestId
     const newRequests = activeRequests.filter(request => request.requestId !== requestId);
     setRequests(newRequests);
     setDisplayRequests(newRequests);
