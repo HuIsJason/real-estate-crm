@@ -20,6 +20,8 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
   const emailRef = useRef();
   const addressRef = useRef();
 
+  // here there would be a callback to retrieve the clients profile information via an api call
+
   const handleClickOpen = useCallback(() => {
       setOpen(true);
   },[]);
