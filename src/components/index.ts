@@ -5,3 +5,4 @@ export { default as SignupNavigationButton } from './SignupNavigationButton';
 export { default as AddClientButton } from './AddClientButton';
 export { default as TransparentAppBar } from './TransparentNav';
 export { default as ClientProfile } from './ClientProfile';
+export { default as FavouritedProjects } from './FavouritedProjects';
