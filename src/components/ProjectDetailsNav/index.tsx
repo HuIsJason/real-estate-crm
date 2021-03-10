@@ -24,13 +24,6 @@ const ProjectDetailsNav: React.FC<ProjectDetailsNavProps> = ({page, handlePageCh
             </Button>
 
             <Button 
-            onClick={() => handlePageChange("tasks")} 
-            variant="contained" color="primary" 
-            classes={{ root: classes.listButtonsHead}} className={classes.listButtons + " " + classes.projectsButton + (page === "tasks" ? " " + classes.current : "") }>
-                Tasks
-            </Button>
-
-            <Button 
             onClick={() => handlePageChange("history")} 
             variant="contained" 
             color="primary" classes={{ root: classes.listButtonsHead}} className={classes.listButtons + " " + classes.favProjectsButton + (page === "history" ? " " + classes.current : "") }>
