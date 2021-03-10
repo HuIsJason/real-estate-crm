@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   paper: {
     // margin: theme.spacing(20),
+    marginTop: theme.spacing(20),
     position: 'relative',
     width: '70%',
     height: '90%',
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   modal: {
     position: 'absolute',
-    width: 500,
+    width: 700,
     padding: theme.spacing(4, 10, 10),
     top: 100,
     left: '30%',

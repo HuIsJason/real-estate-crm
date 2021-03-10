@@ -1,6 +1,5 @@
 import React from 'react';
-import { ClientList } from '../../../components';
-import { PermNavBar } from '../../../components';
+import { ClientList, PermNavBar } from '../../../components';
 
 const ClientListPage: React.FC = () => {
   return (

@@ -10,12 +10,12 @@ import {
   Home,
   Login,
   Signup,
+  ProjectDetailsPage,
 } from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
 import ProjectList from './components/ProjectList/index';
 import PropertyHistoryDash from './components/PropertyHistoryDash/index';
-import { FavouritedProjects } from './components';
 
 const App: React.FC = () => {
   const { user } = useUserContext();
@@ -46,9 +46,13 @@ const App: React.FC = () => {
         render={() => (user ? <Redirect to="/" /> : <Login />)}
       />
       <Route exact path="/signup" component={Signup} />
-      <Route exact path="/ClientList" component={ClientListPage} />
-      <Route exact path="/ClientProfile" component={ClientProfilePage} />
-      <Route exact path="/FavouritedProjects" component={FavouritedProjects} />
+      <Route exact path="/client-list" component={ClientListPage} />
+      <Route exact path="/client-details" component={ClientProfilePage} />
+      <Route
+        exact
+        path="/client-details/project-details"
+        component={ProjectDetailsPage}
+      />
     </Switch>
   );
 };

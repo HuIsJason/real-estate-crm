@@ -1,7 +1,7 @@
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import Props from './types';
 
-export default function PropertySelectList ( { properties, selected, onSelect, onClickAdd } : Props) { 
+export default function PropertySelectList ( { properties, selected, onSelect } : Props) { 
 
     const classes = useStyles();
 
@@ -14,21 +14,18 @@ export default function PropertySelectList ( { properties, selected, onSelect, o
                     <button className={property === selected ? classes.buttonSelected : classes.button} onClick={() => onSelect(property)}> 
                         <Typography variant="button"> {property.addrLineOne} </Typography> 
                     </button>
-                </div>))
+                </div>))  
             }
-            <div className={classes.btnContainer}>
-                <button onClick={onClickAdd} className={classes.clearBtn}> <Typography variant="button"> + Add Property </Typography> </button>
-            </div>
         </div>
     )
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-      margin: theme.spacing(3),
-      marginRight: 0,
-      padding: '20px 20px',
-      display: 'inline-block'
+    //   margin: theme.spacing(3),
+    //   marginRight: 0,
+    //   padding: '20px 20px',
+    //   display: 'inline-block'
     },
     button: {
       background: "white",

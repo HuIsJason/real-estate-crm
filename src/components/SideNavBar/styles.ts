@@ -61,4 +61,13 @@ export default makeStyles((theme: Theme) => ({
     hide: {
         display: 'none',
     },
+    logoutList: {
+        position: "absolute",
+        bottom: "5%",
+        width: "100%"
+    },
+    linkStyle: { 
+        textDecoration: 'none', 
+        color: 'black' 
+    }
 }));

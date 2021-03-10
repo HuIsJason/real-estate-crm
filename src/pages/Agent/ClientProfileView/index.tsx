@@ -3,7 +3,8 @@ import {
   PermNavBar,
   TransparentAppBar,
   ClientProfile,
-  FavouritedProjects,
+  ProjectList,
+  FavouritedProperties,
 } from '../../../components';
 
 const ClientProfilePage: React.FC = () => {
@@ -21,7 +22,8 @@ const ClientProfilePage: React.FC = () => {
       <PermNavBar title="Joey Smith" />
       <TransparentAppBar page={page} handlePageChange={handlePageChange} />
       <ClientProfile page={page} />
-      <FavouritedProjects page={page} />
+      <FavouritedProperties page={page} />
+      {page === 'projects' ? <ProjectList /> : null}
     </>
   );
 };

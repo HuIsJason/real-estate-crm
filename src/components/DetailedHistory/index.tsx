@@ -27,7 +27,8 @@ const DetailedHistory: React.FC<DetailedHistoryProps> = ( { property, toggleFavo
 
     return (
         <div className={classes.root}>
-          <div style={{margin: 15, width: '520px'}}>
+          { property ?
+          (<div> <div style={{margin: 15, width: '520px'}}>
             <Typography style={{display: 'inline-block'}} className={classes.headerText} variant="h4"> {property.addrLineOne} </Typography>
             { !property.favourited ? (<button className={classes.button} onClick={() => toggleFavourite(property)}> <Typography variant='caption'>Favourite</Typography> </button>) 
               : (<button className={classes.buttonSelected} onClick={() => toggleFavourite(property)}> <Typography variant='caption'>Favourited</Typography> </button>)
@@ -39,7 +40,12 @@ const DetailedHistory: React.FC<DetailedHistoryProps> = ( { property, toggleFavo
           {
             currTab === 'activity' ? 
             (<ActivityTable activities={property.activities} addActivity={addActivity}> </ActivityTable>) : (<NotesSection notes={property.notes} onSave={saveNotes}/>)
-          }
+          } </div>)
+          :
+          <div style={{margin: 15, width: '520px'}}>
+          <Typography variant='overline'> No property selected...</Typography>
+          </div>
+        }
           
         </div>
     )

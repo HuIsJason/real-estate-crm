@@ -137,13 +137,13 @@ const Row: React.FC<RowProps> = ({ property, date }: RowProps) => {
   );
 };
 
-interface FavouriteProjectsProps {
+interface FavouritedPropertiesProps {
   page: string;
 }
 
-const FavouriteProjects: React.FC<FavouriteProjectsProps> = ({
+const FavouritedProperties: React.FC<FavouritedPropertiesProps> = ({
   page,
-}: FavouriteProjectsProps) => {
+}: FavouritedPropertiesProps) => {
   const [properties, setProperties] = useState<RowProps[]>(propertyObjects);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
@@ -209,4 +209,4 @@ const FavouriteProjects: React.FC<FavouriteProjectsProps> = ({
   );
 };
 
-export default FavouriteProjects;
+export default FavouritedProperties;
