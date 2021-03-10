@@ -46,7 +46,6 @@ export default makeStyles((theme: Theme) => ({
     width: '25%'
   },
   pagination: {
-
     bottom: "0px",
     right: "0px"
   },
