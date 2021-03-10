@@ -91,7 +91,7 @@ const PermNavBar: React.FC<PermBarProps> = ({title} : PermBarProps) => {
             </ListItem>
           </Link>
 
-          <Link to={"/AgentProfile"} className={classes.linkStyle}>
+          <Link to={"/agent-details"} className={classes.linkStyle}>
             <ListItem button key={'Profile'}>
                 <ListItemIcon> <AccountCircleIcon color="primary" /> </ListItemIcon>
                 <ListItemText primary={'Profile'} color="primary" />

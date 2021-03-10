@@ -88,14 +88,18 @@ const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccou
 
     const handleDeleteAccount = () => {
         deleteAccount(accountEmail);
+        // TODO: Send server request to delete account email <accountEmail>
         setModalOpen(0);
     }
 
     const resetPassword = () => {
-        setNewPassword(generateRandomPassword());
+        const newPassword = generateRandomPassword();
+        setNewPassword(newPassword);
+        // TODO: Send server request to set the password of the account with email <accountEmail> with <newPassword>
         setModalOpen(1);
     }
 
+    // TODO: Get the account object with email <accountEmail> from the server
     const account = agentAccounts.filter(account => account.email === accountEmail)[0];
 
 

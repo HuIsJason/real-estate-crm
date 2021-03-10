@@ -11,6 +11,7 @@ import {
   Login,
   Signup,
   ProjectDetailsPage,
+  AgentProfilePage
 } from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
@@ -53,6 +54,7 @@ const App: React.FC = () => {
         path="/client-details/project-details"
         component={ProjectDetailsPage}
       />
+      <Route exact path="/agent-details" component={AgentProfilePage} />
     </Switch>
   );
 };
