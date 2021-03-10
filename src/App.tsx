@@ -4,7 +4,7 @@ import { useUserContext } from './contexts/UserContext';
 
 import AdminDashboard from './pages/Admin/Dashboard/index';
 import AdminAuthRequestView from './pages/Admin/AuthorizationRequest/index';
-import { ClientListPage, ClientProfilePage, Home, Login, Signup } from './pages';
+import { ClientListPage, ClientProfilePage, Home, Login, Signup, ProjectDetailsPage} from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
 import ProjectList from './components/ProjectList/index';
@@ -33,6 +33,7 @@ const App: React.FC = () => {
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/ClientList" component={ClientListPage} />
       <Route exact path="/ClientProfile" component={ClientProfilePage} />
+      <Route exact path="/ClientProfile/Project" component={ProjectDetailsPage} />
 
     </Switch>
   );
