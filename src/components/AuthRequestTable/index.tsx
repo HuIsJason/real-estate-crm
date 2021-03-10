@@ -4,7 +4,7 @@ import Props from './types';
 import TableRow from './tablerow';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 
-const entriesPerPage = 3;
+const entriesPerPage = 10;
 
 const SimpleTable: React.FC<Props> = ({ requests, selectRequest, displayPage, onClickNext, onClickPrev }: Props) => {
   const classes = useStyles();
