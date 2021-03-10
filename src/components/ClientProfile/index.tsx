@@ -61,7 +61,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Linked Account:</strong> NOT LINKED <Button variant="contained" color="primary" className={classes.linkButton}> INVITE</Button>
+              <strong>Linked Account:</strong> NOT LINKED 
             </Typography>
 
             <Typography className={classes.contactInfo}>
