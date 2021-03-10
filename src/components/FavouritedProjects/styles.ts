@@ -20,6 +20,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: '20px',
     marginRight: '10%',
   },
+  modal: {
+    position: 'absolute',
+    width: 500,
+    padding: theme.spacing(4, 10, 10),
+    top: 100,
+    left: '30%',
+  },
 }));
 
 export default useStyles;
