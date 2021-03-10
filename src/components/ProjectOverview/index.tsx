@@ -40,6 +40,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page }: ProjectOvervi
   },[]);
 
   const handleEdit = useCallback(() => {
+    // This callback would contain an API call to edit project overview info in the backend
     const description = descripRef.current as any;
 
     setDescription(description.value);
@@ -47,6 +48,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page }: ProjectOvervi
   },[setDescription, setOpen]);
 
   const handleAdd = useCallback(() => {
+    // This callback would contain an API call to add a tag to the project overview in the backend
     const tag = tagRef.current as any;
 
     setTags(arr => [...arr, tag.value]);

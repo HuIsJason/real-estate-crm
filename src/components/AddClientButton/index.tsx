@@ -32,6 +32,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
     },[]);
 
     const handleClientAdditon = useCallback(() => {
+        // This callback would contain an API call to add new data to backend
         fullRows.push(createData(nameField, emailField, tagField, uuid()));
 
         const newRows = fullRows.filter((row) => {
