@@ -137,7 +137,7 @@ const ClientList: React.FC = () => {
           </Table>
         </TableContainer>
         <TablePagination classes={{ root: classes.pagination }}
-              rowsPerPageOptions={[5, 10]}
+              rowsPerPageOptions={[4, 8]}
               component="div"
               count={rows.length}
               rowsPerPage={rowsPerPage}
