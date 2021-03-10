@@ -60,6 +60,11 @@ const AgentProfile: React.FC = () => {
     <div className={classes.profileInfoContainer}>
       <Avatar alt="Julia" src="/static/images/avatar/1.jpg" className={classes.large} />
       <div className={classes.contactContainer}>
+
+          <Typography color="primary" className={classes.header + " " + classes.contactInfo}>
+            Profile Information
+          </Typography>
+
             <Typography className={classes.contactInfo}>
               <strong>Name: </strong>{name}
             </Typography>
