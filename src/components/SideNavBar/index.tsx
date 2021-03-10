@@ -84,7 +84,7 @@ const PermNavBar: React.FC<PermBarProps> = ({title} : PermBarProps) => {
         <Divider />
         <List>
 
-          <Link to={"/ClientList"} className={classes.linkStyle}>
+          <Link to={"/client-list"} className={classes.linkStyle}>
             <ListItem button key={'Clients'}>
                 <ListItemIcon> <SupervisorAccountIcon color="primary" /> </ListItemIcon>
                 <ListItemText primary={'Clients'} color="primary" />

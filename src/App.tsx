@@ -31,9 +31,9 @@ const App: React.FC = () => {
         render={() => (user ? <Redirect to="/" /> : <Login />)}
       />
       <Route exact path="/signup" component={Signup} />
-      <Route exact path="/ClientList" component={ClientListPage} />
-      <Route exact path="/ClientProfile" component={ClientProfilePage} />
-      <Route exact path="/ClientProfile/Project" component={ProjectDetailsPage} />
+      <Route exact path="/client-list" component={ClientListPage} />
+      <Route exact path="/client-details" component={ClientProfilePage} />
+      <Route exact path="/client-details/project-details" component={ProjectDetailsPage} />
 
     </Switch>
   );

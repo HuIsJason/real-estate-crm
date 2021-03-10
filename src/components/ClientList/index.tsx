@@ -42,16 +42,16 @@ const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, handleSetRows}: 
     <>
       <TableRow className={classes.root}>
         <TableCell component="th" scope="row">
-          <Link to={"/ClientProfile"} className={classes.linkStyle}>
+          <Link to={"/client-details"} className={classes.linkStyle}>
             {name}
           </Link>
         </TableCell>
           <TableCell align="left">
-            <Link to={"/ClientProfile"} className={classes.linkStyle}>
+            <Link to={"/client-details"} className={classes.linkStyle}>
             {tags}
             </Link>
           </TableCell>
-        <Link to={"/ClientProfile"} className={classes.linkStyle}>
+        <Link to={"/client-details"} className={classes.linkStyle}>
           <TableCell>
             <IconButton size="small" >
               <AccountBoxIcon color="primary" /> 
@@ -73,7 +73,7 @@ const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, handleSetRows}: 
 const ClientList: React.FC = () => {
   const classes = useStyles();
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(8);
   const [rows, setRows] = useState<DataFields[]>(fullRows);
   const [searched, setSearched] = useState<string>("");
 
@@ -104,8 +104,10 @@ const ClientList: React.FC = () => {
   },[searched, requestSearch]);
 
   return (
-    <>
-      <AddClientButton rows={rows} setRows={setRows}/>
+    <div className={classes.main}>
+      <div className={classes.buttonContainer}>
+        <AddClientButton rows={rows} setRows={setRows}/>
+      </div> 
       <Paper className={classes.table}>
         <SearchBar
           value={searched}
@@ -144,7 +146,7 @@ const ClientList: React.FC = () => {
               onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-    </>
+    </div>
   );
 }
 

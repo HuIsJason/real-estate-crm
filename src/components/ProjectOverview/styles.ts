@@ -14,31 +14,35 @@ export default makeStyles((theme: Theme) => ({
     backgroundColor: "#F7F9FD",
     top: "25%",
     left: "18%",
-    width: "60%",
+    width: "100%",
   },
   header: {
     fontSize: "30px"
   },
   contactInfo: {
+    marginTop: "10px",
     marginBottom: "20px",
     width: "40%"
   },
   contactContainer: {
     float: "left"
   },
-  linkButton: {
-    marginLeft: "20px"
+  statusButton: {
+    marginLeft: "10px",
+    borderRadius: '50px'
   },
   editButton: {
-    left: "100%",
-    bottom: "100%",
-    position: "absolute",
-    width: "100px"
+    marginBottom: '20px',
+    background: 'white'
   },
   descriptionEdit: {
     height: "40%"
   },
   addTagButton: {
-    marginBottom: "10px"
+    marginBottom: "20px",
+    background: 'white'
+  },
+  tags: {
+    margin: "4px",
   }
 }));

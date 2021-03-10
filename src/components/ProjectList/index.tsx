@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import BinarySelector from '../BinarySelector/index';
 import AddProjectModal from './modal';
+import { useHistory } from 'react-router-dom';
 
 const selectorOptions = [ {
   value: 'active',
@@ -27,8 +28,10 @@ const projects = [{
 },
 ]
 
-const ProjectList = () => {
+const ProjectList: React.FC = () => {
   const classes = useStyles();
+  const history = useHistory();
+
   const [showActive, setShowActive] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
   const [allProjects, setProjects] = React.useState(projects);
@@ -43,6 +46,7 @@ const ProjectList = () => {
   const openProject = (projectId: number) => {
     /* TODO: update to navigate to detailed project view */
     console.log(`Opening project ${projectId}`);
+    history.push('client-details/project-details');
   }
 
   return (
@@ -56,7 +60,7 @@ const ProjectList = () => {
           <tbody>
             { projects.filter(project => project.active === showActive).map(project => (
               <tr key={project.id} onClick={() => openProject(project.id)}>
-                <td> <Typography className={classes.text} variant="subtitle1" > {project.name.toUpperCase()} </Typography> 
+                <td> <Typography className={classes.text} variant="subtitle1" > {project.name} </Typography> 
                 <span style={{ float: 'right', color: '#d3d5db', marginTop: 5 }}> {'>'} </span></td>
               </tr> ))}
           </tbody>
@@ -71,6 +75,10 @@ const ProjectList = () => {
 const useStyles = makeStyles((theme: Theme) => ({
   main: {
     margin: theme.spacing(5),
+    width: "70%",
+    position: "absolute",
+    top: "18%",
+    left: "15%",
   },
   root: {
     margin: theme.spacing(2),
@@ -87,7 +95,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       borderBottom: '1px solid #F1F2F5',
       padding: '1.3rem',
       textAlign: 'left',
-      color: '#c1d1db',
+      color: "#0C3A77",
     },
     '& tbody tr': {
       height: '50px',

@@ -12,7 +12,7 @@ const NotesSection: React.FC<Props> = ({ notes, onSave } : Props) => {
     return (
         <div className={classes.root}>
             <textarea className={classes.input} onChange={handleChange} placeholder={"No notes to see here, start typing to add notes..."}
-                cols={80} rows={32}>
+                cols={80} rows={30}>
             {notes}
             </textarea>
         </div>

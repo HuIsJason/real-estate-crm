@@ -37,7 +37,7 @@ const properties = [
     }
 ]
 
-export default function PropertyHistoryDash() {
+const ProjectHistory: React.FC = () => {
 
     const classes = useStyles();
     
@@ -129,7 +129,7 @@ export default function PropertyHistoryDash() {
     }
 
     return (
-        <div style={{ width: "fit-content", margin: "auto"}}>
+        <div className={classes.main}>
             <div className={classes.root}>
                 <PropertySelectList 
                 properties={displayedProperties} 
@@ -154,9 +154,15 @@ export default function PropertyHistoryDash() {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
+    main: {
+        width: "fit-content", 
+        margin: "auto",
+        position: "absolute",
+        top: "20%",
+        left: "15%",
+    },
     root: {
       margin: theme.spacing(3),
-      marginRight: 0,
       padding: '20px 20px',
       display: 'inline-block'
     },
@@ -205,3 +211,5 @@ const useStyles = makeStyles((theme: Theme) => ({
         }
     }
   }));
+
+  export default ProjectHistory;

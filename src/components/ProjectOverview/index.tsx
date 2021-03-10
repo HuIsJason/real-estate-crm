@@ -10,7 +10,7 @@ function useToggle(initialValue = true){
 }
 
 
-const ProjectOverview: React.FC<ProjectOverviewProps> = ({page}: ProjectOverviewProps) => {
+const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page }: ProjectOverviewProps) => {
   const classes = useStyles();
   const [description, setDescription] = useState<string>("Joey is looking for his dream house! He wants a place that is near a good school with a lively neighbourhood, so he can raise his son Jonathon in a good environment");
   const [tags, setTags] = useState(["Friendly area", "Nearby school", "Kid friendly"]);
@@ -55,7 +55,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({page}: ProjectOverview
 
 
   return (
-    <>
+    <div >
     { render && <div className={classes.profileInfoContainer}>
       <div className={classes.contactContainer}>
           <Typography color="primary" className={classes.header + " " + classes.contactInfo}>
@@ -66,22 +66,22 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({page}: ProjectOverview
             <Typography className={classes.contactInfo}>
               <strong>Description: </strong> {description}
             </Typography>
+            <Button variant="outlined" color="primary" className={classes.editButton} onClick={handleClickOpen}> Edit Description </Button>
 
             <Typography className={classes.contactInfo}>
-              <strong>Criteria: </strong> 
-              <div>{tags.map( e =>
-                  <Chip label={e}  />
+              <strong>Criteria: </strong> <br/>
+              <div >{tags.map( e =>
+                  <Chip className={classes.tags} color="primary" label={e}  />
               )}
               </div>
             </Typography>
 
-            <Button variant="contained" color="primary" className={classes.addTagButton} onClick={handleClickOpenTag}> + ADD TAG </Button>
+            <Button variant="outlined" color="primary" className={classes.addTagButton} onClick={handleClickOpenTag}> + ADD TAG </Button>
 
             <Typography className={classes.contactInfo}>
-              <strong>Status:</strong> <Button variant="outlined" color="primary" className={classes.linkButton} onClick={toggleIsActive}> {isActive ? "ACTIVE" : "NOT ACTIVE"} </Button>
+              <strong>Status:</strong> <Button variant="contained" disableElevation color={isActive ? "primary" : undefined} className={classes.statusButton} onClick={toggleIsActive}> {isActive ? "ACTIVE" : "CLOSED"} </Button>
             </Typography>
 
-            <Button variant="contained" color="primary" className={classes.editButton} onClick={handleClickOpen}> EDIT </Button>
       </div>
         <Dialog fullWidth maxWidth="sm" open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Edit Description</DialogTitle>
@@ -139,7 +139,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({page}: ProjectOverview
             </Dialog> 
     </div>
     }
-    </>
+    </div>
   );
 }
 
