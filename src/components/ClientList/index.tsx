@@ -1,7 +1,5 @@
 import React, {useState, useCallback} from 'react';
 import {
-  Box,
-  Collapse,
   IconButton,
   Table,
   TableBody,
@@ -10,17 +8,16 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
   Paper,
   Button
 } from '@material-ui/core';
 import {
-  KeyboardArrowDown as KeyboardArrowDownIcon,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
-  DeleteForever as DeleteForeverIcon
+  DeleteForever as DeleteForeverIcon,
+  AccountBox as AccountBoxIcon
 } from '@material-ui/icons';
 import SearchBar from "material-ui-search-bar";
 
+import {Link} from "react-router-dom"
 
 import { AddClientButton } from '../.';
 
@@ -29,7 +26,6 @@ import useStyles from './styles';
 import { fullRows } from './data';
 
 const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, handleSetRows}: RowProps) => {
-  const [open, setOpen] = useState<boolean>(false);
   const classes = useStyles();
 
   const handleDelete = useCallback((id: string) => {
@@ -45,30 +41,29 @@ const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, handleSetRows}: 
   return (
     <>
       <TableRow className={classes.root}>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
         <TableCell component="th" scope="row">
-          {name}
+          <Link to={"/ClientProfile"} className={classes.linkStyle}>
+            {name}
+          </Link>
         </TableCell>
-        <TableCell align="left">
-          {tags}
-        </TableCell>
+          <TableCell align="left">
+            <Link to={"/ClientProfile"} className={classes.linkStyle}>
+            {tags}
+            </Link>
+          </TableCell>
+        <Link to={"/ClientProfile"} className={classes.linkStyle}>
+          <TableCell>
+            <IconButton size="small" >
+              <AccountBoxIcon color="primary" /> 
+            </IconButton>
+          </TableCell>
+        </Link>
         <TableCell>
           <Button color="primary" className={classes.EButton} onClick={() => handleDelete(id)} ><DeleteForeverIcon /></Button>
         </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div" >
-                Contact Information: . . .  Link to profile 
-              </Typography>
-            </Box>
-          </Collapse>
         </TableCell>
       </TableRow>
     </>
@@ -122,9 +117,9 @@ const ClientList: React.FC = () => {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell classes={{ head: classes.emptyCellHead, body: classes.cellBody}} />
                 <TableCell classes={{ head: classes.clientCellHead, body: classes.cellBody }}>CLIENT</TableCell>
                 <TableCell classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>TAGS</TableCell>
+                <TableCell classes={{ head: classes.emptyCellHead, body: classes.cellBody}}> PROFILE </TableCell>
                 <TableCell align="center" classes={{ head: classes.tagsCellHead, body: classes.cellBody }}>DELETE</TableCell>
               </TableRow>
             </TableHead>
