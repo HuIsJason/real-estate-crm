@@ -30,7 +30,6 @@ const App: React.FC = () => {
         path="/login"
         render={() => (user ? <Redirect to="/" /> : <Login />)}
       />
-      <Route exact path="/clientlist" component={Agent} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/ClientList" component={ClientListPage} />
       <Route exact path="/ClientProfile" component={ClientProfilePage} />

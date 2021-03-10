@@ -51,7 +51,7 @@ export default function PropertyHistoryDash() {
     const toggleFavourite = (property: Property) => {
 
         const updatedProperties = allProperties.map(p => {
-            if (p == property) {
+            if (p === property) {
                 property.favourited = !property.favourited;
                 return property;
             }

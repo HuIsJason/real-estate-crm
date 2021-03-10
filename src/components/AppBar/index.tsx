@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function AdminAppBar( { showDashboardbtn } : AppBarProps ) {
   const classes = useStyles();
-  const [redirect, setRedirect] = React.useState(0);
 
   return (
     <div className={classes.root}>

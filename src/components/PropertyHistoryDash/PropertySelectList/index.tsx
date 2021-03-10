@@ -11,7 +11,7 @@ export default function PropertySelectList ( { properties, selected, onSelect, o
             {
             properties.map( property => (
                 <div key={property.addrLineOne}> 
-                    <button className={property == selected ? classes.buttonSelected : classes.button} onClick={() => onSelect(property)}> 
+                    <button className={property === selected ? classes.buttonSelected : classes.button} onClick={() => onSelect(property)}> 
                         <Typography variant="button"> {property.addrLineOne} </Typography> 
                     </button>
                 </div>))

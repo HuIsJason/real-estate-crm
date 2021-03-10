@@ -1,4 +1,4 @@
-import React, {useState, useCallback, ChangeEvent, useRef} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
 import useStyles from './styles';
@@ -14,7 +14,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
   const [address, setAddress] = useState<string>("123 joey land drive");
   const [open, setOpen] = useState(false);
 
-  const render = page == "profile";
+  const render = page === "profile";
 
   const phoneRef = useRef();
   const emailRef = useRef();

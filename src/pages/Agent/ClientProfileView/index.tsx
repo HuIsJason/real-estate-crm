@@ -6,7 +6,7 @@ const ClientProfilePage: React.FC = () => {
 
   const handlePageChange = useCallback((newPage: string) => {
     setPage(newPage);
-  },[page, setPage]);
+  },[setPage]);
 
   return (
     <>

@@ -1,6 +1,5 @@
 import React from 'react';
 import Props from './types';
-import { uid } from 'react-uid';
 
 import TableRow from './tablerow';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
