@@ -23,16 +23,16 @@ interface RowProps {
   date: Date;
 }
 
-const projects = [
+const projectsData = [
   {
     id: 123,
     name: 'Investment Condo in Downtown',
-    active: true,
+    active: false,
   },
   {
     id: 154,
     name: 'Dream House',
-    active: true,
+    active: false,
   },
   {
     id: 190,
@@ -60,7 +60,7 @@ const propertyObjects: RowProps[] = [
 ];
 
 const Row: React.FC<RowProps> = ({ property, date }: RowProps) => {
-  const [isAdded, setIsAdded] = useState<boolean>(false);
+  const [projects, setProjects] = useState(projectsData);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const classes = useStyles();
@@ -72,6 +72,17 @@ const Row: React.FC<RowProps> = ({ property, date }: RowProps) => {
   const handleClose = useCallback(() => {
     setOpenModal(false);
   }, []);
+
+  const handleAddProject = useCallback(
+    (id) => {
+      const updatedProjects = projects.map((project) =>
+        project.id === id ? { ...project, active: true } : project
+      );
+
+      setProjects(updatedProjects);
+    },
+    [projects]
+  );
 
   return (
     <>
@@ -118,7 +129,7 @@ const Row: React.FC<RowProps> = ({ property, date }: RowProps) => {
                         </Typography>
                       ) : (
                         <Button
-                          onClick={() => (project.active = true)}
+                          onClick={() => handleAddProject(project.id)}
                           color="primary"
                           variant="contained"
                         >
