@@ -23,12 +23,15 @@ import { AddClientButton } from '../.';
 
 import { RowProps, DataFields} from './types';
 import useStyles from './styles';
+
+// Data would not be imported from a file when we have backend
 import { fullRows } from './data';
 
 const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, handleSetRows}: RowProps) => {
   const classes = useStyles();
 
   const handleDelete = useCallback((id: string) => {
+    // API call to delete to backend
     var indexOfRow = fullRows.findIndex(i => i.id === id)
     fullRows.splice(indexOfRow, 1);
     const newRows = fullRows.filter((row) => {
@@ -76,6 +79,8 @@ const ClientList: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(8);
   const [rows, setRows] = useState<DataFields[]>(fullRows);
   const [searched, setSearched] = useState<string>("");
+
+  // API call retrieve rows and set them to state, instead of using fullRows
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage);

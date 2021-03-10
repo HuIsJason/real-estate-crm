@@ -31,6 +31,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
   },[]);
 
   const handleEdit = useCallback(() => {
+    // This callback would contain an API call to edit client profile info in the backend
     const phone = phoneRef.current as any;
     const email = emailRef.current as any;
     const address = addressRef.current as any;
