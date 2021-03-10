@@ -18,8 +18,11 @@ import {
     AccountCircle as AccountCircleIcon,
     Menu as MenuIcon,
     ChevronLeft as ChevronLeftIcon,
-    ChevronRight as ChevronRightIcon
+    ChevronRight as ChevronRightIcon,
+    ExitToApp as ExitToAppIcon
 } from '@material-ui/icons';
+
+import {Link} from "react-router-dom"
 
 import { PermBarProps } from './types';
 
@@ -81,18 +84,35 @@ const PermNavBar: React.FC<PermBarProps> = ({title} : PermBarProps) => {
         <Divider />
         <List>
 
+          <Link to={"/ClientList"} className={classes.linkStyle}>
             <ListItem button key={'Clients'}>
                 <ListItemIcon> <SupervisorAccountIcon color="primary" /> </ListItemIcon>
                 <ListItemText primary={'Clients'} color="primary" />
             </ListItem>
+          </Link>
 
+          <Link to={"/AgentProfile"} className={classes.linkStyle}>
             <ListItem button key={'Profile'}>
                 <ListItemIcon> <AccountCircleIcon color="primary" /> </ListItemIcon>
                 <ListItemText primary={'Profile'} color="primary" />
             </ListItem>
+          </Link>
 
         </List>
         <Divider color="primary" />
+
+        <List className={classes.logoutList}>
+          <Divider color="primary" />
+
+          <Link to={"/login"} className={classes.linkStyle}>
+            <ListItem button key={'Logout'}>
+                <ListItemIcon> <ExitToAppIcon color="primary" /> </ListItemIcon>
+                <ListItemText primary={'Logout'} color="primary" />
+            </ListItem>
+          </Link>
+
+          <Divider color="primary" />
+        </List>
       </Drawer>
     </div>
   );

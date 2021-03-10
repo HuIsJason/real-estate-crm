@@ -9,8 +9,8 @@ export default makeStyles((theme: Theme) => ({
   table: {
     position: "absolute",
     width: "75%",
-    height: "90%",
-    transform: 'translate(0%, 10%)',
+    height: "84%",
+    transform: 'translate(0%, 15%)',
     marginLeft: "15%"
   },
   cellBody: {
@@ -45,5 +45,9 @@ export default makeStyles((theme: Theme) => ({
   EButton: {
     height: "10px",
     width: "10px"
+  },
+  linkStyle: { 
+    textDecoration: 'none', 
+    color: 'black' 
   }
 }));
