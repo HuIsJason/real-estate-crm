@@ -2,9 +2,8 @@ import { Activity } from "../../ActivityTable/types";
 
 interface Props { 
     properties: Property[],
-    selected: Property,
+    selected: Property | null,
     onSelect: (property: Property) => void;
-    onClickAdd: () => void;
 }
 
 interface Property { 
