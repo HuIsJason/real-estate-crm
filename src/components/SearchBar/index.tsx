@@ -18,12 +18,10 @@ const SearchBar: React.FC<Props> = ({ placeholder, onChange, value }: Props) => 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     margin: 0,
-    // background: '#F1F2F5',
     borderRadius: 5,
     borderColor: "#F1F2F5",
     padding: '10px 12px',
     display: 'inline-block',
-    // outline: '1px solid grey',
     width: '300px',
     color: '#A2AEB8',
     fontWeight: 500,

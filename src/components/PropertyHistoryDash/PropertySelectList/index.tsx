@@ -6,7 +6,7 @@ export default function PropertySelectList ( { properties, selected, onSelect } 
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div>
             <Typography style={ { marginBottom: '10px', marginLeft: '10px', color: "#0C3A77" }} variant="h6">Properties</Typography>
             {
             properties.map( property => (
@@ -20,13 +20,7 @@ export default function PropertySelectList ( { properties, selected, onSelect } 
     )
 };
 
-const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-    //   margin: theme.spacing(3),
-    //   marginRight: 0,
-    //   padding: '20px 20px',
-    //   display: 'inline-block'
-    },
+const useStyles = makeStyles(() => ({
     button: {
       background: "white",
       color: "#b2b6bf",

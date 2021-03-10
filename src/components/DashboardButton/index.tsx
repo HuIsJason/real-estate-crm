@@ -4,7 +4,6 @@ import Props from './types';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 
 
 const DashboardButton: React.FC<Props> = ({ title, link }: Props) => {
