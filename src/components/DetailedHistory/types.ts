@@ -1,7 +1,7 @@
 import { Activity } from "../ActivityTable/types";
 
 interface DetailedHistoryProps {
-    property: Property;
+    property: Property | null;
     toggleFavourite: (property: Property) => void;
     addActivity: (activity: Activity) => void; 
     updateNotes: (notes: string) => void;
