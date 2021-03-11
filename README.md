@@ -76,7 +76,9 @@ Our web application is built with React. To start running the application locall
 
 # Libraries / Frameworks used
 - React
-- typescript
+- React-router-dom
+- React-datepicker
+- Typescript
 - Material-ui 
 - Material-ui icons
 - Material-ui-search-bar
