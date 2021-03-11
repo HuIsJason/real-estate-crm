@@ -105,10 +105,10 @@ const ProjectHistory: React.FC = () => {
     }
 
     const deleteSelectedProperty = () => {
-        const updatedProperties = allProperties.filter(property => property != selectedProperty);
+        const updatedProperties = allProperties.filter(property => property !== selectedProperty);
         setAllProperties(updatedProperties);
 
-        const updatedDisplay = displayedProperties.filter(property => property != selectedProperty);
+        const updatedDisplay = displayedProperties.filter(property => property !== selectedProperty);
         setDisplayedProperties(updatedDisplay);
 
         // TODO: send request to server to delete <selectedProperty> and
