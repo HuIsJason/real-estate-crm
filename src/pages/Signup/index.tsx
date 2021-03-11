@@ -47,6 +47,10 @@ const UserForm: React.FC = () => {
       );
     case 2:
       return (
+        /**
+         * the AgentSignup page would be provided a function that would call createUser() from the
+         * provider which would then make the server call to create a user
+         */
         <AgentSignup
           {...{ signupStateValues, handleStateChange, prevStep, nextStep }}
         />

@@ -47,6 +47,9 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
   const [user, setUser] = useState<User>(null);
 
   const loginUser = useCallback((username: string, password: string) => {
+    /**
+     * here there would be the login server call to log in a user
+     */
     if (username === 'admin' && password === 'admin') {
       setUser(users[0]);
     } else if (username === 'user' && password === 'user') {
@@ -57,10 +60,16 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
   }, []);
 
   const logoutUser = useCallback(() => {
+    /**
+     * here there would be a server call to log out the current user
+     */
     setUser(null);
   }, []);
 
   const createUser = useCallback((newUser: any) => {
+    /**
+     * here there would be a server call to create a new user
+     */
     newUser.id = uuid();
     newUser.yearCreated = '2021';
     users.push(newUser);

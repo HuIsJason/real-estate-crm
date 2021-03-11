@@ -78,7 +78,9 @@ const Row: React.FC<RowProps> = ({ property, date }: RowProps) => {
       const updatedProjects = projects.map((project) =>
         project.id === id ? { ...project, active: true } : project
       );
-
+      /**
+       * here there would be a server call to change this property's linked projects list
+       */
       setProjects(updatedProjects);
     },
     [projects]
