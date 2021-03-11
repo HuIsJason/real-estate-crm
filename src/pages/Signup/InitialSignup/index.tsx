@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FormControl, Paper, TextField, Typography } from '@material-ui/core';
 
 import Props from './types';
@@ -12,6 +12,15 @@ const InitialSignup: React.FC<Props> = ({
 }: Props) => {
   const signupClasses = useSignupStyles();
 
+  const handleNext = useCallback(() => {
+    const { firstName, lastName, email, password } = signupStateValues;
+    if (!firstName || !lastName || !email || !password) {
+      alert('Missing fields!');
+    } else {
+      nextStep();
+    }
+  }, [signupStateValues, nextStep]);
+
   return (
     <Paper className={signupClasses.paper} elevation={5}>
       <Typography className={signupClasses.title} color="primary" variant="h3">
@@ -20,12 +29,7 @@ const InitialSignup: React.FC<Props> = ({
       <Typography variant="body1">
         Please enter your account details.
       </Typography>
-      <FormControl
-        onSubmit={nextStep}
-        component="form"
-        fullWidth
-        variant="filled"
-      >
+      <FormControl component="form" fullWidth variant="filled">
         <TextField
           className={signupClasses.textField}
           value={signupStateValues.firstName}
@@ -60,8 +64,8 @@ const InitialSignup: React.FC<Props> = ({
           fullWidth
           required
         />
+        <SignupNavigationButton nextStep={handleNext} />
       </FormControl>
-      <SignupNavigationButton {...{ nextStep }} />
     </Paper>
   );
 };

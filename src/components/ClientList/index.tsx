@@ -110,9 +110,7 @@ const ClientList: React.FC = () => {
 
   return (
     <div className={classes.main}>
-      <div className={classes.buttonContainer}>
         <AddClientButton rows={rows} setRows={setRows}/>
-      </div> 
       <Paper className={classes.table}>
         <SearchBar
           value={searched}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Button,
   FormControl,
@@ -21,6 +21,20 @@ const AgentSignup: React.FC<Props> = ({
   const classes = useStyles();
   const signupClasses = useSignupStyles();
 
+  const handleNext = useCallback(() => {
+    const {
+      brokerageName,
+      brokeragePhone,
+      brokerageAddress,
+      license,
+    } = signupStateValues;
+    if (!brokerageName || !brokeragePhone || !brokerageAddress || !license) {
+      alert('Missing fields!');
+    } else {
+      nextStep();
+    }
+  }, [signupStateValues, nextStep]);
+
   return (
     <Paper className={signupClasses.paper} elevation={5}>
       <Typography className={signupClasses.title} color="primary" variant="h3">
@@ -30,12 +44,7 @@ const AgentSignup: React.FC<Props> = ({
         We will need to verify your real estate registration details. Please
         provide additional information below.
       </Typography>
-      <FormControl
-        onSubmit={nextStep}
-        component="form"
-        fullWidth
-        variant="filled"
-      >
+      <FormControl component="form" fullWidth variant="filled">
         <TextField
           className={signupClasses.textField}
           value={signupStateValues.brokerageName}
@@ -68,18 +77,16 @@ const AgentSignup: React.FC<Props> = ({
           fullWidth
           required
         />
-      </FormControl>
-      <div>
-        <SignupNavigationButton isBack {...{ prevStep, nextStep }} />
+        <SignupNavigationButton isBack {...{ prevStep }} />
         <Button
           className={classes.button}
-          onClick={nextStep}
+          onClick={handleNext}
           color="primary"
           variant="contained"
         >
           Create account
         </Button>
-      </div>
+      </FormControl>
     </Paper>
   );
 };
