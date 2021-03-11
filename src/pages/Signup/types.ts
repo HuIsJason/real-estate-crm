@@ -3,9 +3,8 @@ export interface ISignupState {
   lastName: string;
   email: string;
   password: string;
-  confirmPassword: string;
-  brokerageName?: string;
-  brokeragePhone?: string;
-  brokerageAddress?: string;
-  license?: string;
+  brokerageName: string;
+  brokeragePhone: string;
+  brokerageAddress: string;
+  license: string;
 }
