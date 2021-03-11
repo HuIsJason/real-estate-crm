@@ -2,8 +2,9 @@ import { makeStyles, Theme } from '@material-ui/core';
 
 export default makeStyles((theme: Theme) => ({
   main: {
-    margin: theme.spacing(4),
+    margin: theme.spacing(3),
     position: 'absolute',
+    marginTop: '7%'
   },
   root: {
     '& > *': {
@@ -18,7 +19,7 @@ export default makeStyles((theme: Theme) => ({
   table: {
     width: "75%",
     marginLeft: "15%",
-    marginTop: "5%"
+    marginTop: "0%"
   },
   cellBody: {
       fontSize: 14
@@ -42,9 +43,9 @@ export default makeStyles((theme: Theme) => ({
     left: "66%"
   },
   searchBar: {
-    border: 'none',
+    border: '1px solid lightgrey',
     boxShadow: 'none',
-    width: '25%'
+    width: '100%'
   },
   pagination: {
     bottom: "0px",
