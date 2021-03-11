@@ -78,6 +78,7 @@ const AgentSignup: React.FC<Props> = ({
           required
         />
         <SignupNavigationButton isBack {...{ prevStep }} />
+        {/* this button would call a function that would call createUser from the context */}
         <Button
           className={classes.button}
           onClick={handleNext}
