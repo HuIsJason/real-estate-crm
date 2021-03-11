@@ -74,11 +74,12 @@ Our web application is built with React. To start running the application locall
 - The user can also click LOGOUT button on the bar at the top of the screen to log out of the application. This takes them to the login page. 
 
 
-# Libraries / Frameworks used
-- React
-- React-router-dom
-- React-datepicker
-- Typescript
-- Material-ui 
-- Material-ui icons
-- Material-ui-search-bar
+# Libraries/Frameworks used
+* React
+* React Router
+* React-datepicker
+* TypeScript
+* Material-UI 
+* Material-UI icons
+* Material-UI-search-bar
+* UUID
