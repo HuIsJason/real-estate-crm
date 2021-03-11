@@ -24,7 +24,7 @@ const properties = [
         postalCode: 'L6X6X6', 
         favourited: false,
         activities: [{ id: 1, title: 'Follow-up', description: '', date: '2021-02-01' }],
-        notes: 'Ya',
+        notes: 'Not too sure if this is the best option. Lots of renovation required. Contact contractor for estimates!',
     },
     {
         addrLineOne: '123 John Street',
@@ -33,7 +33,7 @@ const properties = [
         postalCode: 'L6X6X6',  
         favourited: true,
         activities: [{ id: 1, title: 'Phone Call w/ Client', description: '', date: '2021-01-01' }],
-        notes: 'Ya',
+        notes: '',
     }
 ]
 
