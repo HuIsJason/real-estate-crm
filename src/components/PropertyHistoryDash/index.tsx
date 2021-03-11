@@ -43,7 +43,10 @@ const ProjectHistory: React.FC = () => {
     
     const [selectedProperty, setSelectedProperty] = React.useState(properties[0] || null);
     const [modalOpen, setModalOpen] = React.useState(0);
+
+    // TODO: Get a list of all properties (w/ detailed info) for this project from server
     const [allProperties, setAllProperties] = React.useState(properties);
+
     const [displayedProperties, setDisplayedProperties] = React.useState(allProperties);
     const [currTab, setCurrTab] = React.useState('activity');
     const [showFav, setShowFav] = React.useState(false);
@@ -51,10 +54,7 @@ const ProjectHistory: React.FC = () => {
     const saveProperty = (property: Property) => {
         allProperties.push(property);
         setAllProperties(allProperties);
-        // if (!showFav) {
-        //     displayedProperties.push(property);
-        //     setDisplayedProperties(displayedProperties);
-        // }
+        // TODO: send request to server to add a new property to this project
         setModalOpen(0);
     }
 
@@ -75,6 +75,7 @@ const ProjectHistory: React.FC = () => {
     
         activity.id = selectedProperty.activities.length + 1;
         selectedProperty.activities.push(activity);
+        // TODO: send request to server to add <activity> to <selectedProperty>'s activity list
   
         // Sort by reverse chronological order
         selectedProperty.activities.sort((a, b) => {
@@ -87,7 +88,6 @@ const ProjectHistory: React.FC = () => {
           return aDate < bDate ? 1 : -1;
         });
 
-        // Debug this!
         setAllProperties(allProperties);
   
     }
@@ -96,6 +96,7 @@ const ProjectHistory: React.FC = () => {
         selectedProperty.notes = notes;
         setSelectedProperty(selectedProperty);
         setAllProperties(allProperties);
+        // TODO: send request to server to update the notes for <selectedProperty>
     }
 
     const handleSelect = (property: Property) => {
@@ -110,7 +111,10 @@ const ProjectHistory: React.FC = () => {
         const updatedDisplay = displayedProperties.filter(property => property != selectedProperty);
         setDisplayedProperties(updatedDisplay);
 
-        setSelectedProperty(updatedDisplay[0] || null); // TODO: case where no properties
+        // TODO: send request to server to delete <selectedProperty> and
+        // get an updated list of the remaining properties
+
+        setSelectedProperty(updatedDisplay[0] || null);
         setModalOpen(0);
 
     }
@@ -118,7 +122,7 @@ const ProjectHistory: React.FC = () => {
     const filterFavourites = () => {
         const newDisplay = allProperties.filter(property => property.favourited);
         setDisplayedProperties(newDisplay);
-        setSelectedProperty(newDisplay[0] || null); // TODO: case where no properties
+        setSelectedProperty(newDisplay[0] || null);
         setCurrTab('activity');
         setShowFav(true);
     }
@@ -158,7 +162,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         width: "fit-content", 
         margin: "auto",
         position: "absolute",
-        top: "20%",
+        top: "185px",
         left: "15%",
     },
     root: {

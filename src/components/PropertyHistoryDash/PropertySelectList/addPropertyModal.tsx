@@ -108,12 +108,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     inputField: {
       margin: 0,
-      // background: '#F1F2F5',
       borderRadius: 5,
       borderColor: "#d5d9e3",
       padding: '10px 12px',
       display: 'inline-block',
-      // outline: '1px solid grey',
       width: '300px',
       color: '#A2AEB8',
       fontWeight: 500,

@@ -18,4 +18,5 @@ interface Property {
     activities: Activity[],
     notes: string,
 }
+
 export default DetailedHistoryProps;

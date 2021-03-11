@@ -34,6 +34,7 @@ const ProjectList: React.FC = () => {
 
   const [showActive, setShowActive] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
+  // TODO: Get a list of all projects (summarized) from server
   const [allProjects, setProjects] = React.useState(projects);
 
   const addProject = (projectName: string) => {
@@ -41,6 +42,7 @@ const ProjectList: React.FC = () => {
     const newId = allProjects[allProjects.length - 1].id + 1;
     allProjects.push({id: newId, name: projectName, active: true});
     setProjects(allProjects);
+    // TODO: send request to server to add a new empty project with name <projectName>
   }
 
   const openProject = (projectId: number) => {
@@ -86,7 +88,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '10px',
     border: '1px solid #F1F2F5',
     boxShadow: '2px 2px #F1F2F5',
-    // padding: '10px 10px'
   },
   table: {
     borderCollapse: 'collapse', 
