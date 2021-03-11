@@ -79,4 +79,4 @@ Our web application is built with React. To start running the application locall
 - typescript
 - Material-ui 
 - Material-ui icons
-- Material-ui-serach-bar
+- Material-ui-search-bar
