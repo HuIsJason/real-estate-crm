@@ -66,7 +66,7 @@ Our web application is built with React. To start running the application locall
 - The user can return to the admin dashboard by clicking the DASHBOARD button on the bar at the top of the screen.
 
 ### Authorization Requests page
-- Here, the user can see a list of active, pending requests. These are requests to authorize an agent’s account when the account holder first signs up. The table displays the request number, the account email, and the date when the request was made.
+- Here, the user can see a list of active, and pending requests. These are requests to authorize an agent’s account when the account holder first signs up. The table displays the request number, the account email, and the date when the request was made.
 - Using the search bar above the table, the user can search for requests by account email. When text is entered, you can see the list is filtered. 
 - Click on any of the table entries, this will open up account details for the selected request. The admin user would review the information, and upon confirmation of the information’s validity, either deny the request or activate the account by clicking the corresponding buttons. In either case, the request will be deleted. 
 - If no action is selected, the user can return the list of requests by clicking the RETURN button. 
