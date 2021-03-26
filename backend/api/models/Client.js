@@ -32,6 +32,7 @@ const ClientSchema = mongoose.Schema({
     tags: {
         type: [String],
         required: true,
+        default: []
     },
     agent: {
         type: mongoose.Schema.Types.ObjectId,

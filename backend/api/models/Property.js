@@ -9,7 +9,11 @@ const ActivitySchema = mongoose.Schema({
         type: Date,
         required: true
     },
-    description: String
+    description: {
+        type: String,
+        required: true, 
+        default: "",
+    }
 })
 
 const PropertySchema = mongoose.Schema({
@@ -34,6 +38,7 @@ const PropertySchema = mongoose.Schema({
     activities: {
         type: [ActivitySchema],
         required: true, 
+        default: []
     },
     notes: {
         type: String,
