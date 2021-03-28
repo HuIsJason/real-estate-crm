@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 
 // These will handle all our routes
-const admin = require("./routes/admin");
-const agent = require("./routes/agent");
-const authentication = require("./route/authentication");
-const clients = require("./routes/clients");
-const projects = require("./routes/projects");
-const property = require("./routes/property");
+const admin = require("./api/routes/admin");
+const agent = require("./api/routes/agent");
+const authentication = require("./api/route/authentication");
+const clients = require("./api/routes/clients");
+const projects = require("./api/routes/projects");
+const property = require("./api/routes/property");
 
 
 let cors = require('cors');
