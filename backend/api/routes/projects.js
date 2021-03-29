@@ -121,6 +121,7 @@ router
 
         } catch (error) {
             log(error);
+            res.status(500).send('Internal Server Error');
         }
     })
     .delete(async(req, res) => {
@@ -138,7 +139,7 @@ router
             if (!project) {
                 res.status(404).send();
             } else {   
-                res.send(project);
+                res.status(204).send(project);
             }
 
         } catch (error) {
