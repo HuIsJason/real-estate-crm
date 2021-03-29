@@ -12,13 +12,12 @@ function isMongoError(error) { // checks for first error returned by promise rej
 }
 
 router
-    .route("/:agent_id/:client_id/")
+    .route("/:client_id/")
     .post(async(req, res) => {
-        log("POST /api/projects/:agent_id/:client_id");
-        const agent = req.params.agent_id;
+        log("POST /api/projects/:client_id");
         const client = req.params.client_id;
 
-        if (!ObjectID.isValid(agent) || !ObjectID.isValid(client)) {
+        if (!ObjectID.isValid(client)) {
             res.status(404).send();
             return;
         }
@@ -49,11 +48,10 @@ router
 
     })
     .get(async(req, res) => {
-        log("GET /api/projects/:agent_id/:client_id");
-        const agent = req.params.agent_id;
+        log("GET /api/projects/:client_id");
         const client = req.params.client_id;
 
-        if (!ObjectID.isValid(agent) || !ObjectID.isValid(client)) {
+        if (!ObjectID.isValid(client)) {
             res.status(404).send();
             return;
         }
@@ -69,13 +67,37 @@ router
     })
 
 router
-    .route("/:agent_id/:client_id/:project_id")
-    .patch(async(req, res) => {
-        const agent = req.params.agent_id;
+    .route("/:client_id/:project_id")
+    .get(async(req, res) => {
+        log("GET (single) /api/projects/:client_id/:project_id");
         const client = req.params.client_id;
         const projectId = req.params.project_id;
 
-        if (!ObjectID.isValid(agent) || !ObjectID.isValid(client) || !ObjectID.isValid(projectId)) {
+        if (!ObjectID.isValid(client) || !ObjectID.isValid(projectId)) {
+            res.status(404).send();
+            return;
+        }
+
+        try {
+            const project = await Project.findById(projectId);
+            if (!project) {
+                res.status(404).send();
+            } else {
+                res.send(project);
+            }
+
+        } catch(error) {
+            log(error);
+            res.status(500).send("Internal Server Error");
+        }
+
+    }) 
+    .patch(async(req, res) => {
+        log("PATCH /api/projects/:client_id/:project_id");
+        const client = req.params.client_id;
+        const projectId = req.params.project_id;
+
+        if (!ObjectID.isValid(client) || !ObjectID.isValid(projectId)) {
             res.status(404).send();
             return;
         }
@@ -102,11 +124,11 @@ router
         }
     })
     .delete(async(req, res) => {
-        const agent = req.params.agent_id;
+        log("DELETE /api/projects/:client_id/:project_id");
         const client = req.params.client_id;
         const projectId = req.params.project_id;
 
-        if (!ObjectID.isValid(agent) || !ObjectID.isValid(client) || !ObjectID.isValid(projectId)) {
+        if (!ObjectID.isValid(client) || !ObjectID.isValid(projectId)) {
             res.status(404).send();
             return;
         }
