@@ -145,6 +145,7 @@ router
         }
 
     })
+    // This route is for adding a new activity to the project property
     .post(async(req, res) => {
         log("POST /api/property/:project_id/:property_id");
         const projectId = req.params.project_id;
@@ -174,6 +175,77 @@ router
             }
 
         } catch (error) {
+            log(error);
+            res.status(500).send();
+        }
+    });
+
+
+router
+    .route("/:project_id/:property_id/:activity_id")
+    .get(async(req, res) => {
+
+        log("GET /api/property/:project_id/:activity_id");
+        const projectId = req.params.project_id;
+        const propertyId = req.params.property_id;
+        const activityId = req.params.activity_id;
+        
+        if (!ObjectID.isValid(projectId) || !ObjectID.isValid(propertyId) || !ObjectID.isValid(activityId) ) {
+            res.status(404).send();
+            return;
+        }
+
+        try {
+            const property = await Property.findById(propertyId);
+            if (!property) {
+                res.status(404).send("Property does not exist");
+            } else {
+                const activity = property.activities.id(activityId);
+                if (!activity) {
+                    res.status(404).send("Activity does not exist for this property");
+                } else {
+                    res.send(activity);
+                }
+            }
+
+
+        } catch(error) {
+            log(error);
+            res.status(500).send();
+        }
+    })
+    .put(async(req, res) => {
+        log("PUT /api/property/:project_id/:activity_id");
+        const projectId = req.params.project_id;
+        const propertyId = req.params.property_id;
+        const activityId = req.params.activity_id;
+        
+        if (!ObjectID.isValid(projectId) || !ObjectID.isValid(propertyId) || !ObjectID.isValid(activityId) ) {
+            res.status(404).send();
+            return;
+        }
+
+        const { title, date, description } = req.body;
+
+        try {
+            const property = await Property.findById(propertyId);
+            if (!property) {
+                res.status(404).send("Property does not exist");
+            } else {
+                const activity = property.activities.id(activityId);
+                if (!activity) {
+                    res.status(404).send("Activity does not exist for this property");
+                } else {
+                    // Update the activity
+                    activity.title = title;
+                    activity.date = date;
+                    activity.description = description;
+                    const result = await property.save();
+
+                    res.send({ activity: activity, property: result });
+                }
+            }
+        } catch(error) {
             log(error);
             res.status(500).send();
         }
