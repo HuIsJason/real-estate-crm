@@ -4,7 +4,7 @@ const app = express();
 // These will handle all our routes
 const admin = require("./api/routes/admin");
 const agent = require("./api/routes/agent");
-const authentication = require("./api/route/authentication");
+const authentication = require("./api/routes/authentication");
 const clients = require("./api/routes/clients");
 const projects = require("./api/routes/projects");
 const property = require("./api/routes/property");
@@ -14,7 +14,7 @@ let cors = require('cors');
 app.use(cors());
 
 // mongoose and mongo connection
-const { mongoose } = require("./db/mongoose");
+const { mongoose } = require("./api/db/mongoose");
 mongoose.set('useFindAndModify', false); // for some deprecation issues
 
 // body-parser: middleware for parsing parts of the request into a usable object (onto req.body)
