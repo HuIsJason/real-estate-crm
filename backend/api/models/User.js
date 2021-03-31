@@ -22,7 +22,6 @@ const UserSchema = mongoose.Schema({
     },
     lastLogin: {
         type: Date,
-        required: true,
     },
     firstName: String,
     lastName: String,
