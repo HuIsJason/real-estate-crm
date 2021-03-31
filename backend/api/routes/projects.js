@@ -22,7 +22,7 @@ router
             return;
         }
 
-        if (!req.body.title || !req.body.description) {
+        if (!req.body.title) {
             res.status(400).send("Some body field(s) missing");
         }
 
@@ -135,11 +135,11 @@ router
         }
 
         try {
-            const project = await Project.findByIdAndRemove(projectId)
+            const project = await Project.findByIdAndDelete(projectId);
             if (!project) {
                 res.status(404).send();
             } else {   
-                res.status(204).send(project);
+                res.send(project);
             }
 
         } catch (error) {

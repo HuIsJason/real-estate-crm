@@ -132,11 +132,11 @@ router
 
         try {
 
-            const property = await Project.findByIdAndRemove(propertyId);
+            const property = await Property.findByIdAndDelete(propertyId);
             if (!property) {
                 res.status(404).send();
             } else {   
-                res.status(204).send(property);
+                res.send(property);
             }
 
         } catch (error) {
@@ -185,7 +185,7 @@ router
     .route("/:project_id/:property_id/:activity_id")
     .get(async(req, res) => {
 
-        log("GET /api/property/:project_id/:activity_id");
+        log("GET /api/property/:project_id/:property_id/:activity_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
         const activityId = req.params.activity_id;
@@ -215,7 +215,7 @@ router
         }
     })
     .put(async(req, res) => {
-        log("PUT /api/property/:project_id/:activity_id");
+        log("PUT /api/property/:project_id/:property_id/:activity_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
         const activityId = req.params.activity_id;
@@ -249,6 +249,39 @@ router
             log(error);
             res.status(500).send();
         }
+    })
+    .delete(async(req, res) => {
+        log("DELETE /api/property/:project_id/:property_id/:activity_id");
+        const projectId = req.params.project_id;
+        const propertyId = req.params.property_id;
+        const activityId = req.params.activity_id;
+
+        if (!ObjectID.isValid(projectId) || !ObjectID.isValid(propertyId) || !ObjectID.isValid(activityId) ) {
+            res.status(404).send();
+            return;
+        }
+
+        try {
+            const property = await Property.findById(propertyId);
+            if (!property) {
+                res.status(404).send("Property does not exist");
+            } else {
+                const activity = await property.activities.id(activityId).remove();
+                if (!activity) {
+                    res.status(404).send("Activity does not exist"); 
+                } else {
+                    const result = await property.save();
+                    res.send({ activity: activity, property: result });
+                }
+
+            }
+
+
+        } catch(error) {
+            log(error);
+            res.status(500).send();
+        }
+
     });
 
 module.exports = router;
