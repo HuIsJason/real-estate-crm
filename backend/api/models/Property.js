@@ -11,7 +11,6 @@ const ActivitySchema = mongoose.Schema({
     },
     description: {
         type: String,
-        required: true, 
         default: "",
     }
 })
@@ -37,17 +36,14 @@ const PropertySchema = mongoose.Schema({
     },
     activities: {
         type: [ActivitySchema],
-        required: true, 
         default: []
     },
     notes: {
         type: String,
-        required: true,
         default: "",
     },
     favourited: {
         type: Boolean,
-        required: true, 
         default: false,
     },
     project: {
