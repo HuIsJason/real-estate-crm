@@ -1,62 +1,81 @@
-type Status = 'ACTIVE' | 'INACTIVE' | 'CLOSED';
+type Status = 'active' | 'closed';
 
-type Specialization = 'BUYER' | 'SELLER';
+type Specialization = 'BUYER' | 'SELLER' | 'BOTH';
+
+type MongoId = string;
 
 export interface Activity {
-  id: number;
+  _id: MongoId;
+  title: string;
   date: Date;
   description: string;
-  completed: boolean;
 }
 
 export interface Property {
-  id: number;
-  addressNumber: number;
+  _id: MongoId;
   address: string;
   city: string;
   province: string;
   notes?: string[];
   activities?: Activity[];
+  favourited: boolean;
+  project: MongoId;
 }
 
 export interface Project {
-  id: number;
+  _id: MongoId;
   title: string;
+  description: string;
   status: Status;
-  tasks?: Activity[];
-  properties?: Property[];
+  tags: string[];
+  client: MongoId;
 }
 
-interface Account {
+export interface User {
+  _id: MongoId;
   username: string;
   password: string;
-  id: string;
-  type: 'ADMIN' | 'CLIENT' | 'AGENT';
+  accountType: 'admin' | 'agent';
+  lastLogin?: Date;
 }
 
-interface Admin extends Account {}
+export interface Admin extends Account {}
 
-interface NonAdminAccount extends Account {
+// interface NonAdminAccount extends Account {
+//   firstName: string;
+//   lastName: string;
+//   bio: string;
+//   yearCreated: number;
+//   address: string;
+//   phone: string;
+//   email: string;
+// }
+
+export interface Agent extends User {
   firstName: string;
   lastName: string;
-  bio: string;
-  yearCreated: number;
-  address: string;
   phone: string;
   email: string;
-}
-
-export interface Agent extends NonAdminAccount {
+  yearStarted: number;
+  bio: string;
   licenseId: string;
   brokerage: string;
   brokerageAddress: string;
   brokeragePhone: string;
   specialization: Specialization;
-  clients: Client[];
+  activated: boolean;
 }
 
-export interface Client extends NonAdminAccount {
-  agent?: Agent;
+export interface Client {
+  _id: MongoId;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  description?:string;
+  profileImg?:string;
+  tags: string[];
+  agent: MongoId;
 }
-
-export type User = Agent | Client | Admin | null;
