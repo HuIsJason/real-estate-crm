@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction } from "react"; 
 
 export interface DataFields {
-  name: string, 
-  email: string, 
+  firstName: string, 
+  lastName: string, 
   tags: string,
-  id: string,
+  _id: string,
 }
 
 export interface RowProps {
-  name: string, 
-  email: string, 
+  firstName: string, 
+  lastName: string, 
   tags: string,
   id: string,
   rows: DataFields[],

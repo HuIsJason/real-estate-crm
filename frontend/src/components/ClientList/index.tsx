@@ -1,4 +1,6 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
+import {getClientsList, deleteClient} from '../../actions/clients';
+
 import {
   IconButton,
   Table,
@@ -26,27 +28,31 @@ import useStyles from './styles';
 
 // Data would not be imported from a file when we have backend
 import { fullRows } from './data';
+import { useUserContext } from '../../contexts/UserContext';
 
-const Row: React.FC<RowProps> = ({ name, email, tags, id, rows, handleSetRows}: RowProps) => {
+const Row: React.FC<RowProps> = ({ firstName, lastName, tags, id, rows, handleSetRows}: RowProps) => {
   const classes = useStyles();
 
   const handleDelete = useCallback((id: string) => {
     // API call to delete to backend
-    var indexOfRow = fullRows.findIndex(i => i.id === id)
-    fullRows.splice(indexOfRow, 1);
-    const newRows = fullRows.filter((row) => {
-      return row.id !== id;
-    });
 
-    handleSetRows(newRows);
-  },[handleSetRows]);
+    deleteClient(id, rows, handleSetRows);
+
+    // var indexOfRow = fullRows.findIndex(i => i.id === id)
+    // fullRows.splice(indexOfRow, 1);
+    // const newRows = fullRows.filter((row) => {
+    //   return row.id !== id;
+    // });
+
+    // handleSetRows(newRows);
+  },[]);
 
   return (
     <>
       <TableRow className={classes.root}>
         <TableCell component="th" scope="row">
           <Link to={"/client-details"} className={classes.linkStyle}>
-            {name}
+            {firstName} {lastName}
           </Link>
         </TableCell>
           <TableCell align="left">
@@ -77,10 +83,14 @@ const ClientList: React.FC = () => {
   const classes = useStyles();
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(8);
-  const [rows, setRows] = useState<DataFields[]>(fullRows);
+  const [rows, setRows] = useState<DataFields[]>([]);
   const [searched, setSearched] = useState<string>("");
 
-  // API call retrieve rows and set them to state, instead of using fullRows
+  const {user} = useUserContext();
+
+  useEffect(() => {
+    getClientsList(setRows, user);
+  }, []);
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage);
@@ -100,7 +110,7 @@ const ClientList: React.FC = () => {
       return row.name.toLowerCase().includes(searchedVal.toLowerCase());
     });
     setPage(0);
-    setRows(filteredRows);
+    // setRows(filteredRows);
   },[]);
 
   const cancelSearch = useCallback(() => {
@@ -131,8 +141,9 @@ const ClientList: React.FC = () => {
             <TableBody>
 
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                
                 return (
-                  <Row key = {row.id} {...row} rows={rows} handleSetRows={handleSetRows}/>
+                  <Row key = {row._id} id = {row._id} firstName={row.firstName} lastName={row.lastName} tags={row.tags} rows={rows} handleSetRows={handleSetRows}/>
                 );
               })}
               

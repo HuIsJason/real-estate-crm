@@ -1,4 +1,6 @@
 import React, {ChangeEvent, useCallback, useState}from 'react';
+import {addClient} from '../../actions/clients';
+
 import {
     Button,
     TextField,
@@ -33,13 +35,15 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
 
     const handleClientAdditon = useCallback(() => {
         // This callback would contain an API call to add new data to backend
+        addClient(nameField, emailField, tagField, rows, setRows);
+
         fullRows.push(createData(nameField, emailField, tagField, uuid()));
 
         const newRows = fullRows.filter((row) => {
             return row.id !== "xxx";
         });
 
-        setRows(newRows);
+        // setRows(newRows);
         setOpen(false);
     },[nameField, emailField, tagField, setRows, setOpen]);
     
