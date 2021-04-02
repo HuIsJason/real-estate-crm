@@ -38,9 +38,13 @@ const Login: React.FC = () => {
     []
   );
 
-  const handleSubmit = useCallback(() => {
-    loginUser(username, password);
-  }, [username, password, loginUser]);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      loginUser(username, password);
+    },
+    [username, password, loginUser]
+  );
 
   return (
     <Paper className={classes.paper} elevation={5}>

@@ -10,6 +10,7 @@ import { v4 as uuid } from 'uuid';
 import UserContextType from './types';
 import { ProviderProps as Props } from '../types';
 import { User } from '../../utils/types';
+import send from '../../requests/request';
 
 const users: User[] = [
   {
@@ -47,17 +48,25 @@ export const useUserContext = (): UserContextType =>
 const UserProvider: React.FC<Props> = ({ children }: Props) => {
   const [user, setUser] = useState<DefUser>(null);
 
-  const loginUser = useCallback((username: string, password: string) => {
+  const loginUser = useCallback(async (username: string, password: string) => {
     /**
      * here there would be the login server call to log in a user
      */
-    if (username === 'admin' && password === 'admin') {
-      setUser(users[0]);
-    } else if (username === 'user' && password === 'user') {
-      setUser(users[1]);
-    } else {
+    console.log('login user');
+    try {
+      const response = await send('login', { username, password });
+      const responseJson = await response.json();
+      setUser(responseJson);
+    } catch (err) {
       alert('Invalid credentials!');
     }
+    // if (username === 'admin' && password === 'admin') {
+    //   setUser(users[0]);
+    // } else if (username === 'user' && password === 'user') {
+    //   setUser(users[1]);
+    // } else {
+    //   alert('Invalid credentials!');
+    // }
   }, []);
 
   const logoutUser = useCallback(() => {
