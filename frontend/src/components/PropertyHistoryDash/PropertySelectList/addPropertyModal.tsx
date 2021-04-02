@@ -6,7 +6,7 @@ import { Typography } from '@material-ui/core';
 
 const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }: addPropertyProps) => {
     const classes = useStyles();
-    const [addrLine, setAddrLine] = React.useState('');
+    const [address, setaddress] = React.useState('');
     const [city, setCity] = React.useState('');
     const [prov, setProv] = React.useState('');
     const [postalCode, setPostalCode] = React.useState('');
@@ -14,13 +14,13 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
     const [warning, setWarning] = React.useState(false);
 
     const saveProperty = () => {
-      if (addrLine === '' || city === '' || prov === '' || postalCode === '') {
+      if (address === '' || city === '' || prov === '' || postalCode === '') {
         setWarning(true);
         return;
       }
 
       const newProperty = {
-        addrLineOne: addrLine,
+        address: address,
         city: city,
         province: prov,
         postalCode: postalCode,
@@ -30,7 +30,7 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
       }
 
       // Reset Modal values
-      setAddrLine('');
+      setaddress('');
       setCity('');
       setProv('');
       setPostalCode('');
@@ -42,7 +42,7 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setWarning(false);
       if (event.target.id === "addr-field") {
-        setAddrLine(event.target.value);
+        setaddress(event.target.value);
       } else if (event.target.id === "city-field") {
         setCity(event.target.value);
       } else if (event.target.id === "prov-field") {
@@ -61,7 +61,7 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
               </Typography>
             </div>
             <div style={{marginBottom: 10, marginTop: 10}}>
-              <input id="addr-field" className={classes.inputField} type='text' placeholder="Street Address" value={addrLine} onChange={handleChange} />
+              <input id="addr-field" className={classes.inputField} type='text' placeholder="Street Address" value={address} onChange={handleChange} />
             </div> 
             <div style={{marginBottom: 10}}>
               <input id="city-field" className={classes.inputField} type='text' placeholder="City" value={city} onChange={handleChange} />

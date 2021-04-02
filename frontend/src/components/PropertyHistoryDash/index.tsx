@@ -1,102 +1,183 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropertySelectList from './PropertySelectList/index';
 import DetailedHistory from '../DetailedHistory/index';
 import AddPropertyModal from './PropertySelectList/addPropertyModal';
-import { Property } from './PropertySelectList/types';
+import { Property } from '../../utils/types';
 import { Activity } from '../ActivityTable/types';
 import ConfirmationModal from '../ConfirmationModal';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 
-const properties = [
+import send from '../../requests/request';
+
+const properties:Property[] = [
     {
-       addrLineOne: '75 Terra Crescent',
+        _id: "123",
+       address: '75 Terra Crescent',
        city: 'Toronto', 
        province: 'ON',
        postalCode: 'L6X6X6', 
        favourited: true,
-       activities: [{ id: 1, title: 'Showing', description: '', date: '2021-02-21' }],
+       activities: [{ _id: "1", title: 'Showing', description: '', date: '2021-02-21' }],
        notes: 'Really liked this house. Should follow up in a week.',
     },
     {
-        addrLineOne: '99 Fern Blvd',
+        _id: "234",
+        address: '99 Fern Blvd',
         city: 'Toronto', 
         province: 'ON',
         postalCode: 'L6X6X6', 
         favourited: false,
-        activities: [{ id: 1, title: 'Follow-up', description: '', date: '2021-02-01' }],
+        activities: [{ _id: "1", title: 'Follow-up', description: '', date: '2021-02-01' }],
         notes: 'Not too sure if this is the best option. Lots of renovation required. Contact contractor for estimates!',
     },
     {
-        addrLineOne: '123 John Street',
+        _id: "5674",
+        address: '123 John Street',
         city: 'Toronto', 
         province: 'ON',
         postalCode: 'L6X6X6',  
         favourited: true,
-        activities: [{ id: 1, title: 'Phone Call w/ Client', description: '', date: '2021-01-01' }],
+        activities: [{ _id: "1", title: 'Phone Call w/ Client', description: '', date: '2021-01-01' }],
         notes: '',
     }
 ]
+
+const dummyProperty: Property = {
+    address: "",
+    city: "",
+    province: "",
+    postalCode: "",
+    favourited: false,
+    activities: [],
+    notes: "",
+}
+
+const dummyPropertiesList: Property[] = [];
+
+const project_id = '6064db056d63340ac5552d53';
 
 const ProjectHistory: React.FC = () => {
 
     const classes = useStyles();
     
-    const [selectedProperty, setSelectedProperty] = React.useState(properties[0] || null);
+    const [selectedProperty, setSelectedProperty] = React.useState(dummyProperty);
     const [modalOpen, setModalOpen] = React.useState(0);
 
     // TODO: Get a list of all properties (w/ detailed info) for this project from server
-    const [allProperties, setAllProperties] = React.useState(properties);
+    const [allProperties, setAllProperties] = React.useState(dummyPropertiesList);
 
-    const [displayedProperties, setDisplayedProperties] = React.useState(allProperties);
+    const [displayedProperties, setDisplayedProperties] = React.useState(dummyPropertiesList);
     const [currTab, setCurrTab] = React.useState('activity');
     const [showFav, setShowFav] = React.useState(false);
 
-    const saveProperty = (property: Property) => {
-        allProperties.push(property);
-        setAllProperties(allProperties);
+    useEffect(() => {
+        // TODO: Get a list of all properties (w/ detailed info) for this project from server
+        send('getAllProperties', {}, `/${project_id}`)
+        .then((response ) => response.json())
+        .then(json => {
+            const { properties } = json;
+            setAllProperties(properties);
+            setDisplayedProperties(properties);
+            setSelectedProperty(properties[0] || dummyProperty);
+        });
+    }, []);
+
+    const saveProperty = async(property: Property) => {
         // TODO: send request to server to add a new property to this project
+        send("addProperty", property, `/${project_id}`)
+        .then(response => {
+            if (response.status === 201) {
+                console.log("Property was saved.");
+                // allProperties.push(property);
+                setAllProperties(prevProperties => [...prevProperties, property]);
+                // displayedProperties.push(property);
+                setDisplayedProperties(prevProperties => [...prevProperties, property]);
+            } else {
+                console.log(`Property was not saved... ${response.status}`);
+            }
+        });
+        
         setModalOpen(0);
     }
 
     const toggleFavourite = (property: Property) => {
 
-        const updatedProperties = allProperties.map(p => {
-            if (p === property) {
-                property.favourited = !property.favourited;
-                return property;
-            }
-            return p;
-        })
+        const req_content = [{ op: "update", field: "favourited", value: !property.favourited }]
+        send('updateProperty', req_content, `/${project_id}/${property._id}`)
+        .then((response) => {
+            if (response.status === 200) {
+                const updatedProperties = allProperties.map(p => {
+                    if (p === property) {
+                        property.favourited = !property.favourited;
+                        return property;
+                    }
+                    return p;
+                })
+        
+                setAllProperties(updatedProperties);
 
-        setAllProperties(updatedProperties);
+            }
+
+        }); 
     }
 
     const addActivity = (activity: Activity) => {
     
-        activity.id = selectedProperty.activities.length + 1;
-        selectedProperty.activities.push(activity);
+        // activity.id = selectedProperty.activities.length + 1;
         // TODO: send request to server to add <activity> to <selectedProperty>'s activity list
-  
-        // Sort by reverse chronological order
-        selectedProperty.activities.sort((a, b) => {
-          const aDateParts = a.date.split('-').map(part => parseInt(part));
-          const aDate = new Date(aDateParts[0], aDateParts[1] - 1, aDateParts[2]);
-  
-          const bDateParts = b.date.split('-').map(part => parseInt(part));
-          const bDate = new Date(bDateParts[0], bDateParts[1] - 1, bDateParts[2]);
-  
-          return aDate < bDate ? 1 : -1;
-        });
+        send("addActivity", activity, `/${project_id}/${selectedProperty._id}`)
+        .then((response) => {
+            if (response.status === 201) {
+                console.log("New activity added");
+                // selectedProperty.activities.push(activity);
+                const newActivities = [...selectedProperty.activities, activity];
 
-        setAllProperties(allProperties);
+                // Sort by reverse chronological order
+                // TODO: update Date object??
+                // selectedProperty.activities.sort((a, b) => {
+                //     const aDateParts = a.date.split('-').map(part => parseInt(part));
+                //     const aDate = new Date(aDateParts[0], aDateParts[1] - 1, aDateParts[2]);
+            
+                //     const bDateParts = b.date.split('-').map(part => parseInt(part));
+                //     const bDate = new Date(bDateParts[0], bDateParts[1] - 1, bDateParts[2]);
+            
+                //     return aDate < bDate ? 1 : -1;
+                // });
+
+                const updatedProperties = allProperties.map( property => {
+                    if (property === selectedProperty) {
+                        property.activities = newActivities;
+                    }
+                    return property;
+                })
+
+                const updatedSelectedProperty = updatedProperties.filter( property => property._id === selectedProperty._id)[0];
+                const updatedDisplay = showFav ? updatedProperties.filter(property => property.favourited) : updatedProperties;
+
+                setSelectedProperty(updatedSelectedProperty);
+                setAllProperties(updatedProperties);
+                setDisplayedProperties(updatedDisplay);
+
+                
+            }
+        });
   
     }
 
     const updateNotes = (notes: string) => {
-        selectedProperty.notes = notes;
-        setSelectedProperty(selectedProperty);
-        setAllProperties(allProperties);
         // TODO: send request to server to update the notes for <selectedProperty>
+        const req_content = [{ op: "update", field: "notes", value: notes }]
+        send('updateProperty', req_content, `/${project_id}/${selectedProperty._id}`)
+        .then((response) => {
+            if (response.status === 200) {
+                selectedProperty.notes = notes;
+                setSelectedProperty(selectedProperty);
+                setAllProperties(allProperties);
+
+            }
+
+        }); 
+        
     }
 
     const handleSelect = (property: Property) => {
@@ -105,16 +186,25 @@ const ProjectHistory: React.FC = () => {
     }
 
     const deleteSelectedProperty = () => {
-        const updatedProperties = allProperties.filter(property => property !== selectedProperty);
-        setAllProperties(updatedProperties);
-
-        const updatedDisplay = displayedProperties.filter(property => property !== selectedProperty);
-        setDisplayedProperties(updatedDisplay);
 
         // TODO: send request to server to delete <selectedProperty> and
         // get an updated list of the remaining properties
+        send("deleteProperty", {}, `/${project_id}/${selectedProperty._id}`)
+        .then(response => {
+            if (response.status === 200) {
 
-        setSelectedProperty(updatedDisplay[0] || null);
+                const updatedProperties = allProperties.filter(property => property !== selectedProperty);
+                setAllProperties(updatedProperties);
+
+                const updatedDisplay = displayedProperties.filter(property => property !== selectedProperty);
+                setDisplayedProperties(updatedDisplay);
+
+                setSelectedProperty(updatedDisplay[0] || null);
+                
+            } else {
+                console.log(`Property not deleted... ${response.status}`);
+            }
+        });
         setModalOpen(0);
 
     }
@@ -152,7 +242,7 @@ const ProjectHistory: React.FC = () => {
         property={selectedProperty} toggleFavourite={toggleFavourite} addActivity={addActivity} updateNotes={updateNotes} />
         <AddPropertyModal open={modalOpen === 1} onCancel={() => setModalOpen(0)} onSave={saveProperty}/>
         <ConfirmationModal open={modalOpen === 2} onCancel={() => setModalOpen(0)} onContinue={deleteSelectedProperty} 
-        actionDescription={ selectedProperty ? `delete property ${selectedProperty.addrLineOne}` : ''} />
+        actionDescription={ selectedProperty ? `delete property ${selectedProperty.address}` : ''} />
         </div>
     )
 }

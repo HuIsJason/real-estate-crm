@@ -15,7 +15,7 @@ const Header: React.FC<Props> = ({ title }: Props) => {
     <>
       <h1 className={classes.root}>{title}</h1>
       {user ? (
-        user.type !== 'ADMIN' ? (
+        user.accountType !== 'admin' ? (
           <Redirect to='/client-list'></Redirect>
         ) : (
           <Redirect to='/admin'></Redirect>

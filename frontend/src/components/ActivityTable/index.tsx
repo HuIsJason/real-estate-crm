@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Activity, TableProps } from './types';
+import { TableProps } from './types';
+import { Activity } from '../../utils/types';
 
 
 import TableRow from './tablerow';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import ActivityDetailModal from './modal';
 import AddActivityModal from './addActivityModal';
+import { fullRows } from '../ClientList/data';
 
 const entriesPerPage = 10;
 
-const defaultActivity = { id: -1, title: '', description: '', date: ''}
+const defaultActivity: Activity = { _id: "default", title: '', description: '', date: ''}
 
 const ActivityTable: React.FC<TableProps> = ({ addActivity, activities }: TableProps) => {
   const classes = useStyles();
@@ -43,7 +45,7 @@ const ActivityTable: React.FC<TableProps> = ({ addActivity, activities }: TableP
         <tbody>
           { activities.slice((displayPage - 1) * entriesPerPage, displayPage * entriesPerPage).map(activity => (
             <TableRow 
-              key={activity.id} 
+              key={activity._id} 
               date={activity.date}
               activityTitle={activity.title}
               onClick={() => openActivityDetails(activity)}/> ))}

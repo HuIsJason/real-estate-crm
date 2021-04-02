@@ -10,9 +10,9 @@ export default function PropertySelectList ( { properties, selected, onSelect } 
             <Typography style={ { marginBottom: '10px', marginLeft: '10px', color: "#0C3A77" }} variant="h6">Properties</Typography>
             {
             properties.map( property => (
-                <div key={property.addrLineOne}> 
+                <div key={property._id}> 
                     <button className={property === selected ? classes.buttonSelected : classes.button} onClick={() => onSelect(property)}> 
-                        <Typography variant="button"> {property.addrLineOne} </Typography> 
+                        <Typography variant="button"> {property.address} </Typography> 
                     </button>
                 </div>))  
             }
