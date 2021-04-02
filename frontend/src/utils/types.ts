@@ -5,34 +5,35 @@ type Specialization = 'BUYER' | 'SELLER' | 'BOTH';
 type MongoId = string;
 
 export interface Activity {
-  _id: MongoId;
+  _id?: MongoId;
   title: string;
-  date: Date;
+  date: string;
   description: string;
 }
 
 export interface Property {
-  _id: MongoId;
+  _id?: MongoId;
   address: string;
   city: string;
   province: string;
-  notes?: string[];
-  activities?: Activity[];
+  postalCode: string;
+  notes: string;
+  activities: Activity[];
   favourited: boolean;
-  project: MongoId;
+  project?: MongoId;
 }
 
 export interface Project {
-  _id: MongoId;
+  _id?: MongoId;
   title: string;
   description: string;
   status: Status;
   tags: string[];
-  client: MongoId;
+  client?: MongoId;
 }
 
-export interface User {
-  _id: MongoId;
+export interface Account {
+  _id?: MongoId;
   username: string;
   password: string;
   accountType: 'admin' | 'agent';
@@ -51,7 +52,7 @@ export interface Admin extends Account {}
 //   email: string;
 // }
 
-export interface Agent extends User {
+export interface Agent extends Account {
   firstName: string;
   lastName: string;
   phone: string;
@@ -67,7 +68,7 @@ export interface Agent extends User {
 }
 
 export interface Client {
-  _id: MongoId;
+  _id?: MongoId;
   firstName: string;
   lastName: string;
   phoneNumber?: string;
@@ -77,5 +78,7 @@ export interface Client {
   description?:string;
   profileImg?:string;
   tags: string[];
-  agent: MongoId;
+  agent?: MongoId;
 }
+
+export type User = Agent | Admin | null;

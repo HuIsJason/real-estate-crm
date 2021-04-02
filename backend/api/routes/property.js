@@ -170,7 +170,7 @@ router
                 property.activities.push(activity);
                 const newActivity = property.activities[property.activities.length - 1];
                 const result = await property.save();
-                res.send({ activity: newActivity, property: result });
+                res.status(201).send({ activity: newActivity, property: result });
 
             }
 

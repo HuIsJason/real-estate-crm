@@ -29,7 +29,7 @@ const DetailedHistory: React.FC<DetailedHistoryProps> = ( { property, toggleFavo
         <div className={classes.root}>
           { property ?
           (<div> <div style={{margin: 15, width: '520px'}}>
-            <Typography style={{display: 'inline-block'}} className={classes.headerText} variant="h4"> {property.addrLineOne} </Typography>
+            <Typography style={{display: 'inline-block'}} className={classes.headerText} variant="h4"> {property.address} </Typography>
             { !property.favourited ? (<button className={classes.button} onClick={() => toggleFavourite(property)}> <Typography variant='caption'>Favourite</Typography> </button>) 
               : (<button className={classes.buttonSelected} onClick={() => toggleFavourite(property)}> <Typography variant='caption'>Favourited</Typography> </button>)
             }
