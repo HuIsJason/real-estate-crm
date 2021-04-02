@@ -46,7 +46,7 @@ export const addClient = (nameField: any, emailField: any, tagField: any, rows: 
     // The data we are going to send in our request
     const client = {
         firstName: name[0],
-        lastName: name[1],
+        lastName: (name.length === 2 ? name[1] : ""),
         email: emailField,
         tags: tagField
     }
@@ -68,7 +68,7 @@ export const addClient = (nameField: any, emailField: any, tagField: any, rows: 
                 // return a promise that resolves with the JSON body
                 return res.json();
             } else {
-                alert("Could not get clients");
+                alert("Could not add client");
             }
         })
         .then(function (json) {
@@ -91,15 +91,14 @@ export const deleteClient = (clientId: any, rows: any, setRows: any) => {
     fetch(request)
         .then(res => {
             if (res.status === 204) {
-                const newRows = rows.filter((row:any) => {
-                    return row.id !== clientId
-                });
 
-                console.log("Hello");
-                
-                setRows(newRows);
+                const newRows = rows.filter((row:any) => {
+                    return row._id !== clientId
+                });
+            
+                setRows([...newRows]);
             } else {
-                alert("Could not delete client");
+                alert("delete failed");
             }
         })
         .catch(error => {

@@ -26,26 +26,10 @@ import { AddClientButton } from '../.';
 import { RowProps, DataFields} from './types';
 import useStyles from './styles';
 
-// Data would not be imported from a file when we have backend
-import { fullRows } from './data';
 import { useUserContext } from '../../contexts/UserContext';
 
-const Row: React.FC<RowProps> = ({ firstName, lastName, tags, id, rows, handleSetRows}: RowProps) => {
+const Row: React.FC<RowProps> = ({ firstName, lastName, tags, id, handleDelete}: RowProps) => {
   const classes = useStyles();
-
-  const handleDelete = useCallback((id: string) => {
-    // API call to delete to backend
-
-    deleteClient(id, rows, handleSetRows);
-
-    // var indexOfRow = fullRows.findIndex(i => i.id === id)
-    // fullRows.splice(indexOfRow, 1);
-    // const newRows = fullRows.filter((row) => {
-    //   return row.id !== id;
-    // });
-
-    // handleSetRows(newRows);
-  },[]);
 
   return (
     <>
@@ -55,18 +39,18 @@ const Row: React.FC<RowProps> = ({ firstName, lastName, tags, id, rows, handleSe
             {firstName} {lastName}
           </Link>
         </TableCell>
-          <TableCell align="left">
+        <TableCell align="left">
             <Link to={"/client-details"} className={classes.linkStyle}>
             {tags}
             </Link>
-          </TableCell>
-        <Link to={"/client-details"} className={classes.linkStyle}>
-          <TableCell>
+        </TableCell>
+        <TableCell>
+          <Link to={"/client-details"} className={classes.linkStyle}>
             <IconButton size="small" >
               <AccountBoxIcon color="primary" /> 
             </IconButton>
-          </TableCell>
-        </Link>
+          </Link>
+        </TableCell>
         <TableCell>
           <Button color="primary" className={classes.EButton} onClick={() => handleDelete(id)} ><DeleteForeverIcon /></Button>
         </TableCell>
@@ -83,44 +67,53 @@ const ClientList: React.FC = () => {
   const classes = useStyles();
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(8);
+  const [originalRows, setOriginalRows] = useState<DataFields[]>([]);
   const [rows, setRows] = useState<DataFields[]>([]);
   const [searched, setSearched] = useState<string>("");
 
   const {user} = useUserContext();
 
   useEffect(() => {
-    getClientsList(setRows, user);
+    getClientsList(handleSetRows, user);
   }, []);
 
   const handleChangePage = useCallback((event: unknown, newPage: number) => {
     setPage(newPage);
-  },[]);
+  },[setRows, rows]);
 
   const handleSetRows = useCallback((newRows: DataFields[]) => {
     setRows(newRows);
-  },[]);
+    setOriginalRows(newRows);
+  },[setRows, rows]); 
   
   const handleChangeRowsPerPage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  },[]);
+  },[setRows, rows]);
 
   const requestSearch = useCallback((searchedVal: string) => {
-    const filteredRows = fullRows.filter((row) => {
-      return row.name.toLowerCase().includes(searchedVal.toLowerCase());
+    const filteredRows = originalRows.filter((row) => {
+      return (row.firstName + " " + row.lastName).toLowerCase().includes(searchedVal.toLowerCase());
     });
     setPage(0);
-    // setRows(filteredRows);
-  },[]);
+    setRows(filteredRows);
+  },[setRows, rows, originalRows]);
 
   const cancelSearch = useCallback(() => {
     setSearched("");
     requestSearch(searched);
-  },[searched, requestSearch]);
+  },[originalRows, searched, requestSearch]);
+
+  const handleDelete = useCallback((id: string) => {
+    // API call to delete to backend
+
+    deleteClient(id, rows, handleSetRows);
+
+  },[rows]);
 
   return (
     <div className={classes.main}>
-        <AddClientButton rows={rows} setRows={setRows}/>
+        <AddClientButton rows={rows} setRows={handleSetRows}/>
       <Paper className={classes.table}>
         <SearchBar
           value={searched}
@@ -143,7 +136,7 @@ const ClientList: React.FC = () => {
               {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 
                 return (
-                  <Row key = {row._id} id = {row._id} firstName={row.firstName} lastName={row.lastName} tags={row.tags} rows={rows} handleSetRows={handleSetRows}/>
+                  <Row key = {row._id} id = {row._id} firstName={row.firstName} lastName={row.lastName} tags={row.tags} handleDelete={handleDelete}/>
                 );
               })}
               

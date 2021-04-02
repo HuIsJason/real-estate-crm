@@ -12,8 +12,7 @@ export interface RowProps {
   lastName: string, 
   tags: string,
   id: string,
-  rows: DataFields[],
-  handleSetRows: (newRows : DataFields[]) => void
+  handleDelete: (id : string) => void
   // page: number,
   // setPage: Dispatch<SetStateAction<number>>
 }
