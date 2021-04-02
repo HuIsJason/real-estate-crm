@@ -1,19 +1,9 @@
-import { Activity } from "../../ActivityTable/types";
+import { Property } from '../../../utils/types'; 
 
 interface Props { 
     properties: Property[],
     selected: Property | null,
     onSelect: (property: Property) => void;
-}
-
-interface Property { 
-    addrLineOne: string, 
-    city: string,
-    province: string,
-    postalCode: string,
-    favourited: boolean,
-    activities: Activity[] | [],
-    notes: string,
 }
 
 interface addPropertyProps { 
@@ -23,4 +13,4 @@ interface addPropertyProps {
 }
 
 export default Props;
-export type { addPropertyProps, Property };
+export type { addPropertyProps };

@@ -8,13 +8,11 @@ const ProjectSchema = mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
         default: ""
     },
     status: {
         type: String,
-        required: true,
-        enum: ["active" | "closed"],
+        enum: ["active", "closed"],
         default: "active"
     },
     tags: {

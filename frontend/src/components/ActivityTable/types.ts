@@ -1,3 +1,5 @@
+import { Activity } from "../../utils/types";
+
 interface TableProps {
   addActivity: (activity: Activity) => void;
   activities: Activity[];
@@ -7,13 +9,6 @@ interface TableRowProps {
   activityTitle: string;
   date: string;
   onClick: () => void;
-}
-
-interface Activity {
-  id: number,
-  title: string,
-  description: string,
-  date: string
 }
 
 interface ActivityDetailModalProps {

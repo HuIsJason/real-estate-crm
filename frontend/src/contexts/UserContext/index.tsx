@@ -13,10 +13,10 @@ import { User } from '../../utils/types';
 
 const users: User[] = [
   {
-    id: '1',
+    _id: '1',
     username: 'admin',
     password: 'admin',
-    type: 'ADMIN',
+    accountType: 'admin',
   },
   {
     username: 'user',
@@ -25,8 +25,7 @@ const users: User[] = [
     firstName: 'Jason',
     lastName: 'Hu',
     bio: 'Selling your house ASAP!',
-    yearCreated: 2021,
-    address: '18 Rainsford Road',
+    yearStarted: 2021,
     phone: '416-909-3633',
     email: 'jasonn.hu@mail.utoronto.ca',
     licenseId: '232-324234-32432',
@@ -34,9 +33,11 @@ const users: User[] = [
     brokerageAddress: '100 Fundy Bay Blvd',
     brokeragePhone: '416-867-1111',
     specialization: 'SELLER',
-    type: 'AGENT',
+    accountType: 'agent',
   },
 ];
+
+type DefUser = User | null;
 
 const UserContext = createContext<UserContextType | null>(null);
 
@@ -44,7 +45,7 @@ export const useUserContext = (): UserContextType =>
   useContext(UserContext) as UserContextType;
 
 const UserProvider: React.FC<Props> = ({ children }: Props) => {
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<DefUser>(null);
 
   const loginUser = useCallback((username: string, password: string) => {
     /**
