@@ -35,7 +35,8 @@ router
                 licenseId: req.body.licenseId,
                 brokerage: req.body.brokerage,
                 brokerageAddress: req.body.brokerageAddress,
-                brokeragePhone: req.body.brokeragePhone
+                brokeragePhone: req.body.brokeragePhone,
+                activated: false
             }); 
 
             const result = await agent.save();
@@ -50,20 +51,35 @@ router
             }
         }
     })
-
-router
-    .route("/:agent_id/")
-    .delete(async(req, res) => {
-        log("DELETE /api/agent/:agent_id");
-        const agentId = req.params.agent_id;
-
-        if (!ObjectID.isValid(agentId)) {
-            res.status(404).send();
-            return;
-        }
+    /* Gets a list of all agent accounts, if query param inactivated=true, it
+       will get only the agents with activation requests pending. */
+    .get(async(req, res) => {
+        log("GET /api/agent");
+        const inactivated = req.query.inactivated;
 
         try {
-            const agent = await User.findByIdAndRemove(agentId);
+            const query = { accountType: 'agent'}
+            if (inactivated) {
+                query.activated = false;
+            }
+            const agents = await User.find(query);
+            res.send({ agents: agents });
+
+        } catch (error) {
+            log(error);
+            res.sendStatus(500);
+        }
+    })
+
+
+router
+    .route("/:username/")
+    .delete(async(req, res) => {
+        log("DELETE /api/agent/:username");
+        const agentUsername = req.params.username;
+
+        try {
+            const agent = await User.findOneAndRemove({ username: agentUsername });
             if (!agent) {
                 res.status(404).send();
             } else {   
@@ -76,16 +92,16 @@ router
 
     })
     .get(async(req, res) => {
-        log("GET /api/agent/:agent_id");
-        const agentId = req.params.agent_id;
+        log("GET /api/agent/:username");
+        const agentUsername = req.params.username;
 
-        if (!ObjectID.isValid(agentId)) {
-            res.status(404).send();
-            return;
-        }
+        // if (!ObjectID.isValid(agentId)) {
+        //     res.status(404).send();
+        //     return;
+        // }
 
         try {
-            const agent = await User.findById(agentId);
+            const agent = await User.findOne({ username: agentUsername });
             
             if(!agent) {
                 res.status(404).send();
@@ -99,16 +115,11 @@ router
         }
     })
     .put(async(req, res) => {
-        log("PUT /api/agent/:agent_id");
-        const agentId = req.params.agent_id;
-
-        if (!ObjectID.isValid(agentId)) {
-            res.status(404).send();
-            return;
-        }
+        log("PUT /api/agent/:username");
+        const agentUsername = req.params.username;
 
         try {
-            const agent = await User.findByIdAndUpdate(agentId , req.body, {
+            const agent = await User.findOneAndUpdate({ username: agentUsername } , req.body, {
                 new: true
             });
 
@@ -122,6 +133,38 @@ router
             log(error);
             res.status(500).send("Internal Server Error");
         }
+    })
+    .patch(async(req, res) => {
+        log("PATCH /api/agent/:username");
+        const agentUsername = req.params.username;
+
+        // Check that username is unique
+        const validFields = ["username", "password", "firstName", "lastName", "email", "phone", "specialization", 
+                            "yearStarted", "licenseId", "brokerage", "brokerageAddress", "brokeragePhone"];
+        const fieldsToUpdate = {}
+        req.body.map((change) => {
+            if (!validFields.includes(change.field)) {
+                res.status(400).send("Invalid update field specified.")
+                return;
+            }
+            if (change.op === "set") {
+                fieldsToUpdate[change.field] = change.value;
+            }
+        });
+
+        try {
+            const agent = await User.findOneAndUpdate({username: agentUsername}, {$set: fieldsToUpdate}, {new: true, useFindAndModify: false});
+            if (!agent) {
+                res.status(404).send();
+            } else {   
+                res.send(agent)
+            }
+
+        } catch (error) {
+            log(error);
+            res.sendStatus(500);
+        }
+
     })
 
 

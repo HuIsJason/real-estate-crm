@@ -35,7 +35,7 @@ router
             }); // status="active" will be added by default by mongoose
 
             const result = await project.save();
-            res.send(result);
+            res.status(201).send(result);
 
         } catch (error) {
             log(error);

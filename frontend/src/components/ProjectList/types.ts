@@ -1,12 +1,8 @@
+import { Project } from "../../utils/types";
+
 interface TableProps {
   projects: Project[];
-  onSelect: (projectId: number) => void;
-}
-
-interface Project {
-  id: number,
-  name: string, 
-  active: boolean
+  onSelect: (projectId: string) => void;
 }
 
 interface AddProjectModalProps {

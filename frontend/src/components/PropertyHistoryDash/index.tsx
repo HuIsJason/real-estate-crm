@@ -43,6 +43,7 @@ const properties:Property[] = [
 ]
 
 const dummyProperty: Property = {
+    _id: "",
     address: "",
     city: "",
     province: "",
@@ -78,7 +79,7 @@ const ProjectHistory: React.FC = () => {
             const { properties } = json;
             setAllProperties(properties);
             setDisplayedProperties(properties);
-            setSelectedProperty(properties[0] || dummyProperty);
+            setSelectedProperty(properties[0] || null);
         });
     }, []);
 
@@ -88,13 +89,19 @@ const ProjectHistory: React.FC = () => {
         .then(response => {
             if (response.status === 201) {
                 console.log("Property was saved.");
+                return response.json();
                 // allProperties.push(property);
-                setAllProperties(prevProperties => [...prevProperties, property]);
+                // setAllProperties(prevProperties => [...prevProperties, property]);
                 // displayedProperties.push(property);
-                setDisplayedProperties(prevProperties => [...prevProperties, property]);
+                // setDisplayedProperties(prevProperties => [...prevProperties, property]);
             } else {
                 console.log(`Property was not saved... ${response.status}`);
+                // throw error
             }
+        })
+        .then(property => {
+            setAllProperties(prevProperties => [...prevProperties, property]);
+            setDisplayedProperties(prevProperties => [...prevProperties, property]);
         });
         
         setModalOpen(0);
@@ -129,8 +136,9 @@ const ProjectHistory: React.FC = () => {
         .then((response) => {
             if (response.status === 201) {
                 console.log("New activity added");
+                return response.json()
                 // selectedProperty.activities.push(activity);
-                const newActivities = [...selectedProperty.activities, activity];
+                // const newActivities = [...selectedProperty.activities, activity];
 
                 // Sort by reverse chronological order
                 // TODO: update Date object??
@@ -144,22 +152,40 @@ const ProjectHistory: React.FC = () => {
                 //     return aDate < bDate ? 1 : -1;
                 // });
 
-                const updatedProperties = allProperties.map( property => {
-                    if (property === selectedProperty) {
-                        property.activities = newActivities;
-                    }
-                    return property;
-                })
+                // const updatedProperties = allProperties.map( property => {
+                //     if (property === selectedProperty) {
+                //         property.activities = newActivities;
+                //     }
+                //     return property;
+                // })
 
-                const updatedSelectedProperty = updatedProperties.filter( property => property._id === selectedProperty._id)[0];
-                const updatedDisplay = showFav ? updatedProperties.filter(property => property.favourited) : updatedProperties;
+                // const updatedSelectedProperty = updatedProperties.filter( property => property._id === selectedProperty._id)[0];
+                // const updatedDisplay = showFav ? updatedProperties.filter(property => property.favourited) : updatedProperties;
 
-                setSelectedProperty(updatedSelectedProperty);
-                setAllProperties(updatedProperties);
-                setDisplayedProperties(updatedDisplay);
-
-                
+                // setSelectedProperty(updatedSelectedProperty);
+                // setAllProperties(updatedProperties);
+                // setDisplayedProperties(updatedDisplay);
+   
+            } else {
+                console.log(`Activity not added... Error ${response.status}`);
             }
+        })
+        .then(json => {
+            const { activity, property } = json;
+            
+            const updatedProperties = allProperties.map( property => {
+                if (property._id === selectedProperty._id) {
+                    property.activities.push(activity);
+                }
+                return property;
+            });
+            const updatedDisplay = showFav ? updatedProperties.filter(property => property.favourited) : updatedProperties;
+            const updatedSelectedProperty = updatedProperties.filter( property => property._id === selectedProperty._id)[0];
+
+            setSelectedProperty(updatedSelectedProperty);
+            setAllProperties(updatedProperties);
+            setDisplayedProperties(updatedDisplay);
+       
         });
   
     }

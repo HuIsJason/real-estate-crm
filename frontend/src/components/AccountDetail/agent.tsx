@@ -1,6 +1,7 @@
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { AgentAccount } from '../AccountListTable/types';
+import { Agent } from '../../utils/types'
 import AccountDetailProps from './types';
 import ResetPasswordModal from '../ResetPasswordModal/index';
 import ConfirmationModal from '../ConfirmationModal/index';

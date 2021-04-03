@@ -24,11 +24,11 @@ export interface Property {
 }
 
 export interface Project {
-  _id?: MongoId;
+  _id: MongoId;
   title: string;
-  description: string;
+  description?: string;
   status: Status;
-  tags: string[];
+  tags?: string[];
   client?: MongoId;
 }
 
