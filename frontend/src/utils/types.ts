@@ -33,7 +33,7 @@ export interface Project {
 }
 
 export interface Account {
-  _id?: MongoId;
+  _id: MongoId;
   username: string;
   password: string;
   accountType: 'admin' | 'agent';

@@ -73,7 +73,7 @@ router
 
 
 router
-    .route("/:username/")
+    .route("/:username")
     .delete(async(req, res) => {
         log("DELETE /api/agent/:username");
         const agentUsername = req.params.username;

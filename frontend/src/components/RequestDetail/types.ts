@@ -1,10 +1,10 @@
-import { Account } from '../AuthRequestTable/types';
+import { Agent } from '../../utils/types';
 
 interface RequestDetailsProps {
   hideDetails: () => void;
   deleteRequest: (requestId: string) => void; 
-  requestId: string;
-  account: Account|null;
+  account: Agent|null;
+  username: string;
 
 }
 

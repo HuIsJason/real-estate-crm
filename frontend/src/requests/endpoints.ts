@@ -5,11 +5,18 @@ interface endpoint {
 }
 
 const endpoints: endpoint[] = [
+
+
     // agents
     {
         name: "getAllAgents",
         endpoint: '/api/agent',
         method: 'GET'
+    },
+    {
+        name: "getInactivatedAgents",
+        endpoint: '/api/agent?inactivated=true',
+        method: "GET"
     },
     {
         name: "deleteAgent",
@@ -22,6 +29,12 @@ const endpoints: endpoint[] = [
         name: "resetPassword",
         endpoint: '/api/user',  // /:username
         method: 'PATCH'
+    },
+
+    {
+        name: "activateAccount",
+        endpoint: '/api/authentication/request', // /:account_id
+        method: 'PATCH',
     },
 
     // projects
