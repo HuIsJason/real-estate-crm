@@ -1,13 +1,13 @@
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import { AgentAccount } from '../AccountListTable/types';
 import { Agent } from '../../utils/types'
 import AccountDetailProps from './types';
 import ResetPasswordModal from '../ResetPasswordModal/index';
 import ConfirmationModal from '../ConfirmationModal/index';
-import generateRandomPassword from './generatePassword';
 
-const agentAccounts : AgentAccount[] = [
+import send from '../../requests/request';
+
+const agentAccounts = [
 
     { email: "joe@gmail.com",
       firstName: "Joe",
@@ -81,28 +81,37 @@ const agentAccounts : AgentAccount[] = [
     },
 ]
 
-const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, accountEmail}: AccountDetailProps) => {
+
+const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, username, account }: AccountDetailProps) => {
 
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(0);
     const [newPassword, setNewPassword] = React.useState('');
 
+
     const handleDeleteAccount = () => {
-        deleteAccount(accountEmail);
-        // TODO: Send server request to delete account email <accountEmail>
+        deleteAccount(username);
         setModalOpen(0);
     }
 
     const resetPassword = () => {
-        const newPassword = generateRandomPassword();
-        setNewPassword(newPassword);
-        // TODO: Send server request to set the password of the account with email <accountEmail> with <newPassword>
+      const reqBody = [ { op: "reset", field: "password"}] 
+      // TODO: Send server request to set the password of the account with email <accountEmail> with <newPassword>
+      send('resetPassword', reqBody, `/${username}`)
+      .then(response => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          console.log(`Could not reset password....Error ${response.status}`);
+          // throw error
+        }
+      })
+      .then(data => {
+        setNewPassword(data.passwordReset);
         setModalOpen(1);
+      })
+
     }
-
-    // TODO: Get the account object with email <accountEmail> from the server
-    const account = agentAccounts.filter(account => account.email === accountEmail)[0];
-
 
     return (
         <div className={classes.root}>

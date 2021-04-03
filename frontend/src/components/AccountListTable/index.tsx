@@ -6,7 +6,7 @@ import { makeStyles, Theme, Typography } from '@material-ui/core';
 
 const entriesPerPage = 10;
 
-const ProjectList: React.FC<Props> = ({ accountSummaries, onSelectRow, displayPage, onClickNext, onClickPrev }: Props) => {
+const ProjectList: React.FC<Props> = ({ accounts, onSelectRow, displayPage, onClickNext, onClickPrev }: Props) => {
   const classes = useStyles();
 
   return (
@@ -15,27 +15,27 @@ const ProjectList: React.FC<Props> = ({ accountSummaries, onSelectRow, displayPa
         <thead>
           <tr>
             <th>
-              Account Email
+              Account Username
             </th>
             <th>
-              Date of Last Login
+              Last Date of Activity
             </th>
           </tr>
         </thead>
         <tbody>
-          { accountSummaries.slice((displayPage - 1) * entriesPerPage, displayPage * entriesPerPage).map(account => (
+          { accounts.slice((displayPage - 1) * entriesPerPage, displayPage * entriesPerPage).map(account => (
             <TableRow 
-              key={account.accountEmail} 
-              email={account.accountEmail} 
+              key={account._id} 
+              username={account.username} 
               lastLogin={account.lastLogin} 
-              onClick={() => onSelectRow(account.accountEmail)}/> ))}
+              onClick={() => onSelectRow(account.username)}/> ))}
         </tbody>
       </table>
       <br/>
-      <span style={{ float: 'right', marginRight: 10}}> <Typography variant='caption'> Displaying {accountSummaries.length / entriesPerPage < displayPage ? accountSummaries.length % entriesPerPage : entriesPerPage} of {accountSummaries.length} entries. </Typography> </span> 
+      <span style={{ float: 'right', marginRight: 10}}> <Typography variant='caption'> Displaying {accounts.length / entriesPerPage < displayPage ? accounts.length % entriesPerPage : entriesPerPage} of {accounts.length} entries. </Typography> </span> 
       <div className={classes.buttonContainer}>
         { displayPage === 1 ? null : (<button className={classes.button} onClick={onClickPrev}> Previous </button>) }
-        { displayPage === Math.ceil(accountSummaries.length / entriesPerPage) || accountSummaries.length === 0 ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
+        { displayPage === Math.ceil(accounts.length / entriesPerPage) || accounts.length === 0 ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
       </div>
     </div>
   );

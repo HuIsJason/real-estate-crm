@@ -39,12 +39,6 @@ router
             })
 
             passwordReset = password;
-            
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(password, salt, (err, hash) => {
-                    fieldsToUpdate.password = hash;
-                });
-            });
         }
 
         try {
@@ -52,7 +46,12 @@ router
             if (!user) {
                 res.status(404).send();
             } else {
-                res.send({ user: user, passwordReset: passwordReset });
+                let result = user;
+                if (passwordReset) { 
+                    user.password = passwordReset; 
+                    result = await user.save();
+                }
+                res.send({ user: result, passwordReset: passwordReset });
             }
 
         } catch (error) {

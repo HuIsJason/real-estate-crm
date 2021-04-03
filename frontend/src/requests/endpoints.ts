@@ -5,6 +5,25 @@ interface endpoint {
 }
 
 const endpoints: endpoint[] = [
+    // agents
+    {
+        name: "getAllAgents",
+        endpoint: '/api/agent',
+        method: 'GET'
+    },
+    {
+        name: "deleteAgent",
+        endpoint: '/api/agent', // /:username
+        method: 'DELETE'
+    }, 
+
+    // users
+    {
+        name: "resetPassword",
+        endpoint: '/api/user',  // /:username
+        method: 'PATCH'
+    },
+
     // projects
     {
         name: "getAllProjects",
