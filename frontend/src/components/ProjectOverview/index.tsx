@@ -10,7 +10,7 @@ function useToggle(initialValue = true){
 }
 
 
-const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page }: ProjectOverviewProps) => {
+const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page, projectId }: ProjectOverviewProps) => {
   const classes = useStyles();
   const [description, setDescription] = useState<string>("Joey is looking for his dream house! He wants a place that is near a good school with a lively neighbourhood, so he can raise his son Jonathon in a good environment");
   const [tags, setTags] = useState(["Friendly area", "Nearby school", "Kid friendly"]);
