@@ -20,7 +20,7 @@ router
             return;
         }
 
-        if (!req.body.firstName || !req.body.lastName) {
+        if (!req.body.firstName) {
             res.status(400).send("Some body field(s) missing");
             return;
         }
@@ -35,7 +35,7 @@ router
                 city: req.body.city,
                 description: req.body.description,
                 profileImg: req.body.profileImg,
-                tags: [],
+                tags: req.body.tags,
                 agent: agent
             }); 
 

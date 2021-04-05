@@ -1,4 +1,6 @@
 import React, {ChangeEvent, useCallback, useState}from 'react';
+import {addClient} from '../../actions/clients';
+
 import {
     Button,
     TextField,
@@ -9,11 +11,7 @@ import {
     DialogTitle
 } from '@material-ui/core';
 
-import {v4 as uuid} from 'uuid'
-
 import AddClientButtonProps from './types';
-
-import { createData, fullRows } from '../ClientList/data';
 
 import useStyles from './styles';
 
@@ -22,6 +20,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
     const [nameField, setNameField] = useState("");
     const [emailField, setEmailField] = useState("");
     const [tagField, setTagField] = useState("");
+    const [emailValid, setEmailValid] = useState(true);
 
     const handleClickOpen = useCallback(() => {
         setOpen(true);
@@ -32,15 +31,12 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
     },[]);
 
     const handleClientAdditon = useCallback(() => {
-        // This callback would contain an API call to add new data to backend
-        fullRows.push(createData(nameField, emailField, tagField, uuid()));
+        setEmailValid((/\S+@\S+\.\S+/).test(emailField));
 
-        const newRows = fullRows.filter((row) => {
-            return row.id !== "xxx";
-        });
-
-        setRows(newRows);
-        setOpen(false);
+        if ((/\S+@\S+\.\S+/).test(emailField)) {
+            addClient(nameField, emailField, tagField, rows, setRows);
+            setOpen(false);
+        }
     },[nameField, emailField, tagField, setRows, setOpen]);
     
     const handleChange = useCallback(
@@ -94,6 +90,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
                         label="Email Address"
                         type="email"
                         fullWidth
+                        {...emailValid ? {error:false} : {error:true}}
                     />
 
                     <TextField

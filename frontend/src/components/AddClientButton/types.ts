@@ -3,6 +3,6 @@ import { RowProps, DataFields } from "../ClientList/types"
 
 export default interface AddClientButtonProps {
     rows: DataFields[],
-    setRows: Dispatch<SetStateAction<DataFields[]>>
+    setRows: (newRows : DataFields[]) => void
     
 }

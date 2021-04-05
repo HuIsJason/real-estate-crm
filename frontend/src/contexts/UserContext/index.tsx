@@ -21,7 +21,7 @@ const users: User[] = [
   {
     username: 'user',
     password: 'user',
-    _id: '2',
+    id: "507f191e810c19729de860ea", // hard coded for now, run 'npm run initUser' to init agent with this _id
     firstName: 'Jason',
     lastName: 'Hu',
     bio: 'Selling your house ASAP!',

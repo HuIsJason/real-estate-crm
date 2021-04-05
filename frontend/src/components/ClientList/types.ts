@@ -1,19 +1,18 @@
 import { Dispatch, SetStateAction } from "react"; 
 
 export interface DataFields {
-  name: string, 
-  email: string, 
+  firstName: string, 
+  lastName: string, 
   tags: string,
-  id: string,
+  _id: string,
 }
 
 export interface RowProps {
-  name: string, 
-  email: string, 
+  firstName: string, 
+  lastName: string, 
   tags: string,
   id: string,
-  rows: DataFields[],
-  handleSetRows: (newRows : DataFields[]) => void
+  handleDelete: (id : string) => void
   // page: number,
   // setPage: Dispatch<SetStateAction<number>>
 }

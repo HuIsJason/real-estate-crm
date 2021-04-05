@@ -9,7 +9,6 @@ import './index.css';
 import 'fontsource-roboto';
 
 ReactDOM.render(
-  <React.StrictMode>
     <ThemeProvider>
       <UserProvider>
         <Router>
@@ -17,8 +16,7 @@ ReactDOM.render(
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         </Router>
       </UserProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
+    </ThemeProvider>,
   document.getElementById('root')
 );
 
