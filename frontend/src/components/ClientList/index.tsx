@@ -35,17 +35,17 @@ const Row: React.FC<RowProps> = ({ firstName, lastName, tags, id, handleDelete}:
     <>
       <TableRow className={classes.root}>
         <TableCell component="th" scope="row">
-          <Link to={"/client-details"} className={classes.linkStyle}>
+          <Link to={{ pathname:"/client-details/"+id }}  className={classes.linkStyle}>
             {firstName} {lastName}
           </Link>
         </TableCell>
         <TableCell align="left">
-            <Link to={"/client-details"} className={classes.linkStyle}>
+            <Link to={"/client-details/"+id} className={classes.linkStyle}>
             {tags}
             </Link>
         </TableCell>
         <TableCell>
-          <Link to={"/client-details"} className={classes.linkStyle}>
+          <Link to={"/client-details/"+id} className={classes.linkStyle}>
             <IconButton size="small" >
               <AccountBoxIcon color="primary" /> 
             </IconButton>

@@ -4,7 +4,7 @@ export interface DataFields {
   firstName: string, 
   lastName: string, 
   tags: string,
-  _id: string,
+  _id: string
 }
 
 export interface RowProps {
@@ -13,6 +13,4 @@ export interface RowProps {
   tags: string,
   id: string,
   handleDelete: (id : string) => void
-  // page: number,
-  // setPage: Dispatch<SetStateAction<number>>
 }
