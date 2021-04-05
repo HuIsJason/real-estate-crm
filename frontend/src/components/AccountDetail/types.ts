@@ -1,7 +1,10 @@
+import { Agent } from '../../utils/types';
+
 interface AccountDetailProps {
   hideDetails: () => void;
-  deleteAccount: (accountEmail: string) => void; 
-  accountEmail: string
+  deleteAccount: (username: string) => void; 
+  username: string;
+  account: Agent;
 }
 
 export default AccountDetailProps;

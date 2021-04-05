@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from '../../../components/SearchBar/index';
 import AuthRequestTable from '../../../components/AuthRequestTable/index';
 import RequestDetails from "../../../components/RequestDetail/index";
-import { Account } from '../../../components/AuthRequestTable/types';
 import AppBar from '../../../components/AppBar';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 
-const mockAccounts : Account[] = [
+import { Agent } from "../../../utils/types";
+import send from "../../../requests/request";
+
+const mockAccounts = [
   
   { email: "joe@gmail.com",
     firstName: "joe",
@@ -74,75 +76,59 @@ const mockAccounts : Account[] = [
 
 ]
 
-const requests = [
-  { requestId: "R12234", 
-      accountEmail: "joe@gmail.com",
-      dateOfRequest: "10-02-2021" 
-  },
-  {
-    requestId: "R12235", 
-    accountEmail: "maryg@gmail.com",
-    dateOfRequest: "11-02-2021" 
-  },
-  {
-    requestId: "R12236", 
-    accountEmail: "harrym@gmail.com",
-    dateOfRequest: "09-02-2021" 
-  },
-  {
-    requestId: "R12237", 
-    accountEmail: "georgeli@gmail.com",
-    dateOfRequest: "09-02-2021" 
-  },
-  {
-    requestId: "R12238", 
-    accountEmail: "james@gmail.com",
-    dateOfRequest: "09-02-2021" 
-  },
-
-]
+const dummyAgents: Agent[] = [];
 
 const AuthRequestsView: React.FC = () => {
 
   // Get all active account authorization requests from server
-  const [activeRequests, setRequests] = useState(requests);
-  const [displayRequests, setDisplayRequests] = useState(requests);
-  const [selectedRequest, setSelectedRequest] = useState(''); // Request Id of the selected row in the table
 
-  // Get all the accounts that are pending authorization from server
-  const accounts = mockAccounts;
-  const [account, setAccount] = useState<Account|null>(null);
+  const [displayRequests, setDisplayRequests] = useState(dummyAgents);
+  
+  const [accounts, setAccounts] = useState(dummyAgents);
+  const [selectedAccount, setSelectedAccount] = useState<Agent|null>(null);
+
   const [searchValue, setSearchValue] = useState('');
   const [displayPage, setDisplayPage] = useState(1);
 
   const classes = useStyles();
 
+  useEffect(() => {
+    // Get all the accounts that are pending authorization from server
+    send("getInactivatedAgents")
+    .then(response => response.json())
+    .then(data => {
+      setAccounts(data.agents);
+      setDisplayRequests(data.agents);
+    });
+
+  }, [])
+
   /* Opens the RequestDetails view showing the account associated with requestId */
-  const openRequestDetails = (requestId: string) => {
+  const openAccountDetails = (username: string) => {
+    const account = accounts.filter(account => account.username === username)[0];
 
-    const selectedRequest = activeRequests.filter(request => request.requestId === requestId)[0];
-    const associatedAccount = accounts.filter(account => account.email === selectedRequest.accountEmail)[0];
-
-    setAccount(associatedAccount);
-    setSelectedRequest(requestId);
+    setSelectedAccount(account);
     setSearchValue('');
     setDisplayPage(1);
 
   }
 
   /* Removes the request with requestId from the table */
-  const deleteRequest = (requestId: string) => {
-    // TODO: Send request to server to delete the request with id requestId
-    const newRequests = activeRequests.filter(request => request.requestId !== requestId);
-    setRequests(newRequests);
-    setDisplayRequests(newRequests);
-    setSelectedRequest('');
+  const deleteRequest = (username: string) => {
+    const updatedAccounts = accounts.filter(account => account.username !== username);
+    setAccounts(updatedAccounts);
+    setDisplayRequests(updatedAccounts);
+    setSelectedAccount(null);
   }
 
   const filterSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
-    const newRequests = activeRequests.filter(request => request.accountEmail.includes(event.target.value));
-    setDisplayRequests(newRequests);
+    const search = event.target.value;
+    setSearchValue(search);
+
+    const updatedRequests = accounts.filter(account => {
+      return account.username.includes(search) || (account.email ? account.email.includes(search) : false);
+    });
+    setDisplayRequests(updatedRequests);
     setDisplayPage(1);
   }
 
@@ -151,13 +137,13 @@ const AuthRequestsView: React.FC = () => {
       <AppBar showDashboardbtn />
       <div className={classes.root}>
         <div> <Typography variant="h6" gutterBottom color='primary'> Authorization Requests </Typography> </div>
-        { selectedRequest ? 
+        { selectedAccount ? 
           (<div> 
-            <RequestDetails deleteRequest={deleteRequest} requestId={selectedRequest} account={account} hideDetails={() => setSelectedRequest('')} />
+            <RequestDetails deleteRequest={deleteRequest} username={selectedAccount.username} account={selectedAccount} hideDetails={() => setSelectedAccount(null)} />
           </div>)
         : (<div>
             <SearchBar value={searchValue} onChange={filterSearch}/>
-            <AuthRequestTable requests={displayRequests} selectRequest={openRequestDetails}
+            <AuthRequestTable accounts={displayRequests} selectRequest={openAccountDetails}
             displayPage={displayPage} onClickNext={() => setDisplayPage(displayPage + 1)} onClickPrev={() => setDisplayPage(displayPage - 1)}/>
           </div>)
         } 

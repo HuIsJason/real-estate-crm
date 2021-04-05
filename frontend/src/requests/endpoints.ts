@@ -5,6 +5,38 @@ interface endpoint {
 }
 
 const endpoints: endpoint[] = [
+
+
+    // agents
+    {
+        name: "getAllAgents",
+        endpoint: '/api/agent',
+        method: 'GET'
+    },
+    {
+        name: "getInactivatedAgents",
+        endpoint: '/api/agent?inactivated=true',
+        method: "GET"
+    },
+    {
+        name: "deleteAgent",
+        endpoint: '/api/agent', // /:username
+        method: 'DELETE'
+    }, 
+
+    // users
+    {
+        name: "resetPassword",
+        endpoint: '/api/user',  // /:username
+        method: 'PATCH'
+    },
+
+    {
+        name: "activateAccount",
+        endpoint: '/api/authentication/request', // /:account_id
+        method: 'PATCH',
+    },
+
     // projects
     {
         name: "getAllProjects",

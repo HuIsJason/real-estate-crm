@@ -1,32 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import BinarySelector from '../BinarySelector/index';
 import AddProjectModal from './modal';
 import { useHistory } from 'react-router-dom';
+import send from '../../requests/request';
+import { Project } from '../../utils/types';
 
-const selectorOptions = [ {
+const selectorOptions = [
+{
   value: 'active',
   displayName: 'Active',
 }, {
-  value: 'inactive',
+  value: 'closed',
   displayName: 'Closed'
 }]
 
-const projects = [{
-  id: 123,
-  name: 'Investment Condo in Downtown', 
-  active: true
-}, {
-  id: 154,
-  name: 'Dream House', 
-  active: true
-},
-{
-  id: 190,
-  name: 'Commercial Investment Property', 
-  active: false
-},
+const projects: Project[] = [
+// {
+//   _id: "734987439",
+//   title: 'Investment Condo in Downtown', 
+//   status: "active"
+// }, {
+//   _id: "8764232",
+//   title: 'Dream House', 
+//   status: "closed",
+// },
+// {
+//   _id: "190",
+//   title: 'Commercial Investment Property', 
+//   status: "active",
+// },
 ]
+
+const client_id = '6064dabe5caf8d0a85ea846d';
 
 const ProjectList: React.FC = () => {
   const classes = useStyles();
@@ -37,15 +43,41 @@ const ProjectList: React.FC = () => {
   // TODO: Get a list of all projects (summarized) from server
   const [allProjects, setProjects] = React.useState(projects);
 
+  useEffect(() => {
+    // TODO: Get a list of all projects (summarized) from server
+    send('getAllProjects', {}, `/${client_id}`)
+    .then((response ) => response.json())
+    .then(json => {
+        const { projects } = json;
+        setProjects(projects);
+    });
+  }, []);
+
   const addProject = (projectName: string) => {
-    setOpenModal(false);
-    const newId = allProjects[allProjects.length - 1].id + 1;
-    allProjects.push({id: newId, name: projectName, active: true});
-    setProjects(allProjects);
+
+    // const newId = allProjects[allProjects.length - 1].id + 1;
+    // allProjects.push({id: newId, name: projectName, active: true});
+    // setProjects(allProjects);
     // TODO: send request to server to add a new empty project with name <projectName>
+    send("addProject", { title: projectName }, `/${client_id}`)
+    .then(response => {
+      if (response.status === 201) {
+        console.log(`Project added`)
+        return response.json()
+      } else {
+        console.log(`Project could not be added.. Error ${response.status}`)
+        // throw
+      }
+    })
+    .then(data => {
+      setProjects([...allProjects, data]);
+    })
+
+
+    setOpenModal(false);
   }
 
-  const openProject = (projectId: number) => {
+  const openProject = (projectId: string) => {
     /* TODO: update to navigate to detailed project view */
     console.log(`Opening project ${projectId}`);
     history.push('client-details/project-details');
@@ -56,13 +88,13 @@ const ProjectList: React.FC = () => {
       <div style={{ minHeight: '40px'}}>
       <button className={classes.buttonFilled} onClick={() => setOpenModal(true)}> <Typography variant='button'> + New Project </Typography></button>
       </div> 
-      <BinarySelector options={selectorOptions} selection={showActive ? 'active' : 'inactive'} setSelection={(value: string) => setShowActive(value === 'active')} />
+      <BinarySelector options={selectorOptions} selection={showActive ? 'active' : 'closed'} setSelection={(value: string) => setShowActive(value === 'active')} />
       <div className={classes.root}>
         <table className={classes.table}>
           <tbody>
-            { projects.filter(project => project.active === showActive).map(project => (
-              <tr key={project.id} onClick={() => openProject(project.id)}>
-                <td> <Typography className={classes.text} variant="subtitle1" > {project.name} </Typography> 
+            { allProjects.filter(project => showActive ? project.status === "active" : project.status === "closed").map(project => (
+              <tr key={project._id} onClick={() => openProject(project._id)}>
+                <td> <Typography className={classes.text} variant="subtitle1" > {project.title} </Typography> 
                 <span style={{ float: 'right', color: '#d3d5db', marginTop: 5 }}> {'>'} </span></td>
               </tr> ))}
           </tbody>

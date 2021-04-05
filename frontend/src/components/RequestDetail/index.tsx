@@ -3,23 +3,43 @@ import React from 'react';
 import RequestDetailProps from './types';
 import ConfirmationModal from '../ConfirmationModal/index';
 
+import send from "../../requests/request";
 
 
-const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteRequest, account, requestId }: RequestDetailProps) => {
+
+const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteRequest, account, username }: RequestDetailProps) => {
 
     const classes = useStyles();
     const [openModal, setOpenModal] = React.useState(0);
 
     const handleDenyRequest = () => {
         setOpenModal(0);
-        deleteRequest(requestId); 
         // TODO: Send request to server to delete the account <account> 
+        send("deleteAgent", {}, `/${username}`)
+        .then(response => {
+            if (response.status === 204) {
+                deleteRequest(username);
+            } else {
+                console.log(`Account could not be deleted... Error ${response.status}`);
+            }
+        })
+        setOpenModal(0);
     }
 
     const activateAccount = () => {
+        // TODO: Send request to server to update the account <account> to be activated --> endpoint incomplete @JASON
+        if (account) {
+            const reqBody = [{ op: "set", field: "activated", value: true }]; 
+            send("activateAccount", reqBody, `/${account._id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    deleteRequest(username);
+                } else {
+                    console.log(`Failed to activate account on server... Error ${response.status}`);
+                }
+            })
+        }
         setOpenModal(0);
-        deleteRequest(requestId);
-        // TODO: Send request to server to update the account <account> to be activated
     }
 
     return (
@@ -27,7 +47,7 @@ const RequestDetails: React.FC<RequestDetailProps> = ({ hideDetails, deleteReque
             {account !== null ? 
             (<div>
             <button className={classes.button} onClick={() => hideDetails()}> <Typography variant='button'> Return </Typography> </button>
-            <Typography variant='h6'> Review Account Details for Request {requestId}</Typography>
+            <Typography variant='h6'> Review Account Details for User {account.username}</Typography>
             <div>
                 <Typography variant="body2"> <span className={classes.bold}>Email:</span> {account.email} </Typography>
             </div>
