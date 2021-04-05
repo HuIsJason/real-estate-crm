@@ -1,17 +1,17 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
+
+import {getClient, editClient} from '../../actions/client';
 
 import useStyles from './styles';
 import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 
-import { ClientProfileProps } from './types';
+import { ClientProfileProps, clientType } from './types';
+import { RouteComponentProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
-
-const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps) => {
+const ClientProfile: React.FC<any> = ({page, setClient, client, clientId}:any) => {
   const classes = useStyles();
-  const [phone, setPhone] = useState<string>("416-666-8888");
-  const [email, setEmail] = useState<string>("joeySmith@outlook.com");
-  const [address, setAddress] = useState<string>("123 joey land drive");
   const [open, setOpen] = useState(false);
 
   const render = page === "profile";
@@ -20,7 +20,6 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
   const emailRef = useRef();
   const addressRef = useRef();
 
-  // here there would be a callback to retrieve the clients profile information via an api call
 
   const handleClickOpen = useCallback(() => {
       setOpen(true);
@@ -35,12 +34,16 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
     const phone = phoneRef.current as any;
     const email = emailRef.current as any;
     const address = addressRef.current as any;
+    
+    editClient(clientId, {
+      name: client.name,
+      phone: phone.value,
+      email: email.value,
+      address: address.value
+    }, setClient);
 
-    setPhone(phone.value);
-    setEmail(email.value);
-    setAddress(address.value);
     setOpen(false);
-  },[setPhone, setEmail, setAddress, setOpen]);
+  },[editClient, setOpen, client, setClient]);
 
   return (
     <>
@@ -53,11 +56,11 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
 
           
             <Typography className={classes.contactInfo}>
-              <strong>Phone: </strong>{phone}
+              <strong>Phone: </strong>{client.phone}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Email: </strong> {email}
+              <strong>Email: </strong> {client.email}
             </Typography>
 
             <Typography className={classes.contactInfo}>
@@ -65,7 +68,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Address: </strong>{address}
+              <strong>Address: </strong>{client.address}
             </Typography>
       </div>
         <Button variant="contained" color="primary" className={classes.editButton} onClick={handleClickOpen}> EDIT </Button>
@@ -75,7 +78,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
 
                     <TextField
                         autoFocus
-                        defaultValue={phone}
+                        defaultValue={client.phone}
                         inputRef={phoneRef}
                         margin="dense"
                         id="phone1"
@@ -85,7 +88,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
                     />
 
                     <TextField
-                        defaultValue={email}
+                        defaultValue={client.email}
                         inputRef={emailRef}
                         margin="dense"
                         id="email"
@@ -95,7 +98,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
                     />
 
                     <TextField
-                        defaultValue={address}
+                        defaultValue={client.address}
                         inputRef={addressRef}
                         margin="dense"
                         id="Address"
@@ -120,4 +123,4 @@ const ClientProfile: React.FC<ClientProfileProps> = ({page}: ClientProfileProps)
   );
 }
 
-export default ClientProfile;
+export default withRouter(ClientProfile);

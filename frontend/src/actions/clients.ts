@@ -2,8 +2,6 @@
 import ENV from './../config'
 const API_HOST = ENV.api_host
 
-// A function to send a GET request to the web server,
-// and then loop through them and add a list element for each student
 export const getClientsList = (setRows:any, user:any) => {
     // the URL for the request
     const url = `${API_HOST}/api/clients/507f191e810c19729de860ea` // + user?.id; add this back after jason fixes context
@@ -27,17 +25,7 @@ export const getClientsList = (setRows:any, user:any) => {
         });
 };
 
-// // A function to update the student form state
-// export const updateStudentForm = (formComp, field) => {
-//     const value = field.value;
-//     const name = field.name;
-
-//     formComp.setState({
-//         [name]: value
-//     });
-// };
-
-// A function to send a POST request with a new student
+// A function to send a POST request with a new client
 export const addClient = (nameField: any, emailField: any, tagField: any, rows: any, setRows: any) => {
     // the URL for the request
     const url = `${API_HOST}/api/clients/507f191e810c19729de860ea`;
