@@ -13,8 +13,15 @@ const InitialSignup: React.FC<Props> = ({
   const signupClasses = useSignupStyles();
 
   const handleNext = useCallback(() => {
-    const { firstName, lastName, email, password } = signupStateValues;
-    if (!firstName || !lastName || !email || !password) {
+    const {
+      username,
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+    } = signupStateValues;
+    if (!username || !phone || !firstName || !lastName || !email || !password) {
       alert('Missing fields!');
     } else {
       nextStep();
@@ -30,6 +37,14 @@ const InitialSignup: React.FC<Props> = ({
         Please enter your account details.
       </Typography>
       <FormControl component="form" fullWidth variant="filled">
+        <TextField
+          className={signupClasses.textField}
+          value={signupStateValues.username}
+          onChange={(e) => handleStateChange(e, 'username')}
+          label="Username"
+          fullWidth
+          required
+        />
         <TextField
           className={signupClasses.textField}
           value={signupStateValues.firstName}
@@ -52,6 +67,14 @@ const InitialSignup: React.FC<Props> = ({
           onChange={(e) => handleStateChange(e, 'email')}
           label="Email"
           type="email"
+          fullWidth
+          required
+        />
+        <TextField
+          className={signupClasses.textField}
+          value={signupStateValues.phone}
+          onChange={(e) => handleStateChange(e, 'phone')}
+          label="Phone"
           fullWidth
           required
         />

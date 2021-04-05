@@ -14,6 +14,7 @@ import { SignupNavigationButton } from '../../../components';
 
 const AgentSignup: React.FC<Props> = ({
   signupStateValues,
+  handleCreateUser,
   handleStateChange,
   prevStep,
   nextStep,
@@ -23,17 +24,23 @@ const AgentSignup: React.FC<Props> = ({
 
   const handleNext = useCallback(() => {
     const {
-      brokerageName,
-      brokeragePhone,
+      brokerage,
+      brokerageNumber,
       brokerageAddress,
-      license,
+      licenseId,
     } = signupStateValues;
-    if (!brokerageName || !brokeragePhone || !brokerageAddress || !license) {
+    if (!brokerage || !brokerageNumber || !brokerageAddress || !licenseId) {
       alert('Missing fields!');
     } else {
-      nextStep();
+      try {
+        handleCreateUser();
+      } catch (err) {
+        alert(err);
+      } finally {
+        nextStep();
+      }
     }
-  }, [signupStateValues, nextStep]);
+  }, [handleCreateUser, signupStateValues, nextStep]);
 
   return (
     <Paper className={signupClasses.paper} elevation={5}>
@@ -47,16 +54,16 @@ const AgentSignup: React.FC<Props> = ({
       <FormControl component="form" fullWidth variant="filled">
         <TextField
           className={signupClasses.textField}
-          value={signupStateValues.brokerageName}
-          onChange={(e) => handleStateChange(e, 'brokerageName')}
+          value={signupStateValues.brokerage}
+          onChange={(e) => handleStateChange(e, 'brokerage')}
           label="Brokerage name"
           fullWidth
           required
         />
         <TextField
           className={signupClasses.textField}
-          value={signupStateValues.brokeragePhone}
-          onChange={(e) => handleStateChange(e, 'brokeragePhone')}
+          value={signupStateValues.brokerageNumber}
+          onChange={(e) => handleStateChange(e, 'brokerageNumber')}
           label="Brokerage phone number"
           fullWidth
           required
@@ -71,14 +78,13 @@ const AgentSignup: React.FC<Props> = ({
         />
         <TextField
           className={signupClasses.textField}
-          value={signupStateValues.license}
-          onChange={(e) => handleStateChange(e, 'license')}
+          value={signupStateValues.licenseId}
+          onChange={(e) => handleStateChange(e, 'licenseId')}
           label="License"
           fullWidth
           required
         />
         <SignupNavigationButton isBack {...{ prevStep }} />
-        {/* this button would call a function that would call createUser from the context */}
         <Button
           className={classes.button}
           onClick={handleNext}

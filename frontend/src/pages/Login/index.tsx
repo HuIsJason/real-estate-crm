@@ -78,9 +78,6 @@ const Login: React.FC = () => {
           Don't have an account? Sign up <Link to="/signup">here</Link>.
         </Typography>
         <Button
-          /**
-           * here the button would call loginUser() from the context
-           */
           color="primary"
           className={classes.button}
           variant="contained"

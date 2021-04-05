@@ -42,29 +42,19 @@ export interface Account {
 
 export interface Admin extends Account {}
 
-// interface NonAdminAccount extends Account {
-//   firstName: string;
-//   lastName: string;
-//   bio: string;
-//   yearCreated: number;
-//   address: string;
-//   phone: string;
-//   email: string;
-// }
-
 export interface Agent extends Account {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
   yearStarted: number;
-  bio: string;
+  bio?: string;
   licenseId: string;
   brokerage: string;
   brokerageAddress: string;
-  brokeragePhone: string;
-  specialization: Specialization;
-  activated: boolean;
+  brokerageNumber: string;
+  specialization?: Specialization;
+  activated?: boolean;
 }
 
 export interface Client {
@@ -75,8 +65,8 @@ export interface Client {
   email?: string;
   address?: string;
   city?: string;
-  description?:string;
-  profileImg?:string;
+  description?: string;
+  profileImg?: string;
   tags: string[];
   agent?: MongoId;
 }

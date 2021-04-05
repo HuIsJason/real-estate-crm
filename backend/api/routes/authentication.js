@@ -10,9 +10,9 @@ const router = express.Router();
 // an active user on the session cookie (indicating a logged in user.)
 const sessionChecker = (req, res, next) => {
   if (req.session.user) {
-    res.redirect('/'); // redirect to dashboard if logged in.
+    res.send({ loggedInAs: user.username });
   } else {
-    next(); // next() moves on to the route.
+    res.sendStatus(401);
   }
 };
 
@@ -129,14 +129,14 @@ router.post('/login', mongoChecker, async (req, res) => {
     // by their email and password.
     const user = await User.findByUsernamePassword(username, password);
 
-    req.session.user = user._id;
+    req.session.username = user.username;
     res.send({ loggedInAs: user.username });
     // res.redirect('/dashboard');
   } catch (err) {
     if (isMongoError(err)) {
       res.sendStatus(500);
     } else {
-      res.sendStatus(404);
+      res.sendStatus(400);
     }
   }
 });
@@ -149,6 +149,14 @@ router.get('/logout', (req, res) => {
       res.sendStatus(200);
     }
   });
+});
+
+router.get('/checkSession', (req, res) => {
+  if (req.session.username) {
+    res.send({ loggedInAs: req.session.username });
+  } else {
+    res.sendStatus(401);
+  }
 });
 
 module.exports = router;

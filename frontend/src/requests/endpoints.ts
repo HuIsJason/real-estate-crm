@@ -101,6 +101,11 @@ const endpoints: endpoint[] = [
     endpoint: '/api/authentication/request',
     method: 'PATCH',
   },
+  {
+    name: 'checkSession',
+    endpoint: '/api/authentication/checkSession',
+    method: 'GET',
+  },
 ];
 
 export default endpoints;

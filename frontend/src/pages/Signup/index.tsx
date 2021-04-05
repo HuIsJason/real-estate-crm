@@ -4,19 +4,31 @@ import { ISignupState } from './types';
 import InitialSignup from './InitialSignup';
 import AgentSignup from './AgentSignup';
 import Confirmation from './Confirmation';
+import { useUserContext } from '../../contexts/UserContext';
 
 const UserForm: React.FC = () => {
   const [step, setStep] = useState<number>(1);
   const [signupState, setSignupState] = useState<ISignupState>({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
+    phone: '',
     password: '',
-    brokerageName: '',
-    brokeragePhone: '',
+    brokerage: '',
+    brokerageNumber: '',
     brokerageAddress: '',
-    license: '',
+    licenseId: '',
   });
+  const { createUser } = useUserContext();
+
+  const handleCreateUser = useCallback(() => {
+    createUser({
+      ...signupState,
+      accountType: 'agent',
+      yearStarted: new Date().getFullYear(),
+    });
+  }, [createUser, signupState]);
 
   const handleStateChange = useCallback(
     (
@@ -47,12 +59,14 @@ const UserForm: React.FC = () => {
       );
     case 2:
       return (
-        /**
-         * the AgentSignup page would be provided a function that would call createUser() from the
-         * provider which would then make the server call to create a user
-         */
         <AgentSignup
-          {...{ signupStateValues, handleStateChange, prevStep, nextStep }}
+          {...{
+            signupStateValues,
+            handleCreateUser,
+            handleStateChange,
+            prevStep,
+            nextStep,
+          }}
         />
       );
     case 3:
