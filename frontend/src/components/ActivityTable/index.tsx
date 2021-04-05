@@ -7,7 +7,6 @@ import TableRow from './tablerow';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import ActivityDetailModal from './modal';
 import AddActivityModal from './addActivityModal';
-import { fullRows } from '../ClientList/data';
 
 const entriesPerPage = 10;
 
