@@ -4,6 +4,7 @@ import DetailedHistory from '../DetailedHistory/index';
 import AddPropertyModal from './PropertySelectList/addPropertyModal';
 import { Property } from '../../utils/types';
 import { Activity } from '../ActivityTable/types';
+import Props from './types'; 
 import ConfirmationModal from '../ConfirmationModal';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 
@@ -55,10 +56,7 @@ const dummyProperty: Property = {
 
 const dummyPropertiesList: Property[] = [];
 
-const project_id = '6064db056d63340ac5552d53';
-
-const ProjectHistory: React.FC = () => {
-
+const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
     const classes = useStyles();
     
     const [selectedProperty, setSelectedProperty] = React.useState(dummyProperty);
@@ -73,7 +71,7 @@ const ProjectHistory: React.FC = () => {
 
     useEffect(() => {
         // TODO: Get a list of all properties (w/ detailed info) for this project from server
-        send('getAllProperties', {}, `/${project_id}`)
+        send('getAllProperties', {}, `/${projectId}`)
         .then((response ) => response.json())
         .then(json => {
             const { properties } = json;
@@ -85,7 +83,7 @@ const ProjectHistory: React.FC = () => {
 
     const saveProperty = async(property: Property) => {
         // TODO: send request to server to add a new property to this project
-        send("addProperty", property, `/${project_id}`)
+        send("addProperty", property, `/${projectId}`)
         .then(response => {
             if (response.status === 201) {
                 console.log("Property was saved.");
@@ -110,7 +108,7 @@ const ProjectHistory: React.FC = () => {
     const toggleFavourite = (property: Property) => {
 
         const req_content = [{ op: "update", field: "favourited", value: !property.favourited }]
-        send('updateProperty', req_content, `/${project_id}/${property._id}`)
+        send('updateProperty', req_content, `/${projectId}/${property._id}`)
         .then((response) => {
             if (response.status === 200) {
                 const updatedProperties = allProperties.map(p => {
@@ -132,13 +130,11 @@ const ProjectHistory: React.FC = () => {
     
         // activity.id = selectedProperty.activities.length + 1;
         // TODO: send request to server to add <activity> to <selectedProperty>'s activity list
-        send("addActivity", activity, `/${project_id}/${selectedProperty._id}`)
+        send("addActivity", activity, `/${projectId}/${selectedProperty._id}`)
         .then((response) => {
             if (response.status === 201) {
                 console.log("New activity added");
-                return response.json()
-                // selectedProperty.activities.push(activity);
-                // const newActivities = [...selectedProperty.activities, activity];
+                return response.json();
 
                 // Sort by reverse chronological order
                 // TODO: update Date object??
@@ -151,20 +147,6 @@ const ProjectHistory: React.FC = () => {
             
                 //     return aDate < bDate ? 1 : -1;
                 // });
-
-                // const updatedProperties = allProperties.map( property => {
-                //     if (property === selectedProperty) {
-                //         property.activities = newActivities;
-                //     }
-                //     return property;
-                // })
-
-                // const updatedSelectedProperty = updatedProperties.filter( property => property._id === selectedProperty._id)[0];
-                // const updatedDisplay = showFav ? updatedProperties.filter(property => property.favourited) : updatedProperties;
-
-                // setSelectedProperty(updatedSelectedProperty);
-                // setAllProperties(updatedProperties);
-                // setDisplayedProperties(updatedDisplay);
    
             } else {
                 console.log(`Activity not added... Error ${response.status}`);
@@ -193,7 +175,7 @@ const ProjectHistory: React.FC = () => {
     const updateNotes = (notes: string) => {
         // TODO: send request to server to update the notes for <selectedProperty>
         const req_content = [{ op: "update", field: "notes", value: notes }]
-        send('updateProperty', req_content, `/${project_id}/${selectedProperty._id}`)
+        send('updateProperty', req_content, `/${projectId}/${selectedProperty._id}`)
         .then((response) => {
             if (response.status === 200) {
                 selectedProperty.notes = notes;
@@ -215,7 +197,7 @@ const ProjectHistory: React.FC = () => {
 
         // TODO: send request to server to delete <selectedProperty> and
         // get an updated list of the remaining properties
-        send("deleteProperty", {}, `/${project_id}/${selectedProperty._id}`)
+        send("deleteProperty", {}, `/${projectId}/${selectedProperty._id}`)
         .then(response => {
             if (response.status === 200) {
 

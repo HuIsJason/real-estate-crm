@@ -80,7 +80,12 @@ const ProjectList: React.FC = () => {
   const openProject = (projectId: string) => {
     /* TODO: update to navigate to detailed project view */
     console.log(`Opening project ${projectId}`);
-    history.push('client-details/project-details');
+    history.push({ 
+      pathname: 'client-details/project-details',
+      state: {
+        projectId: projectId
+      }
+    }); 
   }
 
   return (
