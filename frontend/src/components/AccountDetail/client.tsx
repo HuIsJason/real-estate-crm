@@ -1,13 +1,12 @@
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import React from 'react';
-import { ClientAccount } from '../AccountListTable/types';
 import AccountDetailProps from './types';
 import ResetPasswordModal from '../ResetPasswordModal/index';
-import generateRandomPassword from './generatePassword';
+import generateRandomPassword from '../../actions/generatePassword';
 import ConfirmationModal from '../ConfirmationModal';
 
 
-const clientAccounts : ClientAccount[] = [
+const clientAccounts = [
     { 
         email: "jenny@hotmail.com", 
         firstName: "Jenny",
@@ -17,7 +16,7 @@ const clientAccounts : ClientAccount[] = [
     },
 ]
 
-const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, accountEmail}: AccountDetailProps) => {
+const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccount, username, account}: AccountDetailProps) => {
 
     const classes = useStyles();
     const [modalOpen, setModalOpen] = React.useState(0);
@@ -25,19 +24,16 @@ const AccountDetails: React.FC<AccountDetailProps> = ({ hideDetails, deleteAccou
 
     const handleDeleteAccount = () => {
         // TODO: Send server request to delete account email <accountEmail>
-        deleteAccount(accountEmail); 
+        deleteAccount(username); 
         setModalOpen(0);
     }
 
     const resetPassword = () => {
         const newPassword = generateRandomPassword();
         setNewPassword(newPassword);
-        // TODO: Send server request to set the password of the account with email <accountEmail> with <newPassword>
+        // TODO: Send server request to set the password of the account with email <username> with <newPassword>
         setModalOpen(1);
     }
-
-    // TODO: Get the account object with email <accountEmail> from the server
-    const account = clientAccounts.filter(account => account.email === accountEmail)[0];
 
     return (
         <div className={classes.root}>

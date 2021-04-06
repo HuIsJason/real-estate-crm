@@ -6,7 +6,7 @@ import { makeStyles, Theme, Typography } from '@material-ui/core';
 
 const entriesPerPage = 10;
 
-const SimpleTable: React.FC<Props> = ({ requests, selectRequest, displayPage, onClickNext, onClickPrev }: Props) => {
+const SimpleTable: React.FC<Props> = ({ accounts, selectRequest, displayPage, onClickNext, onClickPrev }: Props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -14,32 +14,32 @@ const SimpleTable: React.FC<Props> = ({ requests, selectRequest, displayPage, on
         <thead>
           <tr>
             <th>
-              Request Number
+              Username
             </th>
             <th>
               Account Email
             </th>
             <th>
-              Date of Request
+              Date of Sign Up
             </th>
           </tr>
         </thead>
         <tbody>
-          {requests.slice((displayPage - 1) * entriesPerPage, displayPage * entriesPerPage).map(request => (
+          {accounts.slice((displayPage - 1) * entriesPerPage, displayPage * entriesPerPage).map(account => (
             <TableRow 
-              key={request.requestId} 
-              requestId={request.requestId}
-              email={request.accountEmail} 
-              dateOfRequest={request.dateOfRequest} 
-              onClick={() => selectRequest(request.requestId)}/> ))}
+              key={account._id} 
+              username={account.username}
+              email={account.email} 
+              dateOfSignUp={account.lastLogin} 
+              onClick={() => selectRequest(account.username)}/> ))}
         </tbody>
 
       </table>
       <br/>
-      <span style={{ float: 'right', marginRight: 10}}> <Typography variant='caption'> Displaying {requests.length / entriesPerPage < displayPage ? requests.length % entriesPerPage : entriesPerPage} of {requests.length} entries. </Typography> </span> 
+      <span style={{ float: 'right', marginRight: 10}}> <Typography variant='caption'> Displaying {accounts.length / entriesPerPage < displayPage ? accounts.length % entriesPerPage : entriesPerPage} of {accounts.length} entries. </Typography> </span> 
       <div className={classes.buttonContainer}>
         { displayPage === 1 ? null : (<button className={classes.button} onClick={onClickPrev}> Previous </button>) }
-        { displayPage === Math.ceil(requests.length / entriesPerPage) || requests.length === 0 ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
+        { displayPage === Math.ceil(accounts.length / entriesPerPage) || accounts.length === 0 ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
       </div>
     </div>
   );

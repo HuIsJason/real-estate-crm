@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon server.js",
+    "initUser": "node -e \"require('./init').initUser()\""
   },
   "author": "Jason Hu, Obaida Saleh, Jenny Zhang",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "generate-password": "^1.6.0",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.2",
     "validator": "^13.5.2"

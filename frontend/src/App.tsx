@@ -52,7 +52,7 @@ const App: React.FC = () => {
       />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/client-list" component={ClientListPage} />
-      <Route exact path="/client-details" component={ClientProfilePage} />
+      <Route exact path="/client-details/:clientId" component={ClientProfilePage} />
       <Route
         exact
         path="/client-details/project-details"

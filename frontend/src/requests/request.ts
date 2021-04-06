@@ -2,12 +2,6 @@ import endpoints from './endpoints';
 
 const SERVER = 'http://localhost:5000'; // <-- Replace with main server URL path
 
-interface Request {
-  method: string;
-  headers: { Accept: string; 'Content-Type': string };
-  mode: string;
-  body?: string;
-}
 export default function send(
   requestType: string,
   data: any = {},

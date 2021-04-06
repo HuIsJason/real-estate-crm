@@ -7,8 +7,7 @@ const ClientSchema = mongoose.Schema({
         required: true
     },
     lastName: {
-        type: String,
-        required: true
+        type: String
     }, 
     phoneNumber: {
         type: String,
@@ -30,9 +29,8 @@ const ClientSchema = mongoose.Schema({
     description: String,
     profileImg: String,
     tags: {
-        type: [String],
-        required: true,
-        default: []
+        type: String,
+        default: ""
     },
     agent: {
         type: mongoose.Schema.Types.ObjectId,

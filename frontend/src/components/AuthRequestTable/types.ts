@@ -1,34 +1,19 @@
+import { Agent } from "../../utils/types";
+
 interface TableProps {
-  requests: Request[];
-  selectRequest: (requestId: string) => void;
+  accounts: Agent[];
+  selectRequest: (accountId: string) => void;
   displayPage: number;
   onClickNext: () => void;
   onClickPrev: () => void;
 }
 
 interface TableRowProps {
-  requestId: string; 
+  username: string; 
   email: string;
-  dateOfRequest: string;
+  dateOfSignUp?: Date;
   onClick: () => void;
 }
 
-interface Request {
-  requestId: string, 
-  accountEmail: string,
-  dateOfRequest: string
-}
-
-interface Account { 
-  email: string,
-  firstName: string,
-  lastName: string,
-  licenseId: string,
-  phone: string,
-  brokerage: string,
-  brokerageAddress: string,
-  brokeragePhone: string
-}
-
 export default TableProps;
-export type { TableRowProps, Request, Account } ;
+export type { TableRowProps } ;
