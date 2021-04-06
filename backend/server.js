@@ -10,7 +10,14 @@ const projects = require('./api/routes/projects');
 const property = require('./api/routes/property');
 
 let cors = require('cors');
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,POST,PUT,PATCH,DELETE',
+    credentials: true,
+    allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
+  })
+);
 
 // mongoose and mongo connection
 const { mongoose } = require('./api/db/mongoose');

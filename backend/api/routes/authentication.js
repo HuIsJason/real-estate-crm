@@ -129,8 +129,15 @@ router.post('/login', mongoChecker, async (req, res) => {
     // by their email and password.
     const user = await User.findByUsernamePassword(username, password);
 
-    req.session.username = user.username;
-    res.send({ loggedInAs: user.username });
+    if (user.activated) {
+      req.session.username = user.username;
+      res.send({
+        loggedInAs: `${user.firstName} ${user.lastName}`,
+        id: user._id,
+      });
+    } else {
+      res.sendStatus(401);
+    }
     // res.redirect('/dashboard');
   } catch (err) {
     if (isMongoError(err)) {
