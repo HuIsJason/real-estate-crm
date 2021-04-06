@@ -28,7 +28,7 @@ export default function send(
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      credentials: 'same-origin',
+      credentials: 'include',
     };
 
     if (endpoint.method !== 'GET') {

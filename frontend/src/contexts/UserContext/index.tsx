@@ -5,7 +5,6 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { v4 as uuid } from 'uuid';
 
 import { UserState, default as UserContextType } from './types';
 import { ProviderProps as Props } from '../types';
@@ -49,8 +48,12 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
   const loginUser = useCallback(async (username: string, password: string) => {
     try {
       const response = await send('login', { username, password });
-      const responseJson = await response.json();
-      setUser(responseJson);
+      if (response.status === 401) {
+        alert('Account has not been activated yet!');
+      } else {
+        const responseJson = await response.json();
+        setUser(responseJson);
+      }
     } catch (err) {
       alert('Invalid credentials!');
     }
@@ -65,8 +68,7 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
 
   const logoutUser = useCallback(async () => {
     try {
-      const response = await send('logout');
-      console.log(response);
+      await send('logout');
       setUser(null);
     } catch (err) {
       alert('Error with logging out :(');
@@ -75,10 +77,7 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
 
   const createUser = useCallback(async (signupInfo: Agent) => {
     try {
-      console.log(signupInfo);
-      const response = await send('signup', signupInfo);
-      const responseJson = await response.json();
-      console.log(responseJson);
+      await send('signup', signupInfo);
     } catch (err) {
       throw 'Signup failed';
     }
@@ -87,7 +86,6 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
   const checkSession = useCallback(async () => {
     try {
       const response = await send('checkSession');
-      console.log(response);
       const responseJson = await response.json();
       if (responseJson && responseJson.loggedInAs) {
         setUser(responseJson);

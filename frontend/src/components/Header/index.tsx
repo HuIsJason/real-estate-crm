@@ -14,6 +14,7 @@ const Header: React.FC<Props> = ({ title }: Props) => {
     <>
       <h1 className={classes.root}>{title}</h1>
       <h2>{user?.loggedInAs}</h2>
+      <h2>{user?.id}</h2>
       <Button onClick={logoutUser}>Logout</Button>
     </>
   );
