@@ -10,6 +10,8 @@ import { ClientProfileProps, clientType } from './types';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
+import { useUserContext } from '../../contexts/UserContext';
+
 const ClientProfile: React.FC<any> = ({page, setClient, client, clientId}:any) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -19,6 +21,8 @@ const ClientProfile: React.FC<any> = ({page, setClient, client, clientId}:any) =
   const phoneRef = useRef();
   const emailRef = useRef();
   const addressRef = useRef();
+
+  const { user } = useUserContext();
 
 
   const handleClickOpen = useCallback(() => {
@@ -40,10 +44,10 @@ const ClientProfile: React.FC<any> = ({page, setClient, client, clientId}:any) =
       phone: phone.value,
       email: email.value,
       address: address.value
-    }, setClient);
+    }, setClient, user);
 
     setOpen(false);
-  },[editClient, setOpen, client, setClient]);
+  },[editClient, setOpen, client, setClient, user]);
 
   return (
     <>

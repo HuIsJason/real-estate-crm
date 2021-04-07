@@ -13,13 +13,13 @@ const AgentProfile: React.FC = () => {
 
   const {user} = useUserContext();
 
-  const [agent, setAgent] = useState<any>({name: "Not available", bio: "Not available", history: "Not available",
+  const [agent, setAgent] = useState<any>({name: "Not available", bio: "Not available", history: 10,
   company: "Not available", city: "Not available", phone: "Not available",email: "Not available", 
   specialization: "Not available"});
 
   useEffect(() => {
     getAgent(user, setAgent);
-  }, []);
+  }, [user]);
 
   const nameRef = useRef();
   const bioRef = useRef();
@@ -60,7 +60,7 @@ const AgentProfile: React.FC = () => {
     }, setAgent);
 
     setOpen(false);
-  },[setAgent, agent, setOpen]);
+  },[setAgent, agent, setOpen, user]);
 
   return (
     <div className={classes.profileInfoContainer}>

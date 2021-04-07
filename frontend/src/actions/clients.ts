@@ -4,7 +4,7 @@ const API_HOST = ENV.api_host;
 
 export const getClientsList = (setRows:any, user:any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/` + user?.id;
+    const url = `${API_HOST}/api/clients/` + user?.MongoId;
     
     // Since this is a GET request, simply call fetch on the URL
     fetch(url)
@@ -28,7 +28,7 @@ export const getClientsList = (setRows:any, user:any) => {
 // A function to send a POST request with a new client
 export const addClient = (nameField: any, emailField: any, tagField: any, rows: any, setRows: any, user: any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/` + user?.id;
+    const url = `${API_HOST}/api/clients/` + user?.MongoId;
 
   const name = nameField.split(' ');
   // The data we are going to send in our request
@@ -70,7 +70,7 @@ export const addClient = (nameField: any, emailField: any, tagField: any, rows: 
 
 export const deleteClient = (clientId: any, rows: any, setRows: any, user: any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/` + user?.id;
+    const url = `${API_HOST}/api/clients/` + user?.MongoId + "/" + clientId;
 
   const request = new Request(url, {
     method: 'delete',

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useUserContext } from './contexts/UserContext';
+import { RouteComponentProps } from 'react-router';
 
 import AdminDashboard from './pages/Admin/Dashboard/index';
 import AdminAuthRequestView from './pages/Admin/AuthorizationRequest/index';
@@ -11,6 +12,7 @@ import {
   Signup,
   ProjectDetailsPage,
   AgentProfilePage,
+  Loading
 } from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
@@ -44,7 +46,7 @@ const App: React.FC = () => {
         path="/"
 
         render={() =>
-          user ? <Redirect to="/client-list" /> : <Redirect to="/login" />
+          user ? <Redirect to="/client-list" /> : <Login />
         }
       />
       <Route
@@ -57,18 +59,21 @@ const App: React.FC = () => {
         path="/login"
         render={() => (user ? <Redirect to="/client-list" /> : <Login />)}
       />
+      
       <Route exact path="/signup" component={Signup} />
+
       <Route
         exact
         path="/client-details/:clientId"
-        component={ClientProfilePage}
+        render={(props) => (user ? <ClientProfilePage {...props} /> : <Loading />)}
       />
+
       <Route
         exact
         path="/client-details/:clientId/project-details"
-        component={ProjectDetailsPage}
+        render={() => (user ? <ProjectDetailsPage /> : <Loading />)}
       />
-      <Route exact path="/agent-details" component={AgentProfilePage} />
+      <Route exact path="/agent-details" render={() => (user ? <AgentProfilePage /> : <Loading />)} />
     </Switch>
   );
 };

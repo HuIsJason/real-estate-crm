@@ -154,11 +154,11 @@ router.post('/login', mongoChecker, async (req, res) => {
 
     if (user.activated) {
       req.session.username = user.username;
-      req.session.id = user._id;
+      req.session.MongoId = user._id;
       req.session.name = `${user.firstName} ${user.lastName}`;
       res.send({
         username: user.username,
-        id: user._id,
+        MongoId: user._id,
         loggedInAs: `${user.firstName} ${user.lastName}`,
       });
     } else {
@@ -188,7 +188,7 @@ router.get('/checkSession', (req, res) => {
   if (req.session.username) {
     res.send({
       loggedInAs: req.session.name,
-      id: req.session.id,
+      MongoId: req.session.MongoId,
       username: req.session.username,
     });
   } else {

@@ -2,7 +2,7 @@ import { User } from '../../utils/types';
 
 interface IState {
   loggedInAs: string;
-  id: string;
+  MongoId: string;
   username: string;
 }
 

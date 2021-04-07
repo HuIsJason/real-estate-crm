@@ -4,9 +4,9 @@ const API_HOST = ENV.api_host
 
 // A function to send a GET request to the web server,
 // and then loop through them and add a list element for each student
-export const getClient = (clientId:any, setClient:any) => {
+export const getClient = (clientId:any, setClient:any, user:any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/507f191e810c19729de860ea/`+clientId // + user?.id; add this back after jason fixes context
+    const url = `${API_HOST}/api/clients/`+user?.MongoId+"/"+clientId // + user?.id; add this back after jason fixes context
     
     // Since this is a GET request, simply call fetch on the URL
     fetch(url)
@@ -33,9 +33,9 @@ export const getClient = (clientId:any, setClient:any) => {
         });
 };
 
-export const editClient = (clientId: any, client: any, setClient: any) => {
+export const editClient = (clientId: any, client: any, setClient: any, user:any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/507f191e810c19729de860ea/`+clientId;
+    const url = `${API_HOST}/api/clients/`+user?.MongoId+"/"+clientId
 
     const name = client.name.split(" ");
     // The data we are going to send in our request

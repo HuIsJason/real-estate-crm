@@ -92,6 +92,9 @@ const ClientList: React.FC = () => {
 
   useEffect(() => {
     getClientsList(handleSetRows, user);
+    return () => {
+      handleSetRows([]); 
+    };
   }, [user]);
 
   const handleChangePage = useCallback(
@@ -137,11 +140,10 @@ const ClientList: React.FC = () => {
 
   const handleDelete = useCallback(
     (id: string) => {
-      // API call to delete to backend
 
     deleteClient(id, rows, handleSetRows, user);
 
-  },[rows]);
+  },[rows, user]);
 
   return (
     <div className={classes.main}>

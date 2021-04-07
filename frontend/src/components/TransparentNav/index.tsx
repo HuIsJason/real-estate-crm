@@ -29,13 +29,6 @@ const TransparentAppBar: React.FC<TransparentNavBarProps> = ({page, handlePageCh
             classes={{ root: classes.listButtonsHead}} className={classes.listButtons + " " + classes.projectsButton + (page === "projects" ? " " + classes.current : "") }>
                 Projects
             </Button>
-
-            <Button 
-            onClick={() => handlePageChange("fav projects")} 
-            variant="contained" 
-            color="primary" classes={{ root: classes.listButtonsHead}} className={classes.listButtons + " " + classes.favProjectsButton + (page === "fav projects" ? " " + classes.current : "") }>
-                Favourited Properties
-            </Button>
     
           </Toolbar>
         </AppBar>
