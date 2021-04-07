@@ -43,7 +43,7 @@ const App: React.FC = () => {
       <Route
         exact
         path="/"
-        render={() => (user ? <Home /> : <Redirect to="/login" />)}
+        render={() => (user ? <Redirect to="/client-list" /> : <Redirect to="/login" />)}
       />
       <Route
         exact

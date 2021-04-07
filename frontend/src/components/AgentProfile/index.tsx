@@ -1,21 +1,25 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
 import useStyles from './styles';
 import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
+import { editAgent, getAgent } from '../../actions/agent';
 
+import { useUserContext } from '../../contexts/UserContext';
 
 const AgentProfile: React.FC = () => {
   const classes = useStyles();
-  const [name, setName] = useState<string>("Julia Smith");
-  const [bio, setBio] = useState<string>("Getting you top $$$");
-  const [history, setHistory] = useState<string>("2010");
-  const [company, setCompany] = useState<string>("HomeLife");
-  const [city, setCity] = useState<string>("Toronto");
-  const [phone, setPhone] = useState<string>("647-626-8888");
-  const [email, setEmail] = useState<string>("joeySmith@outlook.com");
-  const [specialization, setSpecialization] = useState<string>("Buyer Agent");
   const [open, setOpen] = useState(false);
+
+  const {user} = useUserContext();
+
+  const [agent, setAgent] = useState<any>({name: "Not available", bio: "Not available", history: "Not available",
+  company: "Not available", city: "Not available", phone: "Not available",email: "Not available", 
+  specialization: "Not available"});
+
+  useEffect(() => {
+    getAgent(user, setAgent);
+  }, []);
 
   const nameRef = useRef();
   const bioRef = useRef();
@@ -44,17 +48,19 @@ const AgentProfile: React.FC = () => {
     const email = emailRef.current as any;
     const spec = specRef.current as any;
 
-    setName(name.value);
-    setBio(bio.value);
-    setHistory(history.value);
-    setCompany(company.value);
-    setCity(city.value);
-    setPhone(phone.value);
-    setEmail(email.value);
-    setSpecialization(spec.value);
+    editAgent(user, {
+      name: name.value,
+      email: email.value,
+      phone: phone.value,
+      bio: bio.value,
+      company: company.value,
+      history: history.value,
+      city: city.value,
+      specialization: spec.valuie,
+    }, setAgent);
 
     setOpen(false);
-  },[setName,setBio,setHistory,setCompany,setCity,setPhone,setEmail,setSpecialization,setOpen]);
+  },[setAgent, agent, setOpen]);
 
   return (
     <div className={classes.profileInfoContainer}>
@@ -66,35 +72,35 @@ const AgentProfile: React.FC = () => {
           </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Name: </strong>{name}
+              <strong>Name: </strong>{agent.name}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Bio: </strong>{bio}
+              <strong>Bio: </strong>{agent.bio}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Realtor Since: </strong>{history}
+              <strong>Realtor Since: </strong>{agent.history}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Company: </strong>{company}
+              <strong>Company: </strong>{agent.company}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>City: </strong>{city}
+              <strong>City: </strong>{agent.city}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Phone: </strong> {phone}
+              <strong>Phone: </strong> {agent.phone}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Email:</strong> {email}
+              <strong>Email:</strong> {agent.email}
             </Typography>
 
             <Typography className={classes.contactInfo}>
-              <strong>Specialization: </strong>{specialization}
+              <strong>Specialization: </strong>{agent.specialization}
             </Typography>
 
       </div>
@@ -105,7 +111,7 @@ const AgentProfile: React.FC = () => {
 
                     <TextField
                         autoFocus
-                        defaultValue={name}
+                        defaultValue={agent.name}
                         inputRef={nameRef}
                         margin="dense"
                         id="Name"
@@ -115,7 +121,7 @@ const AgentProfile: React.FC = () => {
                     />
 
                     <TextField
-                        defaultValue={bio}
+                        defaultValue={agent.bio}
                         inputRef={bioRef}
                         margin="dense"
                         id="Bio"
@@ -125,7 +131,7 @@ const AgentProfile: React.FC = () => {
                     />
 
                     <TextField
-                        defaultValue={history}
+                        defaultValue={agent.history}
                         inputRef={historyRef}
                         margin="dense"
                         id="History"
@@ -135,7 +141,7 @@ const AgentProfile: React.FC = () => {
                     />
 
                     <TextField
-                        defaultValue={company}
+                        defaultValue={agent.company}
                         inputRef={companyRef}
                         margin="dense"
                         id="Address"
@@ -145,7 +151,7 @@ const AgentProfile: React.FC = () => {
                     />
 
                     <TextField
-                        defaultValue={city}
+                        defaultValue={agent.city}
                         inputRef={cityRef}
                         margin="dense"
                         id="City"
@@ -155,7 +161,7 @@ const AgentProfile: React.FC = () => {
                     />
 
                     <TextField
-                        defaultValue={phone}
+                        defaultValue={agent.phone}
                         inputRef={phoneRef}
                         margin="dense"
                         id="Phone"
@@ -165,7 +171,7 @@ const AgentProfile: React.FC = () => {
                     />
 
                     <TextField
-                        defaultValue={email}
+                        defaultValue={agent.email}
                         inputRef={emailRef}
                         margin="dense"
                         id="Email"
@@ -175,7 +181,7 @@ const AgentProfile: React.FC = () => {
                     />
 
                     <TextField
-                        defaultValue={specialization}
+                        defaultValue={agent.specialization}
                         inputRef={specRef}
                         margin="dense"
                         id="Specialization"

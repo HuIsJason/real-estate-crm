@@ -107,7 +107,7 @@ const ClientList: React.FC = () => {
   const handleDelete = useCallback((id: string) => {
     // API call to delete to backend
 
-    deleteClient(id, rows, handleSetRows);
+    deleteClient(id, rows, handleSetRows, user);
 
   },[rows]);
 

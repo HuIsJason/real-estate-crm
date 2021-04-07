@@ -4,7 +4,7 @@ const API_HOST = ENV.api_host
 
 export const getClientsList = (setRows:any, user:any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/507f191e810c19729de860ea` // + user?.id; add this back after jason fixes context
+    const url = `${API_HOST}/api/clients/` + user?.id;
     
     // Since this is a GET request, simply call fetch on the URL
     fetch(url)
@@ -26,9 +26,9 @@ export const getClientsList = (setRows:any, user:any) => {
 };
 
 // A function to send a POST request with a new client
-export const addClient = (nameField: any, emailField: any, tagField: any, rows: any, setRows: any) => {
+export const addClient = (nameField: any, emailField: any, tagField: any, rows: any, setRows: any, user: any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/507f191e810c19729de860ea`;
+    const url = `${API_HOST}/api/clients/` + user?.id;
 
     const name = nameField.split(" ");
     // The data we are going to send in our request
@@ -67,9 +67,9 @@ export const addClient = (nameField: any, emailField: any, tagField: any, rows: 
         });
 };
 
-export const deleteClient = (clientId: any, rows: any, setRows: any) => {
+export const deleteClient = (clientId: any, rows: any, setRows: any, user: any) => {
     // the URL for the request
-    const url = `${API_HOST}/api/clients/507f191e810c19729de860ea/` + clientId;
+    const url = `${API_HOST}/api/clients/` + user?.id;
 
     const request = new Request(url, {
         method: "delete"

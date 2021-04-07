@@ -15,12 +15,16 @@ import AddClientButtonProps from './types';
 
 import useStyles from './styles';
 
+import { useUserContext } from '../../contexts/UserContext';
+
 const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddClientButtonProps)=> {
     const [open, setOpen] = useState(false);
     const [nameField, setNameField] = useState("");
     const [emailField, setEmailField] = useState("");
     const [tagField, setTagField] = useState("");
     const [emailValid, setEmailValid] = useState(true);
+
+    const {user} = useUserContext();
 
     const handleClickOpen = useCallback(() => {
         setOpen(true);
@@ -34,7 +38,7 @@ const AddClientButton: React.FC<AddClientButtonProps> = ({rows, setRows}: AddCli
         setEmailValid((/\S+@\S+\.\S+/).test(emailField));
 
         if ((/\S+@\S+\.\S+/).test(emailField)) {
-            addClient(nameField, emailField, tagField, rows, setRows);
+            addClient(nameField, emailField, tagField, rows, setRows, user);
             setOpen(false);
         }
     },[nameField, emailField, tagField, setRows, setOpen]);
