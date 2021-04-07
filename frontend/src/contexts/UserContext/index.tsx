@@ -21,7 +21,7 @@ const users: User[] = [
   {
     username: 'user',
     password: 'user',
-    _id: "507f191e810c19729de860ea", // hard coded for now, run 'npm run initUser' to init agent with this _id
+    _id: '507f191e810c19729de860ea', // hard coded for now, run 'npm run initUser' to init agent with this _id
     firstName: 'Jason',
     lastName: 'Hu',
     bio: 'Selling your house ASAP!',
@@ -71,6 +71,7 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
       await send('logout');
       setUser(null);
     } catch (err) {
+      console.log(err);
       alert('Error with logging out :(');
     }
   }, []);
@@ -88,6 +89,7 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
       const response = await send('checkSession');
       const responseJson = await response.json();
       if (responseJson && responseJson.loggedInAs) {
+        console.log(responseJson);
         setUser(responseJson);
       }
     } catch (err) {

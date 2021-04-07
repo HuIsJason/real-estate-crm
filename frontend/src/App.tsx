@@ -7,7 +7,6 @@ import AdminAuthRequestView from './pages/Admin/AuthorizationRequest/index';
 import {
   ClientListPage,
   ClientProfilePage,
-  Home,
   Login,
   Signup,
   ProjectDetailsPage,
@@ -43,16 +42,27 @@ const App: React.FC = () => {
       <Route
         exact
         path="/"
-        render={() => (user ? <Redirect to="/client-list" /> : <Redirect to="/login" />)}
+
+        render={() =>
+          user ? <Redirect to="/client-list" /> : <Redirect to="/login" />
+        }
+      />
+      <Route
+        exact
+        path="/client-list"
+        render={() => (user ? <ClientListPage /> : <Redirect to="/login" />)}
       />
       <Route
         exact
         path="/login"
-        render={() => (user ? <Redirect to="/" /> : <Login />)}
+        render={() => (user ? <Redirect to="/client-list" /> : <Login />)}
       />
       <Route exact path="/signup" component={Signup} />
-      <Route exact path="/client-list" component={ClientListPage} />
-      <Route exact path="/client-details/:clientId" component={ClientProfilePage} />
+      <Route
+        exact
+        path="/client-details/:clientId"
+        component={ClientProfilePage}
+      />
       <Route
         exact
         path="/client-details/project-details"
