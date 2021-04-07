@@ -127,7 +127,7 @@ router.post('/signup', mongoChecker, async (req, res) => {
       brokerageAddress,
       brokerageNumber,
       accountType,
-      activated: false,
+      activated: true,
     });
 
     try {
@@ -154,9 +154,12 @@ router.post('/login', mongoChecker, async (req, res) => {
 
     if (user.activated) {
       req.session.username = user.username;
+      req.session.id = user._id;
+      req.session.name = `${user.firstName} ${user.lastName}`;
       res.send({
-        loggedInAs: `${user.firstName} ${user.lastName}`,
+        username: user.username,
         id: user._id,
+        loggedInAs: `${user.firstName} ${user.lastName}`,
       });
     } else {
       res.sendStatus(401);
@@ -183,7 +186,11 @@ router.get('/logout', mongoChecker, (req, res) => {
 
 router.get('/checkSession', (req, res) => {
   if (req.session.username) {
-    res.send({ loggedInAs: req.session.username });
+    res.send({
+      loggedInAs: req.session.name,
+      id: req.session.id,
+      username: req.session.username,
+    });
   } else {
     res.sendStatus(401);
   }
