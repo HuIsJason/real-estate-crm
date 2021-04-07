@@ -1,27 +1,27 @@
-import React, {useState, useCallback, useRef, useReducer} from 'react';
+import React, {useState, useCallback, useRef, useReducer, useEffect} from 'react';
 
 import useStyles from './styles';
 import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Chip } from '@material-ui/core';
 
 import { ProjectOverviewProps } from './types';
+import { getProject, editProject } from '../../actions/project';
 
-function useToggle(initialValue = true){
-  return useReducer((state) => !state, initialValue);
-}
-
-
-const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page, projectId }: ProjectOverviewProps) => {
+const ProjectOverview: React.FC<any> = ({ page, projectId, clientId }: any) => {
   const classes = useStyles();
-  const [description, setDescription] = useState<string>("Joey is looking for his dream house! He wants a place that is near a good school with a lively neighbourhood, so he can raise his son Jonathon in a good environment");
-  const [tags, setTags] = useState(["Friendly area", "Nearby school", "Kid friendly"]);
-  const [isActive, toggleIsActive] = useToggle();
+  const [description, setDescription] = useState<string>("Not available");
+  const [tags, setTags] = useState([""]);
   const [open, setOpen] = useState(false);
   const [openTag, setOpenTag] = useState(false);
+  const [isActive, setActive] = useState(false);
 
   const render = page === "overview";
 
   const descripRef = useRef();
   const tagRef = useRef();
+
+  useEffect(() => {
+    getProject(projectId, clientId, setDescription, setTags, tags, setActive);
+  }, []);
 
   const handleClickOpenTag = useCallback(() => {
       setOpenTag(true);
@@ -40,27 +40,41 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page, projectId }: Pr
   },[]);
 
   const handleEdit = useCallback(() => {
-    // This callback would contain an API call to edit project overview info in the backend
     const description = descripRef.current as any;
 
-    setDescription(description.value);
+    const changedField = "description";
+    const change = description.value;
+
+    editProject({projectId, clientId, setDescription, setTags, setActive, tags, changedField, change});
+
     setOpen(false);
-  },[setDescription, setOpen]);
+  },[setTags, setDescription, tags, setOpen, setOpenTag, isActive, setActive]);
 
   const handleAdd = useCallback(() => {
-    // This callback would contain an API call to add a tag to the project overview in the backend
     const tag = tagRef.current as any;
 
-    setTags(arr => [...arr, tag.value]);
+    const changedField = "tags";
+    const change = tag.value;
+
+    editProject({projectId, clientId, setDescription, setTags, setActive, tags, changedField, change});
+
     setOpenTag(false);
-  },[setTags, setOpenTag]);
+  },[setTags, setDescription, tags, setOpenTag, isActive, setActive]);
+
+  const handleStatusToggle = useCallback(() => {
+    const change = !isActive;
+    const changedField = "status";
+
+    editProject({projectId, clientId, setDescription, setTags, setActive, tags, changedField, change});
+
+  },[setTags, setDescription, tags, isActive, setActive]);
 
 
   return (
     <div >
     { render && <div className={classes.profileInfoContainer}>
       <div className={classes.contactContainer}>
-          <Typography color="primary" className={classes.header + " " + classes.contactInfo}>
+          <Typography component={"span"} color="primary" className={classes.header + " " + classes.contactInfo}>
             Project Details
           </Typography>
 
@@ -70,10 +84,10 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page, projectId }: Pr
             </Typography>
             <Button variant="outlined" color="primary" className={classes.editButton} onClick={handleClickOpen}> Edit Description </Button>
 
-            <Typography className={classes.contactInfo}>
+            <Typography component={"div"} className={classes.contactInfo}>
               <strong>Criteria: </strong> <br/>
-              <div >{tags.map( e =>
-                  <Chip className={classes.tags} color="primary" label={e}  />
+              <div >{tags.map((e,i) =>
+                  e !== "" ? <Chip key={i} className={classes.tags} color="primary" label={e}  /> : null
               )}
               </div>
             </Typography>
@@ -81,7 +95,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({ page, projectId }: Pr
             <Button variant="outlined" color="primary" className={classes.addTagButton} onClick={handleClickOpenTag}> + ADD TAG </Button>
 
             <Typography className={classes.contactInfo}>
-              <strong>Status:</strong> <Button variant="contained" disableElevation color={isActive ? "primary" : undefined} className={classes.statusButton} onClick={toggleIsActive}> {isActive ? "ACTIVE" : "CLOSED"} </Button>
+              <strong>Status:</strong> <Button variant="contained" disableElevation color={isActive ? "primary" : undefined} className={classes.statusButton} onClick={handleStatusToggle}> {isActive ? "ACTIVE" : "CLOSED"} </Button>
             </Typography>
 
       </div>

@@ -12,7 +12,7 @@ export default makeStyles((theme: Theme) => ({
     backgroundColor: "#F7F9FD",
     top: "225px",
     left: "18%",
-    width: "70%",
+    width: "70%"
   },
   header: {
     fontSize: "30px"
@@ -23,7 +23,8 @@ export default makeStyles((theme: Theme) => ({
     width: "40%"
   },
   contactContainer: {
-    float: "left"
+    float: "left",
+    width: "100%"
   },
   statusButton: {
     marginLeft: "10px",

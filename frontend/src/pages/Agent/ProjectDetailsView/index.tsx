@@ -12,14 +12,14 @@ const ProjectDetailsPage: React.FC = () => {
   const [page, setPage] = useState<string>("overview");
   const history = useHistory();
 
-  const location: { state: { projectId: string } } = useLocation();
+  const location: { state: { projectId: string, clientId: string, title: string } } = useLocation();
 
   const handlePageChange = useCallback((newPage: string) => {
     setPage(newPage);
   },[setPage]);
 
   useEffect(() => {
-    if (!location.state) {
+    if (!location.state.projectId || !location.state.clientId) {
       history.push("/client-list");
     }
   }, []);
@@ -27,15 +27,15 @@ const ProjectDetailsPage: React.FC = () => {
 
   return (
     <>
-        <PermNavBar title="Joey Smith"/>
+        <PermNavBar title={location.state.title}/>
 
-        <Button component={ Link } variant="contained" to="/client-details" color="primary" classes={{ root: classes.listButtonsHead}} className={classes.backButton}>
+        <Button component={ Link } variant="contained" to={"/client-details/"+location.state.clientId} color="primary" classes={{ root: classes.listButtonsHead}} className={classes.backButton}>
           Back
         </Button>
 
         <ProjectDetailsNav page={page} handlePageChange={handlePageChange}/>
-        <ProjectOverview page={page} projectId={ location.state.projectId }/>
-        { page === "history" ? <ProjectHistory projectId={ location.state.projectId } /> : null }
+        <ProjectOverview page={page} projectId={ location.state.projectId } clientId={location.state.clientId}/>
+        { page === "history" ? <ProjectHistory projectId={ location.state.projectId }/> : null }
     </>
   );
 };

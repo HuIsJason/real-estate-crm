@@ -32,9 +32,7 @@ const projects: Project[] = [
 // },
 ]
 
-const client_id = '6064dabe5caf8d0a85ea846d';
-
-const ProjectList: React.FC = () => {
+const ProjectList: React.FC<any> = ({clientId, title}:any) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -45,7 +43,7 @@ const ProjectList: React.FC = () => {
 
   useEffect(() => {
     // TODO: Get a list of all projects (summarized) from server
-    send('getAllProjects', {}, `/${client_id}`)
+    send('getAllProjects', {}, `/${clientId}`)
     .then((response ) => response.json())
     .then(json => {
         const { projects } = json;
@@ -59,7 +57,7 @@ const ProjectList: React.FC = () => {
     // allProjects.push({id: newId, name: projectName, active: true});
     // setProjects(allProjects);
     // TODO: send request to server to add a new empty project with name <projectName>
-    send("addProject", { title: projectName }, `/${client_id}`)
+    send("addProject", { title: projectName }, `/${clientId}`)
     .then(response => {
       if (response.status === 201) {
         console.log(`Project added`)
@@ -81,9 +79,11 @@ const ProjectList: React.FC = () => {
     /* TODO: update to navigate to detailed project view */
     console.log(`Opening project ${projectId}`);
     history.push({ 
-      pathname: 'client-details/project-details',
+      pathname: '/client-details/' + clientId + '/project-details',
       state: {
-        projectId: projectId
+        projectId: projectId,
+        clientId: clientId,
+        title: title
       }
     }); 
   }
