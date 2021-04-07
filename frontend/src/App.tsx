@@ -42,6 +42,7 @@ const App: React.FC = () => {
       <Route
         exact
         path="/"
+
         render={() =>
           user ? <Redirect to="/client-list" /> : <Redirect to="/login" />
         }

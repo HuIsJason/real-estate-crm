@@ -139,10 +139,9 @@ const ClientList: React.FC = () => {
     (id: string) => {
       // API call to delete to backend
 
-      deleteClient(id, rows, handleSetRows);
-    },
-    [rows]
-  );
+    deleteClient(id, rows, handleSetRows, user);
+
+  },[rows]);
 
   return (
     <div className={classes.main}>
