@@ -52,7 +52,7 @@ const ClientProfile: React.FC<any> = ({page, setClient, client, clientId}:any) =
   return (
     <>
     { render && <div className={classes.profileInfoContainer}>
-      <Avatar alt="Joey" src="/static/images/avatar/1.jpg" className={classes.large} />
+      {/* <Avatar alt="Joey" src="/static/images/avatar/1.jpg" className={classes.large} /> */}
       <div className={classes.contactContainer}>
           <Typography color="primary" className={classes.header + " " + classes.contactInfo}>
             Contact information
