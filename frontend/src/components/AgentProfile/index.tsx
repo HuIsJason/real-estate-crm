@@ -56,7 +56,7 @@ const AgentProfile: React.FC = () => {
       company: company.value,
       history: history.value,
       city: city.value,
-      specialization: spec.valuie,
+      specialization: spec.value,
     }, setAgent);
 
     setOpen(false);

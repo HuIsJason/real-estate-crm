@@ -89,7 +89,6 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
       const response = await send('checkSession');
       const responseJson = await response.json();
       if (responseJson && responseJson.loggedInAs) {
-        console.log(responseJson);
         setUser(responseJson);
       }
     } catch (err) {
