@@ -1,118 +1,141 @@
 interface endpoint {
-    name: string;
-    endpoint: string;
-    method: string;
+  name: string;
+  endpoint: string;
+  method: string;
 }
 
 const endpoints: endpoint[] = [
+  // agents
+  {
+    name: 'getAllAgents',
+    endpoint: '/api/agent',
+    method: 'GET',
+  },
+  {
+    name: 'getInactivatedAgents',
+    endpoint: '/api/agent?inactivated=true',
+    method: 'GET',
+  },
+  {
+    name: 'deleteAgent',
+    endpoint: '/api/agent', // /:username
+    method: 'DELETE',
+  },
 
+  // users
+  {
+    name: 'resetPassword',
+    endpoint: '/api/user', // /:username
+    method: 'PATCH',
+  },
 
-    // agents
-    {
-        name: "getAllAgents",
-        endpoint: '/api/agent',
-        method: 'GET'
-    },
-    {
-        name: "getInactivatedAgents",
-        endpoint: '/api/agent?inactivated=true',
-        method: "GET"
-    },
-    {
-        name: "deleteAgent",
-        endpoint: '/api/agent', // /:username
-        method: 'DELETE'
-    }, 
+  {
+    name: 'activateAccount',
+    endpoint: '/api/authentication/request', // /:account_id
+    method: 'PATCH',
+  },
 
-    // users
-    {
-        name: "resetPassword",
-        endpoint: '/api/user',  // /:username
-        method: 'PATCH'
-    },
+  // projects
+  {
+    name: 'getAllProjects',
+    endpoint: '/api/projects', // /:client_id
+    method: 'GET',
+  },
+  {
+    name: 'addProject',
+    endpoint: '/api/projects', // /:client_id
+    method: 'POST',
+  },
+  {
+    name: 'getSingleProject',
+    endpoint: '/api/projects', // /:client_id/:project_id:
+    method: 'GET',
+  },
+  {
+    name: 'deleteProject',
+    endpoint: '/api/projects', // /:client_id/:project_id
+    method: 'DELETE',
+  },
+  {
+    name: 'updateProject',
+    endpoint: '/api/projects', // /:client_id/:project_id
+    method: 'PATCH',
+  },
 
-    {
-        name: "activateAccount",
-        endpoint: '/api/authentication/request', // /:account_id
-        method: 'PATCH',
-    },
+  // properties
+  {
+    name: 'addProperty',
+    endpoint: '/api/property', // /:project_id
+    method: 'POST',
+  },
 
-    // projects
-    {
-        name: "getAllProjects",
-        endpoint: '/api/projects', // /:client_id
-        method: 'GET',
-    },
-    {
-        name: 'addProject',
-        endpoint: '/api/projects', // /:client_id
-        method: 'POST',
-    }, 
-    {
-        name: "getSingleProject",
-        endpoint: '/api/projects', // /:client_id/:project_id: 
-        method: 'GET',
-    }, 
-    {
-        name: "deleteProject",
-        endpoint: '/api/projects', // /:client_id/:project_id 
-        method: 'DELETE',
-    },
-    {
-        name: "updateProject",
-        endpoint: '/api/projects', // /:client_id/:project_id 
-        method: 'PATCH',
-    },
+  {
+    name: 'getAllProperties',
+    endpoint: '/api/property', // /:project_id
+    method: 'GET',
+  },
 
-    // properties
-    {
-        name: 'addProperty',
-        endpoint: '/api/property', // /:project_id 
-        method: 'POST',
-    },
+  {
+    name: 'getSingleProperty',
+    endpoint: '/api/property', // /:project_id/:property_id
+    method: 'GET',
+  },
 
-    {
-        name: 'getAllProperties',
-        endpoint: '/api/property', // /:project_id 
-        method: 'GET',
-    },
+  {
+    name: 'deleteProperty',
+    endpoint: '/api/property', // /:project_id/:property_id
+    method: 'DELETE',
+  },
 
-    {
-        name: 'getSingleProperty',
-        endpoint: '/api/property', // /:project_id/:property_id
-        method: 'GET',
-    },
+  {
+    name: 'updateProperty',
+    endpoint: '/api/property', // /:project_id/:property_id
+    method: 'PATCH',
+  },
 
-    {
-        name: 'deleteProperty',
-        endpoint: '/api/property', // /:project_id/:property_id
-        method: 'DELETE',
-    },
+  // activities
+  {
+    name: 'addActivity',
+    endpoint: '/api/property', // /:project_id/:property_id
+    method: 'POST',
+  },
 
-    {
-        name: 'updateProperty',
-        endpoint: '/api/property', // /:project_id/:property_id
-        method: 'PATCH',
-    },
+  {
+    name: 'getSingleActivity',
+    endpoint: '/api/property', // /:project_id/:property_id/:activity_id
+    method: 'GET',
+  },
 
-    // activities
-    {
-        name: 'addActivity',
-        endpoint: '/api/property', // /:project_id/:property_id
-        method: 'POST',
-    },
-
-    {
-        name: 'getSingleActivity',
-        endpoint: '/api/property', // /:project_id/:property_id/:activity_id
-        method: 'GET',
-    },
-
-    {
-        name: 'updateActivity',
-        endpoint: '/api/property', // /:project_id/:property_id/:activity_id
-        method: 'PUT',
-    }
-]
+  {
+    name: 'updateActivity',
+    endpoint: '/api/property', // /:project_id/:property_id/:activity_id
+    method: 'PUT',
+  },
+  {
+    name: 'signup',
+    endpoint: '/api/authentication/signup',
+    method: 'POST',
+  },
+  {
+    name: 'login',
+    endpoint: '/api/authentication/login',
+    method: 'POST',
+  },
+  {
+    name: 'logout',
+    endpoint: '/api/authentication/logout',
+    method: 'GET',
+  },
+  {
+    name: 'signupRequest',
+    endpoint: '/api/authentication/request',
+    method: 'PATCH',
+  },
+  {
+    name: 'checkSession',
+    endpoint: '/api/authentication/checkSession',
+    method: 'GET',
+  },
+];
 
 export default endpoints;

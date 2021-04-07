@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useUserContext } from './contexts/UserContext';
 
@@ -11,7 +11,7 @@ import {
   Login,
   Signup,
   ProjectDetailsPage,
-  AgentProfilePage
+  AgentProfilePage,
 } from './pages';
 
 import AdminAccountManagerView from './pages/Admin/AccountManager/index';
@@ -19,7 +19,11 @@ import ProjectList from './components/ProjectList/index';
 import PropertyHistoryDash from './components/PropertyHistoryDash/index';
 
 const App: React.FC = () => {
-  const { user } = useUserContext();
+  const { user, checkSession } = useUserContext();
+
+  useEffect(() => {
+    checkSession();
+  }, [checkSession]);
 
   return (
     <Switch>

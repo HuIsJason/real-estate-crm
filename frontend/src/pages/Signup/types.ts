@@ -1,10 +1,12 @@
 export interface ISignupState {
+  username: string;
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   password: string;
-  brokerageName: string;
-  brokeragePhone: string;
+  brokerage: string;
+  brokerageNumber: string;
   brokerageAddress: string;
-  license: string;
+  licenseId: string;
 }

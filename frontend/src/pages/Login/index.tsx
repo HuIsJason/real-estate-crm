@@ -38,9 +38,13 @@ const Login: React.FC = () => {
     []
   );
 
-  const handleSubmit = useCallback(() => {
-    loginUser(username, password);
-  }, [username, password, loginUser]);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      loginUser(username, password);
+    },
+    [username, password, loginUser]
+  );
 
   return (
     <Paper className={classes.paper} elevation={5}>
@@ -74,9 +78,6 @@ const Login: React.FC = () => {
           Don't have an account? Sign up <Link to="/signup">here</Link>.
         </Typography>
         <Button
-          /**
-           * here the button would call loginUser() from the context
-           */
           color="primary"
           className={classes.button}
           variant="contained"

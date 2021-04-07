@@ -5,11 +5,11 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { v4 as uuid } from 'uuid';
 
-import UserContextType from './types';
+import { UserState, default as UserContextType } from './types';
 import { ProviderProps as Props } from '../types';
-import { User } from '../../utils/types';
+import { Agent, User } from '../../utils/types';
+import send from '../../requests/request';
 
 const users: User[] = [
   {
@@ -31,13 +31,11 @@ const users: User[] = [
     licenseId: '232-324234-32432',
     brokerage: 'Remax',
     brokerageAddress: '100 Fundy Bay Blvd',
-    brokeragePhone: '416-867-1111',
+    brokerageNumber: '416-867-1111',
     specialization: 'SELLER',
     accountType: 'agent',
   },
 ];
-
-type DefUser = User | null;
 
 const UserContext = createContext<UserContextType | null>(null);
 
@@ -45,40 +43,67 @@ export const useUserContext = (): UserContextType =>
   useContext(UserContext) as UserContextType;
 
 const UserProvider: React.FC<Props> = ({ children }: Props) => {
-  const [user, setUser] = useState<DefUser>(null);
+  const [user, setUser] = useState<UserState>(null);
 
-  const loginUser = useCallback((username: string, password: string) => {
-    /**
-     * here there would be the login server call to log in a user
-     */
-    if (username === 'admin' && password === 'admin') {
-      setUser(users[0]);
-    } else if (username === 'user' && password === 'user') {
-      setUser(users[1]);
-    } else {
+  const loginUser = useCallback(async (username: string, password: string) => {
+    try {
+      const response = await send('login', { username, password });
+      if (response.status === 401) {
+        alert('Account has not been activated yet!');
+      } else {
+        const responseJson = await response.json();
+        setUser(responseJson);
+      }
+    } catch (err) {
       alert('Invalid credentials!');
+    }
+    // if (username === 'admin' && password === 'admin') {
+    //   setUser(users[0]);
+    // } else if (username === 'user' && password === 'user') {
+    //   setUser(users[1]);
+    // } else {
+    //   alert('Invalid credentials!');
+    // }
+  }, []);
+
+  const logoutUser = useCallback(async () => {
+    try {
+      await send('logout');
+      setUser(null);
+    } catch (err) {
+      alert('Error with logging out :(');
     }
   }, []);
 
-  const logoutUser = useCallback(() => {
-    /**
-     * here there would be a server call to log out the current user
-     */
-    setUser(null);
+  const createUser = useCallback(async (signupInfo: Agent) => {
+    try {
+      await send('signup', signupInfo);
+    } catch (err) {
+      throw 'Signup failed';
+    }
   }, []);
 
-  const createUser = useCallback((newUser: any) => {
-    /**
-     * here there would be a server call to create a new user
-     */
-    newUser.id = uuid();
-    newUser.yearCreated = '2021';
-    users.push(newUser);
+  const checkSession = useCallback(async () => {
+    try {
+      const response = await send('checkSession');
+      const responseJson = await response.json();
+      if (responseJson && responseJson.loggedInAs) {
+        setUser(responseJson);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   const providerValue = useMemo(
-    (): UserContextType => ({ user, loginUser, logoutUser, createUser }),
-    [user, loginUser, logoutUser, createUser]
+    (): UserContextType => ({
+      user,
+      loginUser,
+      logoutUser,
+      createUser,
+      checkSession,
+    }),
+    [user, loginUser, logoutUser, createUser, checkSession]
   );
 
   return (
