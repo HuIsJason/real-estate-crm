@@ -115,6 +115,7 @@ router
             const project = await Project.findByIdAndUpdate({_id: projectId}, {$set: fieldsToUpdate}, {new: true, useFindAndModify: false});
             if (!project) {
                 res.status(404).send();
+                return;
             } else {   
                 res.send(project)
             }
@@ -122,6 +123,7 @@ router
         } catch (error) {
             log(error);
             res.status(500).send('Internal Server Error');
+            return;
         }
     })
     .delete(async(req, res) => {

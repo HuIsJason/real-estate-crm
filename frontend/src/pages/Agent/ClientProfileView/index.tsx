@@ -34,7 +34,7 @@ const ClientProfilePage: React.FC<RouteComponentProps<{clientId: string}>> = ({m
       <TransparentAppBar page={page} handlePageChange={handlePageChange} />
       <ClientProfile page={page} setClient={setClient} client={client} clientId={match.params.clientId} />
       <FavouritedProperties page={page} />
-      {page === 'projects' ? <ProjectList /> : null}
+      {page === 'projects' ? <ProjectList clientId={match.params.clientId} title={client.name} /> : null}
     </>
   );
 };

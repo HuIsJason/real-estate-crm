@@ -51,7 +51,7 @@ const App: React.FC = () => {
       <Route exact path="/client-details/:clientId" component={ClientProfilePage} />
       <Route
         exact
-        path="/client-details/project-details"
+        path="/client-details/:clientId/project-details"
         component={ProjectDetailsPage}
       />
       <Route exact path="/agent-details" component={AgentProfilePage} />
