@@ -3,6 +3,7 @@ import { User } from '../../utils/types';
 interface IState {
   loggedInAs: string;
   id: string;
+  username: string;
 }
 
 export type UserState = IState | null;
