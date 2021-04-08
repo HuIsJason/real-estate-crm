@@ -29,10 +29,9 @@ const mongoChecker = (req, res, next) => {
 };
 
 const adminAuthenticate = (req, res, next) => {
-  if (req.session.user) {
-    User.findById(req.session.user)
+  if (req.session.MongoId) {
+    User.findById(req.session.MongoId)
       .then((user) => {
-        console.log(user);
         if (!user || user.accountType !== 'admin') {
           return Promise.reject();
         } else {
@@ -201,7 +200,7 @@ router.get('/checkSession', (req, res) => {
 router.patch(
   '/request/:agent_id',
   mongoChecker,
-  authenticate,
+  adminAuthenticate,
   async (req, res) => {
     const agent_id = req.params.agent_id;
 
