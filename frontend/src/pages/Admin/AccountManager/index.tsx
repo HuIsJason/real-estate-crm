@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import AccountListTable from '../../../components/AccountListTable/index';
 import SearchBar from '../../../components/SearchBar/index';
 import AgentAccountDetail from "../../../components/AccountDetail/agent";
-import ClientAccountDetail from "../../../components/AccountDetail/client";
-import AccountSelector from '../../../components/AccountSelector/index';
 import AppBar from "../../../components/AppBar";
 
 import { Agent } from "../../../utils/types";
@@ -105,13 +103,13 @@ const  AccountManagerView: React.FC = () => {
         toggleOpenDetails(false);
     }
 
-    const filterByType = (type: string) => {
-        setAccountType(type);
-        const newAccountsList = activeAccounts.filter(account => account.accountType === type);
-        setDisplayAccounts(newAccountsList);
-        setSearchValue('');
-        setDisplayPage(1);
-    }
+    // const filterByType = (type: string) => {
+    //     setAccountType(type);
+    //     const newAccountsList = activeAccounts.filter(account => account.accountType === type);
+    //     setDisplayAccounts(newAccountsList);
+    //     setSearchValue('');
+    //     setDisplayPage(1);
+    // }
 
     const searchFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
@@ -126,13 +124,13 @@ const  AccountManagerView: React.FC = () => {
             <AppBar showDashboardbtn/>
             <div className={classes.root} > 
                 <div> <Typography variant="h6" gutterBottom color='primary'> Account Manager </Typography> </div>
-                { openDetails ?
-                ( accountType === 'agent' ? <AgentAccountDetail account={selectedAccount} username={selectedAccount.username} hideDetails={() => toggleOpenDetails(false)} 
-                deleteAccount={deleteAccount}/> : <ClientAccountDetail account={selectedAccount} username={selectedAccount.username} hideDetails={() => toggleOpenDetails(false)} deleteAccount={deleteAccount} />)
+                { openDetails ? 
+                (<AgentAccountDetail account={selectedAccount} username={selectedAccount.username} hideDetails={() => toggleOpenDetails(false)} 
+                deleteAccount={deleteAccount}/>)
                 :
                 (<div> 
                     <SearchBar onChange={searchFilter} value={searchValue}/>
-                    <AccountSelector selection={accountType} setSelection={filterByType}/>
+                    {/* <AccountSelector selection={accountType} setSelection={filterByType}/> */}
                     <AccountListTable displayPage={displayPage} accounts={displayAccounts} 
                         onSelectRow={openAccountDetails}
                         onClickNext={() => setDisplayPage(displayPage + 1)}
