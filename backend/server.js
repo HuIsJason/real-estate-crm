@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+const path = require('path');
+
 // These will handle all our routes
 const admin = require('./api/routes/admin');
 const agent = require('./api/routes/agent');
@@ -59,10 +61,14 @@ app.use('/api/projects', projects);
 app.use('/api/property', property);
 app.use('/api/user', user);
 
+app.use(express.static(path.join(__dirname, "/../frontend/build")));
+
 // All routes other than above will go to index.html
 app.get('*', (req, res) => {
-  res.status(404).send('404 Not Found');
+  // res.status(404).send('404 Not Found');
   // TODO: We can add a cool 404 page here later
+  // send index.html
+  res.sendFile(path.join(__dirname, "/../frontend/build/index.html"));
 });
 
 module.exports = app;
