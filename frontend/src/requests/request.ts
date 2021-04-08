@@ -1,6 +1,9 @@
 import endpoints from './endpoints';
+import ENV from './../config'
 
-const SERVER = 'http://localhost:5000'; // <-- Replace with main server URL path
+const API_HOST = ENV.api_host
+
+const SERVER = API_HOST; // <-- Replace with main server URL path
 
 export default function send(
   requestType: string,
