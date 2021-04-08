@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from "@material-ui/core";
+import { useState } from "react";
 import Props from './types'; 
 
 
@@ -12,9 +13,7 @@ const NotesSection: React.FC<Props> = ({ notes, onSave } : Props) => {
     return (
         <div className={classes.root}>
             <textarea className={classes.input} onChange={handleChange} placeholder={"No notes to see here, start typing to add notes..."}
-                cols={80} rows={30}>
-            {notes}
-            </textarea>
+                cols={80} rows={30} defaultValue={notes} />
         </div>
     )
 
