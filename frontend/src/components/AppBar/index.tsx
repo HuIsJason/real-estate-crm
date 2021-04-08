@@ -1,10 +1,13 @@
+import React, { useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+
 import AppBarProps from './types';
-import { Link } from 'react-router-dom';
+import { useUserContext } from '../../contexts/UserContext';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,11 +20,18 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
     },
-  }),
+  })
 );
 
-export default function AdminAppBar( { showDashboardbtn } : AppBarProps ) {
+export default function AdminAppBar({ showDashboardbtn }: AppBarProps) {
   const classes = useStyles();
+  const history = useHistory();
+  const { logoutUser } = useUserContext();
+
+  const handleLogout = useCallback(() => {
+    logoutUser();
+    history.push('/login');
+  }, [history, logoutUser]);
 
   return (
     <div className={classes.root}>
@@ -30,9 +40,17 @@ export default function AdminAppBar( { showDashboardbtn } : AppBarProps ) {
           <Typography variant="h6" className={classes.title}>
             Administration
           </Typography>
-  
-          {showDashboardbtn ? <Button color="inherit" component={Link} to='/admin' > Dashboard</Button> : null }
-          <Button color="inherit" component={Link} to='/login'> Logout</Button>
+
+          {showDashboardbtn ? (
+            <Button color="inherit" component={Link} to="/admin">
+              {' '}
+              Dashboard
+            </Button>
+          ) : null}
+          <Button onClick={handleLogout} color="inherit">
+            {' '}
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

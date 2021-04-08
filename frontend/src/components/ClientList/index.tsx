@@ -90,34 +90,28 @@ const ClientList: React.FC = () => {
 
   const { user } = useUserContext();
 
+  const handleSetRows = useCallback((newRows: DataFields[]) => {
+    setRows(newRows);
+    setOriginalRows(newRows);
+  }, []);
+
   useEffect(() => {
     getClientsList(handleSetRows, user);
     return () => {
-      handleSetRows([]); 
+      handleSetRows([]);
     };
-  }, [user]);
+  }, [user, handleSetRows]);
 
-  const handleChangePage = useCallback(
-    (event: unknown, newPage: number) => {
-      setPage(newPage);
-    },
-    [setRows, rows]
-  );
-
-  const handleSetRows = useCallback(
-    (newRows: DataFields[]) => {
-      setRows(newRows);
-      setOriginalRows(newRows);
-    },
-    [setRows, rows]
-  );
+  const handleChangePage = useCallback((event: unknown, newPage: number) => {
+    setPage(newPage);
+  }, []);
 
   const handleChangeRowsPerPage = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     },
-    [setRows, rows]
+    []
   );
 
   const requestSearch = useCallback(
@@ -130,20 +124,20 @@ const ClientList: React.FC = () => {
       setPage(0);
       setRows(filteredRows);
     },
-    [setRows, rows, originalRows]
+    [setRows, originalRows]
   );
 
   const cancelSearch = useCallback(() => {
     setSearched('');
     requestSearch(searched);
-  }, [originalRows, searched, requestSearch]);
+  }, [searched, requestSearch]);
 
   const handleDelete = useCallback(
     (id: string) => {
-
-    deleteClient(id, rows, handleSetRows, user);
-
-  },[rows, user]);
+      deleteClient(id, rows, handleSetRows, user);
+    },
+    [rows, user, handleSetRows]
+  );
 
   return (
     <div className={classes.main}>
