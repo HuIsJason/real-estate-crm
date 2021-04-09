@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Button,
   FormControl,
@@ -50,6 +51,9 @@ const AgentSignup: React.FC<Props> = ({
       <Typography variant="body1">
         We will need to verify your real estate registration details. Please
         provide additional information below.
+      </Typography>
+      <Typography variant="body1">
+        <Link to="/login">Or return to Login.</Link>
       </Typography>
       <FormControl component="form" fullWidth variant="filled">
         <TextField
