@@ -6,12 +6,21 @@ import { Typography } from '@material-ui/core';
 
 const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }: addPropertyProps) => {
     const classes = useStyles();
-    const [address, setaddress] = React.useState('');
+    const [address, setAddress] = React.useState('');
     const [city, setCity] = React.useState('');
     const [prov, setProv] = React.useState('');
     const [postalCode, setPostalCode] = React.useState('');
 
     const [warning, setWarning] = React.useState(false);
+
+    const resetFormValues = () => {
+      setAddress('');
+      setCity('');
+      setProv('');
+      setPostalCode('');
+      return;
+      
+    }
 
     const saveProperty = () => {
       if (address === '' || city === '' || prov === '' || postalCode === '') {
@@ -30,10 +39,7 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
       }
 
       // Reset Modal values
-      setaddress('');
-      setCity('');
-      setProv('');
-      setPostalCode('');
+      resetFormValues();
 
       onSave(newProperty);
 
@@ -42,7 +48,7 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setWarning(false);
       if (event.target.id === "addr-field") {
-        setaddress(event.target.value);
+        setAddress(event.target.value);
       } else if (event.target.id === "city-field") {
         setCity(event.target.value);
       } else if (event.target.id === "prov-field") {
@@ -73,7 +79,7 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
               <input id="postal-field" className={classes.inputField} type='text' placeholder="Postal Code" value={postalCode} onChange={handleChange} />
             </div> 
             
-            <button type="button" onClick={onCancel}><Typography variant='button'> Cancel </Typography> </button>
+            <button type="button" onClick={() => { resetFormValues(); onCancel(); }}><Typography variant='button'> Cancel </Typography> </button>
             <button type="button" onClick={saveProperty} style={{ marginLeft: 10 }}><Typography variant='button'>Save</Typography> </button>
         </div>
 
@@ -113,7 +119,6 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '10px 12px',
       display: 'inline-block',
       width: '300px',
-      color: '#A2AEB8',
       fontWeight: 500,
       fontSize: '12px',
       border: '1px solid grey', 

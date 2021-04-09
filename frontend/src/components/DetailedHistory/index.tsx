@@ -18,7 +18,7 @@ const tabOptions = [
 ]
 
 
-const DetailedHistory: React.FC<DetailedHistoryProps> = ( { property, toggleFavourite, addActivity, updateNotes, currTab, setCurrTab } : DetailedHistoryProps) => {
+const DetailedHistory: React.FC<DetailedHistoryProps> = ( { property, toggleFavourite, addActivity, deleteActivity, updateNotes, currTab, setCurrTab } : DetailedHistoryProps) => {
     const classes = useStyles();
 
     const saveNotes = (notes: string) => {
@@ -39,7 +39,7 @@ const DetailedHistory: React.FC<DetailedHistoryProps> = ( { property, toggleFavo
           </div>
           {
             currTab === 'activity' ? 
-            (<ActivityTable activities={property.activities} addActivity={addActivity}> </ActivityTable>) : (<NotesSection notes={property.notes} onSave={saveNotes}/>)
+            (<ActivityTable activities={property.activities} addActivity={addActivity} deleteActivity={deleteActivity}> </ActivityTable>) : (<NotesSection notes={property.notes} onSave={saveNotes}/>)
           } </div>)
           :
           <div style={{margin: 15, width: '520px'}}>

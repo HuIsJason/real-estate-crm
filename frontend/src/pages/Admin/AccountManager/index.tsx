@@ -73,7 +73,7 @@ const  AccountManagerView: React.FC = () => {
     const [displayAccounts, setDisplayAccounts] = useState(activeAccounts.filter(account => account.accountType === accountType));
     
     useEffect(() => {
-        send("getAllAgents")
+        send("getActivatedAgents")
         .then(response => response.json())
         .then(data => {
             setActiveAccounts(data.agents);

@@ -4,6 +4,7 @@ import { useUserContext } from './contexts/UserContext';
 
 import AdminDashboard from './pages/Admin/Dashboard/index';
 import AdminAuthRequestView from './pages/Admin/AuthorizationRequest/index';
+import AdminAccountManagerView from './pages/Admin/AccountManager/index';
 import {
   ClientListPage,
   ClientProfilePage,
@@ -13,10 +14,6 @@ import {
   AgentProfilePage,
   Loading,
 } from './pages';
-
-import AdminAccountManagerView from './pages/Admin/AccountManager/index';
-import ProjectList from './components/ProjectList/index';
-import PropertyHistoryDash from './components/PropertyHistoryDash/index';
 
 const App: React.FC = () => {
   const { user, checkSession } = useUserContext();
@@ -41,14 +38,24 @@ const App: React.FC = () => {
       <Route
         exact
         path="/admin/auth-requests"
-        component={AdminAuthRequestView}
+        render={() =>
+          user?.accountType === 'admin' ? (
+            <AdminAuthRequestView />
+          ) : (
+            <Redirect to="/login" />
+          )
+        }
       />
-      <Route exact path="/admin/accounts" component={AdminAccountManagerView} />
-      <Route exact path="/project-list" component={ProjectList} />
-      <Route
-        exact
-        path="/project/history-dash"
-        component={PropertyHistoryDash}
+      <Route 
+        exact 
+        path="/admin/accounts" 
+        render={() =>
+          user?.accountType === 'admin' ? (
+            <AdminAccountManagerView />
+          ) : (
+            <Redirect to="/login" />
+          )
+        }
       />
       <Route
         exact

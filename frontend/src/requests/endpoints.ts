@@ -7,8 +7,8 @@ interface endpoint {
 const endpoints: endpoint[] = [
   // agents
   {
-    name: 'getAllAgents',
-    endpoint: '/api/agent',
+    name: 'getActivatedAgents',
+    endpoint: '/api/agent?inactivated=false',
     method: 'GET',
   },
   {
@@ -111,6 +111,13 @@ const endpoints: endpoint[] = [
     endpoint: '/api/property', // /:project_id/:property_id/:activity_id
     method: 'PUT',
   },
+  {
+    name: 'deleteActivity',
+    endpoint: '/api/property', // /:project_id/:property_id/:activity_id
+    method: 'DELETE',
+  },
+
+  // authentication
   {
     name: 'signup',
     endpoint: '/api/authentication/signup',

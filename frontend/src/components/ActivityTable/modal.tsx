@@ -4,7 +4,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Typography } from '@material-ui/core';
 
-const ActivityDetailModal: React.FC<ActivityDetailModalProps> = ({ open, onClose, activity }: ActivityDetailModalProps) => {
+const ActivityDetailModal: React.FC<ActivityDetailModalProps> = ({ open, handleDelete, onClose, activity }: ActivityDetailModalProps) => {
     const classes = useStyles();
 
     const body = (
@@ -17,6 +17,7 @@ const ActivityDetailModal: React.FC<ActivityDetailModalProps> = ({ open, onClose
                 {activity.description}
             </p>
             <button type="button" onClick={onClose}><Typography variant='button'> Close </Typography> </button>
+            <button type="button" onClick={handleDelete} style={{ marginLeft: 10 }}><Typography variant='button'> Delete Activity </Typography> </button>
         </div>
 
     );
