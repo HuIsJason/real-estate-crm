@@ -7,8 +7,8 @@ interface endpoint {
 const endpoints: endpoint[] = [
   // agents
   {
-    name: 'getAllAgents',
-    endpoint: '/api/agent',
+    name: 'getActivatedAgents',
+    endpoint: '/api/agent?inactivated=false',
     method: 'GET',
   },
   {

@@ -59,8 +59,8 @@ router
 
         try {
             const query = { accountType: 'agent'}
-            if (inactivated) {
-                query.activated = false;
+            if (!(inactivated == null)) {
+                query.activated = (inactivated === 'false');
             }
             const agents = await User.find(query);
             res.send({ agents: agents });
