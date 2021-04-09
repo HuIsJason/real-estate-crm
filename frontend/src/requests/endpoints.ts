@@ -21,11 +21,22 @@ const endpoints: endpoint[] = [
     endpoint: '/api/agent', // /:username
     method: 'DELETE',
   },
+  {
+    name: 'getAgent',
+    endpoint: '/api/agent', // /:username
+    method: 'GET',
+
+  },
+  {
+    name: 'updateAgent',
+    endpoint: '/api/agent', // /:username
+    method: 'PUT',
+  },
 
   // users
   {
     name: 'resetPassword',
-    endpoint: '/api/user', // /:username
+    endpoint: '/api/authentication/user', // /:username
     method: 'PATCH',
   },
 

@@ -1,5 +1,6 @@
 // environment configutations
-import ENV from './../config'
+import ENV from './../config';
+import send from '../requests/request';
 
 const API_HOST = ENV.api_host
 
@@ -12,7 +13,7 @@ export const getAgent = (user:any, setAgent:any) => {
     const url = `${API_HOST}/api/agent/` + user?.username;
     
     // Since this is a GET request, simply call fetch on the URL
-    fetch(url)
+    send('getAgent', {}, `/${user.username}`)
         .then(res => {
             if (res.status === 200) {
                 // return a promise that resolves with the JSON body
@@ -42,9 +43,6 @@ export const getAgent = (user:any, setAgent:any) => {
 
 export const editAgent = (user:any, agent: any, setAgent: any) => {
 
-    // the URL for the request
-    const url = `${API_HOST}/api/agent/` + user?.username;
-
     const name = agent.name.split(" ");
     // The data we are going to send in our request
     const formattedAgent = {
@@ -59,17 +57,8 @@ export const editAgent = (user:any, agent: any, setAgent: any) => {
         specialization: agent.specialization,
     }
 
-    // Create our request constructor with all the parameters we need
-    const request = new Request(url, {
-        method: "put",
-        body: JSON.stringify(formattedAgent),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-
     // Send the request with fetch()
-    fetch(request)
+    send("updateAgent", formattedAgent, `/${user.username}`)
         .then(res => {
             if (res.status === 200) {
                 // return a promise that resolves with the JSON body

@@ -1,6 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const { ObjectID } = require('mongodb');
+const log = console.log;
+const generator = require('generate-password');
 
 const { User } = require('../models/User');
 const { mongoose } = require('../db/mongoose');
@@ -33,27 +35,6 @@ const adminAuthenticate = (req, res, next) => {
     User.findById(req.session.MongoId)
       .then((user) => {
         if (!user || user.accountType !== 'admin') {
-          return Promise.reject();
-        } else {
-          req.user = user;
-          next();
-        }
-      })
-      .catch((err) => {
-        res.sendStatus(401);
-      });
-  } else {
-    res.sendStatus(401);
-  }
-};
-
-// Middleware for authentication of resources
-const authenticate = (req, res, next) => {
-  if (req.session.user) {
-    User.findById(req.session.user)
-      .then((user) => {
-        console.log(user);
-        if (!user) {
           return Promise.reject();
         } else {
           req.user = user;
@@ -231,5 +212,61 @@ router.patch(
     }
   }
 );
+
+router
+  .route('/user/:username')
+  /* Admin accessible route for updating a user, including resetting passwords
+          TODO: admin authenticate middleware */
+  .patch(mongoChecker, adminAuthenticate, async(req, res) => {
+
+      log("PATCH /api/authenticate/user/:username");
+      const username = req.params.username;
+
+      // Reset password
+      const validFields = ["username", "password", "firstName", "lastName", "email", "phone", "specialization", 
+                          "yearStarted", "licenseId", "brokerage", "brokerageAddress", "brokeragePhone"];
+      
+      const fieldsToUpdate = {};
+      let passwordReset;
+      req.body.map((change) => {
+          if (!validFields.includes(change.field)) {
+              res.status(400).send("Invalid update field specified.");
+          }
+          if (change.op === "set") {
+              fieldsToUpdate[change.field] = change.value;
+          } else if (change.op === "reset" && change.field === "password") {
+              passwordReset = "";
+          }
+      });
+
+      if (passwordReset === "") {
+          const password = generator.generate({
+              numbers: true,
+              symbols: true,
+          })
+
+          passwordReset = password;
+      }
+
+      try {
+          let user = await User.findOneAndUpdate({username: username}, {$set: fieldsToUpdate}, {new: true, useFindAndModify: false});
+          if (!user) {
+              res.status(404).send();
+          } else {
+              let result = user;
+              if (passwordReset) { 
+                  user.password = passwordReset; 
+                  result = await user.save();
+              }
+              res.send({ user: result, passwordReset: passwordReset });
+          }
+
+      } catch (error) {
+          log(error);
+          res.sendStatus(500);
+      }
+
+  });
+
 
 module.exports = router;
