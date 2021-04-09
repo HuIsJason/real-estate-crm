@@ -63,8 +63,12 @@ app.use(express.static(path.join(__dirname, "/../frontend/build")));
 
 // All routes other than above will go to index.html
 app.get('*', (req, res) => {
-  // res.status(404).send('404 Not Found');
-  // TODO: We can add a cool 404 page here later
+  // check for page routes that we expect in the frontend to provide correct status code.
+  const goodPageRoutes = ["/", "/login", "/admin", "/admin/accounts", "/admin/auth-requests", "/client-list", "/agent-details"];
+  if (!goodPageRoutes.includes(req.url)) {
+      // if url not in expected page routes, set status to 404.
+      res.status(404).send("<h1> Sorry, it looks like you reached an non-existent page </h1>");
+  }
   // send index.html
   res.sendFile(path.join(__dirname, "/../frontend/build/index.html"));
 });
