@@ -15,6 +15,7 @@ import { editAgent, getAgent } from '../../actions/agent';
 
 import { useUserContext } from '../../contexts/UserContext';
 import ChangePasswordModal from './modal';
+import Joi from 'joi';
 
 const specializations = [
   {
@@ -35,6 +36,8 @@ const AgentProfile: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openChangePassword, setOpenChangePassword] = useState(false);
+  const [emailValid, setEmailValid] = useState(true);
+  const [phoneValid, setPhoneValid] = useState(true);
 
   const { user } = useUserContext();
 
@@ -70,7 +73,9 @@ const AgentProfile: React.FC = () => {
 
   const handleClose = useCallback(() => {
     setOpen(false);
-  }, []);
+    setPhoneValid(true);
+    setEmailValid(true);
+  }, [setPhoneValid, setEmailValid]);
 
   const handleOpenChangePasswordModal = useCallback(() => {
     setOpenChangePassword(true);
@@ -79,6 +84,19 @@ const AgentProfile: React.FC = () => {
   const handleCloseChangePasswordModal = useCallback(() => {
     setOpenChangePassword(false);
   }, []);
+  
+  const schema = Joi.object().keys({
+    email: Joi.string()
+      .lowercase()
+      .trim()
+      .max(100)
+      .email({ minDomainSegments: 2 , tlds: { allow: ['com', 'net', 'ca'] } })
+      .required(),
+    phone: Joi.string()
+      .max(10)
+      .min(10)
+      .required()
+  });
 
   const handleEdit = useCallback(() => {
     const name = nameRef.current as any;
@@ -90,25 +108,60 @@ const AgentProfile: React.FC = () => {
     const email = emailRef.current as any;
     // const spec = specRef.current as any;
 
-    editAgent(
-      user,
-      {
-        name: name.value,
-        email: email.value,
-        phone: phone.value,
-        bio: bio.value,
-        company: company.value,
-        history: history.value,
-        address: address.value,
-        specialization: spec,
-      },
-      setAgent,
-      spec,
-      setSpec
-    );
+    schema.validateAsync({ email: email.value, phone: phone.value }).then(val => {
+      const res = val;
+      setPhoneValid(true);
+      setEmailValid(true);
 
-    setOpen(false);
-  }, [setAgent, setOpen, user, spec]);
+      editAgent(
+        user,
+        {
+          name: name.value,
+          email: email.value,
+          phone: phone.value,
+          bio: bio.value,
+          company: company.value,
+          history: history.value,
+          address: address.value,
+          specialization: spec,
+        },
+        setAgent,
+        spec,
+        setSpec
+      );
+
+      setOpen(false);
+
+    }).catch(err => {
+      if (err.details[0].path[0] === "phone") {
+        setPhoneValid(false);
+      }
+      if (err.details[0].path[0] === "email") {
+        setEmailValid(false);
+      }
+    })
+
+    // if(phoneValid && emailValid) {
+    //   editAgent(
+    //     user,
+    //     {
+    //       name: name.value,
+    //       email: email.value,
+    //       phone: phone.value,
+    //       bio: bio.value,
+    //       company: company.value,
+    //       history: history.value,
+    //       address: address.value,
+    //       specialization: spec,
+    //     },
+    //     setAgent,
+    //     spec,
+    //     setSpec
+    //   );
+
+    //   setOpen(false);
+    // }
+  }, [setAgent, setOpen, user, spec, phoneValid, emailValid, setPhoneValid, setEmailValid]);
 
   const handleSpecChange = useCallback((e) => {
     setSpec(e.target.value);
@@ -267,6 +320,7 @@ const AgentProfile: React.FC = () => {
             label="Phone"
             type="Phone"
             fullWidth
+            {...(phoneValid ? { error: false } : { error: true })}
           />
 
           <TextField
@@ -277,6 +331,7 @@ const AgentProfile: React.FC = () => {
             label="Email"
             type="Email"
             fullWidth
+            {...(emailValid ? { error: false } : { error: true })}
           />
 
           <TextField
