@@ -132,6 +132,11 @@ router.post('/login', mongoChecker, async (req, res) => {
     const user = await User.findByUsernamePassword(username, password);
 
     if (user.activated || user.accountType === 'admin') {
+      await User.findOneAndUpdate(
+        { username },
+        { lastLogin: new Date().toISOString() },
+        { new: true }
+      );
       req.session.username = user.username;
       req.session.MongoId = user._id;
       req.session.name = `${user.firstName} ${user.lastName}`;
