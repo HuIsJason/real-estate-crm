@@ -11,7 +11,7 @@ interface TableProps {
 interface TableRowProps {
   username: string; 
   email: string;
-  dateOfSignUp?: Date;
+  dateOfSignUp?: string;
   onClick: () => void;
 }
 

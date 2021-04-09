@@ -37,7 +37,7 @@ export interface Account {
   username: string;
   password: string;
   accountType: 'admin' | 'agent';
-  lastLogin?: Date;
+  lastLogin?: string;
 }
 
 export interface Admin extends Account {}

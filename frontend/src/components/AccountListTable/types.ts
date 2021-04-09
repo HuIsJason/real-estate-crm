@@ -10,7 +10,7 @@ interface TableProps {
 
 interface TableRowProps {
   username: string;
-  lastLogin?: Date;
+  lastLogin?: string;
   onClick: () => void;
 }
 

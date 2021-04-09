@@ -18,7 +18,7 @@ const ProjectList: React.FC<Props> = ({ accounts, onSelectRow, displayPage, onCl
               Account Username
             </th>
             <th>
-              Last Date of Activity
+              Last Time of Login
             </th>
           </tr>
         </thead>
