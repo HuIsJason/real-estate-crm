@@ -126,6 +126,40 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
         }); 
     }
 
+    const deleteActivity = (activity: Activity) => {
+        send("deleteActivity", {}, `/${projectId}/${selectedProperty._id}/${activity._id}`)
+        .then((response) => {
+            if (response.status === 200) {
+                console.log("Activity deleted");
+                return response.json();
+            } else {
+                throw `Activity could not be deleted... Error ${response.status}.`
+            }
+        })
+        .then(json => {
+            const updatedProperty: Property = json.property;
+
+            const updatedProperties = allProperties.map( property => {
+                if (property._id === selectedProperty._id) {
+                    return updatedProperty;
+                } else {
+                    return property;
+                }
+            });
+
+            const updatedDisplay = showFav ? updatedProperties.filter(property => property.favourited) : updatedProperties;
+            const updatedSelectedProperty = updatedProperties.filter( property => property._id === selectedProperty._id)[0];
+
+            setSelectedProperty(updatedSelectedProperty);
+            setAllProperties(updatedProperties);
+            setDisplayedProperties(updatedDisplay);
+        })
+        .catch((error) => {
+            alert("Could not delete activity, please try again later!");
+            console.log(error);
+        })
+    }
+
     const addActivity = (activity: Activity) => {
     
         // activity.id = selectedProperty.activities.length + 1;
@@ -247,7 +281,9 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
             </div>
 
         <DetailedHistory currTab={currTab} setCurrTab={(value) => setCurrTab(value)}
-        property={selectedProperty} toggleFavourite={toggleFavourite} addActivity={addActivity} updateNotes={updateNotes} />
+        property={selectedProperty} toggleFavourite={toggleFavourite} addActivity={addActivity} deleteActivity={deleteActivity}
+        updateNotes={updateNotes} 
+        />
         <AddPropertyModal open={modalOpen === 1} onCancel={() => setModalOpen(0)} onSave={saveProperty}/>
         <ConfirmationModal open={modalOpen === 2} onCancel={() => setModalOpen(0)} onContinue={deleteSelectedProperty} 
         actionDescription={ selectedProperty ? `delete property ${selectedProperty.address}` : ''} />

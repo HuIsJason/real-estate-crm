@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     enum: ['agent', 'admin'],
   },
   lastLogin: {
-    type: Date,
+    type: String,
   },
   firstName: String,
   lastName: String,

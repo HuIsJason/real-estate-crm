@@ -30,7 +30,7 @@ const RequestDetails: React.FC<RequestDetailProps> = ({
   const activateAccount = () => {
     // TODO: Send request to server to update the account <account> to be activated --> endpoint incomplete @JASON
     if (account) {
-      const reqBody = [{ op: 'set', field: 'activated', value: true }];
+      const reqBody = { op: 'set', field: 'activated', value: true };
       send('activateAccount', reqBody, `/${account._id}`).then((response) => {
         if (response.status === 200) {
           deleteRequest(username);

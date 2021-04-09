@@ -2,6 +2,7 @@ import { Activity } from "../../utils/types";
 
 interface TableProps {
   addActivity: (activity: Activity) => void;
+  deleteActivity: (activity: Activity) => void;
   activities: Activity[];
 }
 
@@ -15,6 +16,7 @@ interface ActivityDetailModalProps {
   activity: Activity,
   open: boolean,
   onClose: () => void,
+  handleDelete: () => void,
 }
 
 interface AddModalProps {
