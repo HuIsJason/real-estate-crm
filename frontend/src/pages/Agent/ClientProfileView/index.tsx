@@ -11,6 +11,7 @@ import { RouteComponentProps } from 'react-router';
 import { getClient, editClient } from '../../../actions/client';
 
 import { useUserContext } from '../../../contexts/UserContext';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const ClientProfilePage: React.FC<
   RouteComponentProps<{ clientId: string }>
@@ -25,10 +26,21 @@ const ClientProfilePage: React.FC<
   });
 
   const { user } = useUserContext();
+  const history = useHistory();
+
+  const location: {
+    state: { clientId: string; from: string };
+  } = useLocation();
 
   useEffect(() => {
     getClient(match.params.clientId, setClient, user);
   }, [match.params.clientId, user]);
+
+  useEffect(() => {
+    if (location.state && location.state.from) {
+      setPage('projects');
+    }
+  }, [history, location.state]);
 
   const handlePageChange = useCallback(
     (newPage: string) => {

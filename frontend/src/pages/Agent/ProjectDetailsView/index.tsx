@@ -39,12 +39,17 @@ const ProjectDetailsPage: React.FC = () => {
       <PermNavBar title={location.state.title} />
 
       <Button
-        component={Link}
         variant="contained"
-        to={'/client-details/' + location.state.clientId}
         color="primary"
         classes={{ root: classes.listButtonsHead }}
         className={classes.backButton}
+        onClick={() => history.push({
+          pathname: '/client-details/' + location.state.clientId,
+          state: {
+            clientId: location.state.clientId,
+            from: "project"
+          },
+        })}
       >
         Back
       </Button>

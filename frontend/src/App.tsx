@@ -77,7 +77,7 @@ const App: React.FC = () => {
           user?.accountType === 'agent' ? (
             <ClientListPage />
           ) : (
-            <Redirect to="/login" />
+            <Redirect to="/" />
           )
         }
       />
@@ -102,7 +102,7 @@ const App: React.FC = () => {
           user?.accountType === 'agent' ? (
             <ClientProfilePage {...props} />
           ) : (
-            <Loading />
+            <Redirect to="/" />
           )
         }
       />
@@ -110,14 +110,14 @@ const App: React.FC = () => {
         exact
         path="/client-details/:clientId/project-details"
         render={() =>
-          user?.accountType === 'agent' ? <ProjectDetailsPage /> : <Loading />
+          user?.accountType === 'agent' ? <ProjectDetailsPage /> : <Redirect to="/" />
         }
       />
       <Route
         exact
         path="/agent-details"
         render={() =>
-          user?.accountType === 'agent' ? <AgentProfilePage /> : <Loading />
+          user?.accountType === 'agent' ? <AgentProfilePage /> : <Redirect to="/" />
         }
       />
     </Switch>
