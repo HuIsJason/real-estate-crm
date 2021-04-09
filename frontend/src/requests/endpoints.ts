@@ -32,6 +32,11 @@ const endpoints: endpoint[] = [
     endpoint: '/api/agent', // /:username
     method: 'PUT',
   },
+  {
+    name: 'modifyAgent',
+    endpoint: '/api/agent', // /:username
+    method: 'PATCH',
+  },
 
   // users
   {

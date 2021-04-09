@@ -25,16 +25,17 @@ export const getAgent = (user:any, setAgent:any) => {
         .then(json => {
             // the resolved promise with the JSON body
 
-            setAgent({
-                name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
-                phone: (json.phone ? json.phone : "Not available"),
-                email: (json.email ? json.email : "Not available"),
-                bio: (json.bio ? json.bio : "Not available"),
-                history: (json.yearStarted ? json.yearStarted : "Not available"),
-                company: (json.brokerage ? json.brokerage : "Not available"),
-                city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
-                specialization: (json.specialization ? json.specialization : "Not available")
-            })
+            // setAgent({
+            //     name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
+            //     phone: (json.phone ? json.phone : "Not available"),
+            //     email: (json.email ? json.email : "Not available"),
+            //     bio: (json.bio ? json.bio : "Not available"),
+            //     history: (json.yearStarted ? json.yearStarted : "Not available"),
+            //     company: (json.brokerage ? json.brokerage : "Not available"),
+            //     city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
+            //     specialization: (json.specialization ? json.specialization : "Not available")
+            // })
+            setAgent(json);
         })
         .catch(error => {
             console.log(error);
@@ -68,16 +69,17 @@ export const editAgent = (user:any, agent: any, setAgent: any) => {
             }
         })
         .then(function (json) {
-            setAgent({
-                name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
-                phone: (json.phone ? json.phone : "Not available"),
-                email: (json.email ? json.email : "Not available"),
-                bio: (json.bio ? json.bio : "Not available"),
-                history: (json.yearStarted ? json.yearStarted : "Not available"),
-                company: (json.brokerage ? json.brokerage : "Not available"),
-                city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
-                specialization: (json.specialization ? json.specialization : "Not available")
-            })
+            // setAgent({
+            //     name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
+            //     phone: (json.phone ? json.phone : "Not available"),
+            //     email: (json.email ? json.email : "Not available"),
+            //     bio: (json.bio ? json.bio : "Not available"),
+            //     history: (json.yearStarted ? json.yearStarted : "Not available"),
+            //     company: (json.brokerage ? json.brokerage : "Not available"),
+            //     city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
+            //     specialization: (json.specialization ? json.specialization : "Not available")
+            // })
+            setAgent(json);
         })
         .catch(error => {
             console.log(error);

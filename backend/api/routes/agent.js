@@ -163,17 +163,18 @@ router
         log("PATCH /api/agent/:username");
         const agentUsername = req.params.username;
 
-        // Check that username is unique
-        const validFields = ["username", "password", "firstName", "lastName", "email", "phone", "specialization", 
-                            "yearStarted", "licenseId", "brokerage", "brokerageAddress", "brokeragePhone"];
+        // Can only update username and password
         const fieldsToUpdate = {}
+        let passwordReset = '';
         req.body.map((change) => {
-            if (!validFields.includes(change.field)) {
+            if (change.field === "username") {
+                fieldsToUpdate[change.field] = change.value;
+            }
+            else if (change.field === "password") {
+                passwordReset = change.value;
+            } else {
                 res.status(400).send("Invalid update field specified.")
                 return;
-            }
-            if (change.op === "set") {
-                fieldsToUpdate[change.field] = change.value;
             }
         });
 
@@ -181,8 +182,10 @@ router
             const agent = await User.findOneAndUpdate({username: agentUsername}, {$set: fieldsToUpdate}, {new: true, useFindAndModify: false});
             if (!agent) {
                 res.status(404).send();
-            } else {   
-                res.send(agent)
+            } else {
+                agent.password = passwordReset;
+                result = await agent.save();   
+                res.send(result)
             }
 
         } catch (error) {

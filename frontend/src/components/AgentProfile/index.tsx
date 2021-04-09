@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 
 import useStyles from './styles';
 import {
@@ -14,19 +13,22 @@ import {
 import { editAgent, getAgent } from '../../actions/agent';
 
 import { useUserContext } from '../../contexts/UserContext';
+import ChangePasswordModal from './modal';
 
 const AgentProfile: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openChangePassword, setOpenChangePassword] = useState(false);
 
   const { user } = useUserContext();
 
   const [agent, setAgent] = useState<any>({
+    username: '',
     name: 'Not available',
     bio: 'Not available',
     history: 10,
     company: 'Not available',
-    city: 'Not available',
+    address: 'Not available',
     phone: 'Not available',
     email: 'Not available',
     specialization: 'Not available',
@@ -40,7 +42,7 @@ const AgentProfile: React.FC = () => {
   const bioRef = useRef();
   const historyRef = useRef();
   const companyRef = useRef();
-  const cityRef = useRef();
+  const addressRef = useRef();
   const phoneRef = useRef();
   const emailRef = useRef();
   const specRef = useRef();
@@ -53,12 +55,20 @@ const AgentProfile: React.FC = () => {
     setOpen(false);
   }, []);
 
+  const handleOpenChangePasswordModal = useCallback(() => {
+    setOpenChangePassword(true);
+  }, []);
+
+  const handleCloseChangePasswordModal = useCallback(() => {
+    setOpenChangePassword(false);
+  }, []);
+
   const handleEdit = useCallback(() => {
     const name = nameRef.current as any;
     const bio = bioRef.current as any;
     const history = historyRef.current as any;
     const company = companyRef.current as any;
-    const city = cityRef.current as any;
+    const address = addressRef.current as any;
     const phone = phoneRef.current as any;
     const email = emailRef.current as any;
     const spec = specRef.current as any;
@@ -72,7 +82,7 @@ const AgentProfile: React.FC = () => {
         bio: bio.value,
         company: company.value,
         history: history.value,
-        city: city.value,
+        address: address.value,
         specialization: spec.value,
       },
       setAgent
@@ -91,10 +101,14 @@ const AgentProfile: React.FC = () => {
         >
           Profile Information
         </Typography>
+        <Typography className={classes.contactInfo}>
+          <strong>Username: </strong>
+          {agent.username}
+        </Typography>
 
         <Typography className={classes.contactInfo}>
           <strong>Name: </strong>
-          {agent.name}
+          {`${agent.firstName} ${agent.lastName}`}
         </Typography>
 
         <Typography className={classes.contactInfo}>
@@ -104,17 +118,17 @@ const AgentProfile: React.FC = () => {
 
         <Typography className={classes.contactInfo}>
           <strong>Realtor Since: </strong>
-          {agent.history}
+          {agent.yearStarted}
         </Typography>
 
         <Typography className={classes.contactInfo}>
-          <strong>Company: </strong>
-          {agent.company}
+          <strong>Brokerage Name: </strong>
+          {agent.brokerage}
         </Typography>
 
         <Typography className={classes.contactInfo}>
-          <strong>City: </strong>
-          {agent.city}
+          <strong>Brokerage Address: </strong>
+          {agent.brokerageAddress}
         </Typography>
 
         <Typography className={classes.contactInfo}>
@@ -129,6 +143,21 @@ const AgentProfile: React.FC = () => {
           <strong>Specialization: </strong>
           {agent.specialization}
         </Typography>
+        <br/>
+        <Typography
+          color="primary"
+          className={classes.header + ' ' + classes.contactInfo}
+        >
+          More Account Actions
+        </Typography>
+        <Button className={classes.contactInfo}
+        variant="contained"
+        color="primary"
+        onClick={handleOpenChangePasswordModal}
+        >
+        {' '}
+        Change Password {' '}
+        </Button>
       </div>
       <Button
         variant="contained"
@@ -139,6 +168,14 @@ const AgentProfile: React.FC = () => {
         {' '}
         EDIT{' '}
       </Button>
+      {
+        openChangePassword && (
+        <ChangePasswordModal 
+          open={openChangePassword} 
+          onClose={handleCloseChangePasswordModal}
+          username={agent.username}
+        />)
+      }
       <Dialog
         open={open}
         onClose={handleClose}
@@ -150,7 +187,7 @@ const AgentProfile: React.FC = () => {
         <DialogContent>
           <TextField
             autoFocus
-            defaultValue={agent.name}
+            defaultValue={`${agent.firstName} ${agent.lastName}`}
             inputRef={nameRef}
             margin="dense"
             id="Name"
@@ -170,7 +207,7 @@ const AgentProfile: React.FC = () => {
           />
 
           <TextField
-            defaultValue={agent.history}
+            defaultValue={agent.yearStarted}
             inputRef={historyRef}
             margin="dense"
             id="History"
@@ -180,22 +217,22 @@ const AgentProfile: React.FC = () => {
           />
 
           <TextField
-            defaultValue={agent.company}
+            defaultValue={agent.brokerage}
             inputRef={companyRef}
             margin="dense"
             id="Address"
-            label="Company"
+            label="Brokerage"
             type="Address"
             fullWidth
           />
 
           <TextField
-            defaultValue={agent.city}
-            inputRef={cityRef}
+            defaultValue={agent.brokerageAddress}
+            inputRef={addressRef}
             margin="dense"
-            id="City"
-            label="City"
-            type="City"
+            id="address"
+            label="Brokerage Address"
+            type="address"
             fullWidth
           />
 
@@ -234,7 +271,7 @@ const AgentProfile: React.FC = () => {
             Cancel
           </Button>
           <Button onClick={handleEdit} color="primary">
-            Edit
+            Save Changes
           </Button>
         </DialogActions>
       </Dialog>
