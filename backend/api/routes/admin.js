@@ -1,26 +1,43 @@
-"use strict";
+'use strict';
 
 const express = require('express');
+
+const { User } = require('../models/User');
+const { mongoose } = require('../db/mongoose');
+
 const router = express.Router();
-const log = console.log;
 
-router
-    .route("/")
-    .post(async (req, res) => {
-        log("POST request to /api/admin/");
+// middleware for mongo connection error for routes that need it
+const mongoChecker = (req, res, next) => {
+  // check mongoose connection established.
+  if (mongoose.connection.readyState != 1) {
+    console.log('Issue with mongoose connection');
+    res.sendStatus(500);
+    return;
+  } else {
+    next();
+  }
+};
 
-        // Create a new admin account
+router.post('/', mongoChecker, async (req, res) => {
+  const { username, password } = req.body;
 
-    });
-
-router
-    .route("/:user_id")
-    .get(async(res, req) => {
-
-        log("GET request to /api/admin/:user_id");
-
-    });
-
-
+  if (!username || !password) {
+    res.sendStatus(400);
+  } else {
+    const admin = new User({ username, password, accountType: 'admin' });
+    try {
+      const newAdmin = admin.save();
+      res.send(newAdmin);
+    } catch (err) {
+      console.log(err);
+      if (isMongoError(err)) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(400);
+      }
+    }
+  }
+});
 
 module.exports = router;

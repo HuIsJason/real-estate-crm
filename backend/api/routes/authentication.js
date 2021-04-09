@@ -1,6 +1,5 @@
 const express = require('express');
 const session = require('express-session');
-const bcrypt = require('bcryptjs');
 const { ObjectID } = require('mongodb');
 
 const { User } = require('../models/User');
@@ -30,10 +29,9 @@ const mongoChecker = (req, res, next) => {
 };
 
 const adminAuthenticate = (req, res, next) => {
-  if (req.session.user) {
-    User.findById(req.session.user)
+  if (req.session.MongoId) {
+    User.findById(req.session.MongoId)
       .then((user) => {
-        console.log(user);
         if (!user || user.accountType !== 'admin') {
           return Promise.reject();
         } else {
@@ -127,7 +125,7 @@ router.post('/signup', mongoChecker, async (req, res) => {
       brokerageAddress,
       brokerageNumber,
       accountType,
-      activated: true,
+      activated: false,
     });
 
     try {
@@ -152,14 +150,16 @@ router.post('/login', mongoChecker, async (req, res) => {
     // by their email and password.
     const user = await User.findByUsernamePassword(username, password);
 
-    if (user.activated) {
+    if (user.activated || user.accountType === 'admin') {
       req.session.username = user.username;
       req.session.MongoId = user._id;
       req.session.name = `${user.firstName} ${user.lastName}`;
+      req.session.accountType = user.accountType;
       res.send({
         username: user.username,
         MongoId: user._id,
         loggedInAs: `${user.firstName} ${user.lastName}`,
+        accountType: user.accountType,
       });
     } else {
       res.sendStatus(401);
@@ -190,6 +190,7 @@ router.get('/checkSession', (req, res) => {
       loggedInAs: req.session.name,
       MongoId: req.session.MongoId,
       username: req.session.username,
+      accountType: req.session.accountType,
     });
   } else {
     res.sendStatus(401);
@@ -199,7 +200,7 @@ router.get('/checkSession', (req, res) => {
 router.patch(
   '/request/:agent_id',
   mongoChecker,
-  authenticate,
+  adminAuthenticate,
   async (req, res) => {
     const agent_id = req.params.agent_id;
 
