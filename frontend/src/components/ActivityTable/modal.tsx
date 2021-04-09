@@ -11,7 +11,7 @@ const ActivityDetailModal: React.FC<ActivityDetailModalProps> = ({ open, handleD
         <div className={classes.paper}>
             <h2 id="simple-modal-title">{ activity.title }</h2>
             <p id="simple-modal-description">
-              <Typography variant='overline'> Date: </Typography> {activity.date}
+              <Typography variant='overline'> Date: </Typography> {activity.date.slice(0, 10)}
               <br/>
                 <Typography variant='overline'> Description: </Typography>
                 {activity.description}

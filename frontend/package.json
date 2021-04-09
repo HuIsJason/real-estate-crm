@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.3.0",
     "fontsource-roboto": "^4.0.0",
+    "joi": "^17.4.0",
     "material-ui-search-bar": "^1.0.0",
     "react": "^17.0.1",
     "react-datepicker": "^3.6.0",

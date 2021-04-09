@@ -128,6 +128,9 @@ const ProjectList: React.FC<any> = ({ clientId, title }: any) => {
                       {' '}
                       {'>'}{' '}
                     </span>
+                    <div>
+                    {project.tags?.map((tag, i) => (i < 5) ? (<span key={tag} className={classes.tagContainer}> {tag} </span>) : null )} 
+                  </div>
                   </td>
                 </tr>
               ))}
