@@ -9,11 +9,27 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  MenuItem,
 } from '@material-ui/core';
 import { editAgent, getAgent } from '../../actions/agent';
 
 import { useUserContext } from '../../contexts/UserContext';
 import ChangePasswordModal from './modal';
+
+const specializations = [
+  {
+    value: 'BUYER',
+    label: 'BUYER',
+  },
+  {
+    value: 'SELLER',
+    label: 'SELLER',
+  },
+  {
+    value: 'BOTH',
+    label: 'BOTH',
+  }
+];
 
 const AgentProfile: React.FC = () => {
   const classes = useStyles();
@@ -26,13 +42,14 @@ const AgentProfile: React.FC = () => {
     username: '',
     name: 'Not available',
     bio: 'Not available',
-    history: 10,
+    history: 0,
     company: 'Not available',
     address: 'Not available',
     phone: 'Not available',
-    email: 'Not available',
-    specialization: 'Not available',
+    email: 'Not available'
   });
+
+  const [spec, setSpec] = useState<any>("SELLER")
 
   useEffect(() => {
     getAgent(user, setAgent);
@@ -71,7 +88,7 @@ const AgentProfile: React.FC = () => {
     const address = addressRef.current as any;
     const phone = phoneRef.current as any;
     const email = emailRef.current as any;
-    const spec = specRef.current as any;
+    // const spec = specRef.current as any;
 
     editAgent(
       user,
@@ -83,13 +100,20 @@ const AgentProfile: React.FC = () => {
         company: company.value,
         history: history.value,
         address: address.value,
-        specialization: spec.value,
+        specialization: spec,
       },
-      setAgent
+      setAgent,
+      spec,
+      setSpec
     );
 
     setOpen(false);
-  }, [setAgent, setOpen, user]);
+  }, [setAgent, setOpen, user, spec]);
+
+  const handleSpecChange = useCallback((e) => {
+    setSpec(e.target.value);
+
+  }, []);
 
   return (
     <div className={classes.profileInfoContainer}>
@@ -212,7 +236,7 @@ const AgentProfile: React.FC = () => {
             margin="dense"
             id="History"
             label="Realtor Since"
-            type="History"
+            type="number"
             fullWidth
           />
 
@@ -257,14 +281,22 @@ const AgentProfile: React.FC = () => {
           />
 
           <TextField
-            defaultValue={agent.specialization}
-            inputRef={specRef}
+            value={agent.specialization}
+            // inputRef={specRef}
             margin="dense"
             id="Specialization"
             label="Specialization"
             type="Specialization"
             fullWidth
-          />
+            select
+            onChange={handleSpecChange}
+          >
+          {specializations.map((option) => (
+            <MenuItem key={option.value} value={option.value ? option.value : ""}>
+              {option.label}
+            </MenuItem>
+          ))}
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

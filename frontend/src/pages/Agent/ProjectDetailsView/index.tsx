@@ -18,7 +18,7 @@ const ProjectDetailsPage: React.FC = () => {
   const history = useHistory();
 
   const location: {
-    state: { projectId: string; clientId: string; title: string };
+    state: { projectId: string; clientId: string; title: string; projectLabel: string; };
   } = useLocation();
 
   const handlePageChange = useCallback(
@@ -54,6 +54,7 @@ const ProjectDetailsPage: React.FC = () => {
         page={page}
         projectId={location.state.projectId}
         clientId={location.state.clientId}
+        projectLabel={location.state.projectLabel}
       />
       {page === 'history' ? (
         <ProjectHistory projectId={location.state.projectId} />

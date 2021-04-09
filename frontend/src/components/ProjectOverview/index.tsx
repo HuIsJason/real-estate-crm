@@ -15,7 +15,7 @@ import {
 import { ProjectOverviewProps } from './types';
 import { getProject, editProject } from '../../actions/project';
 
-const ProjectOverview: React.FC<any> = ({ page, projectId, clientId }: any) => {
+const ProjectOverview: React.FC<any> = ({ page, projectId, clientId, projectLabel }: any) => {
   const classes = useStyles();
   const [description, setDescription] = useState<string>('Not available');
   const [tags, setTags] = useState(['']);
@@ -30,7 +30,7 @@ const ProjectOverview: React.FC<any> = ({ page, projectId, clientId }: any) => {
 
   useEffect(() => {
     getProject(projectId, clientId, setDescription, setTags, tags, setActive);
-  }, [clientId, projectId, tags]);
+  }, []);
 
   const handleClickOpenTag = useCallback(() => {
     setOpenTag(true);
@@ -134,6 +134,10 @@ const ProjectOverview: React.FC<any> = ({ page, projectId, clientId }: any) => {
               className={classes.header + ' ' + classes.contactInfo}
             >
               Project Details
+            </Typography>
+
+            <Typography className={classes.contactInfo}>
+              <strong>Project Name: </strong> {projectLabel}
             </Typography>
 
             <Typography className={classes.contactInfo}>

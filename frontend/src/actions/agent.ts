@@ -42,7 +42,7 @@ export const getAgent = (user:any, setAgent:any) => {
         });
 };
 
-export const editAgent = (user:any, agent: any, setAgent: any) => {
+export const editAgent = (user:any, agent: any, setAgent: any, spec: any, setSpec: any) => {
 
     const name = agent.name.split(" ");
     // The data we are going to send in our request
@@ -55,7 +55,7 @@ export const editAgent = (user:any, agent: any, setAgent: any) => {
         brokerage: agent.company,
         yearStarted: agent.history,
         brokerageAddress: agent.city,
-        specialization: agent.specialization,
+        specialization: spec
     }
 
     // Send the request with fetch()
