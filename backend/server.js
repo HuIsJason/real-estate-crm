@@ -10,7 +10,6 @@ const authentication = require('./api/routes/authentication');
 const clients = require('./api/routes/clients');
 const projects = require('./api/routes/projects');
 const property = require('./api/routes/property');
-const user = require('./api/routes/user');
 
 let cors = require('cors');
 app.use(
@@ -59,7 +58,6 @@ app.use('/api/authentication', authentication);
 app.use('/api/clients', clients);
 app.use('/api/projects', projects);
 app.use('/api/property', property);
-app.use('/api/user', user);
 
 app.use(express.static(path.join(__dirname, "/../frontend/build")));
 

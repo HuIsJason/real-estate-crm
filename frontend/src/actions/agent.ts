@@ -1,5 +1,6 @@
 // environment configutations
-import ENV from './../config'
+import ENV from './../config';
+import send from '../requests/request';
 
 const API_HOST = ENV.api_host
 
@@ -12,7 +13,7 @@ export const getAgent = (user:any, setAgent:any) => {
     const url = `${API_HOST}/api/agent/` + user?.username;
     
     // Since this is a GET request, simply call fetch on the URL
-    fetch(url)
+    send('getAgent', {}, `/${user.username}`)
         .then(res => {
             if (res.status === 200) {
                 // return a promise that resolves with the JSON body
@@ -24,16 +25,17 @@ export const getAgent = (user:any, setAgent:any) => {
         .then(json => {
             // the resolved promise with the JSON body
 
-            setAgent({
-                name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
-                phone: (json.phone ? json.phone : "Not available"),
-                email: (json.email ? json.email : "Not available"),
-                bio: (json.bio ? json.bio : "Not available"),
-                history: (json.yearStarted ? json.yearStarted : "Not available"),
-                company: (json.brokerage ? json.brokerage : "Not available"),
-                city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
-                specialization: (json.specialization ? json.specialization : "Not available")
-            })
+            // setAgent({
+            //     name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
+            //     phone: (json.phone ? json.phone : "Not available"),
+            //     email: (json.email ? json.email : "Not available"),
+            //     bio: (json.bio ? json.bio : "Not available"),
+            //     history: (json.yearStarted ? json.yearStarted : "Not available"),
+            //     company: (json.brokerage ? json.brokerage : "Not available"),
+            //     city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
+            //     specialization: (json.specialization ? json.specialization : "Not available")
+            // })
+            setAgent(json);
         })
         .catch(error => {
             console.log(error);
@@ -41,9 +43,6 @@ export const getAgent = (user:any, setAgent:any) => {
 };
 
 export const editAgent = (user:any, agent: any, setAgent: any, spec: any, setSpec: any) => {
-
-    // the URL for the request
-    const url = `${API_HOST}/api/agent/` + user?.username;
 
     const name = agent.name.split(" ");
     // The data we are going to send in our request
@@ -59,17 +58,8 @@ export const editAgent = (user:any, agent: any, setAgent: any, spec: any, setSpe
         specialization: spec
     }
 
-    // Create our request constructor with all the parameters we need
-    const request = new Request(url, {
-        method: "put",
-        body: JSON.stringify(formattedAgent),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-
     // Send the request with fetch()
-    fetch(request)
+    send("updateAgent", formattedAgent, `/${user.username}`)
         .then(res => {
             if (res.status === 200) {
                 // return a promise that resolves with the JSON body
@@ -79,16 +69,17 @@ export const editAgent = (user:any, agent: any, setAgent: any, spec: any, setSpe
             }
         })
         .then(function (json) {
-            setAgent({
-                name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
-                phone: (json.phone ? json.phone : "Not available"),
-                email: (json.email ? json.email : "Not available"),
-                bio: (json.bio ? json.bio : "Not available"),
-                history: (json.yearStarted ? json.yearStarted : "Not available"),
-                company: (json.brokerage ? json.brokerage : "Not available"),
-                city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
-                specialization: (json.specialization ? json.specialization : "Not available")
-            })
+            // setAgent({
+            //     name: (json.firstName ? json.firstName + " " + json.lastName : "Not available"),
+            //     phone: (json.phone ? json.phone : "Not available"),
+            //     email: (json.email ? json.email : "Not available"),
+            //     bio: (json.bio ? json.bio : "Not available"),
+            //     history: (json.yearStarted ? json.yearStarted : "Not available"),
+            //     company: (json.brokerage ? json.brokerage : "Not available"),
+            //     city: (json.brokerageAddress ? json.brokerageAddress : "Not available"),
+            //     specialization: (json.specialization ? json.specialization : "Not available")
+            // })
+            setAgent(json);
         })
         .catch(error => {
             console.log(error);

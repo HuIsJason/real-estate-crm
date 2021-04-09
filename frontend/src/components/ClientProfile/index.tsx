@@ -80,16 +80,16 @@ const ClientProfile: React.FC<any> = ({
             </Typography>
 
             <Typography className={classes.contactInfo}>
+              <strong>Full Name: </strong> {client.name}
+            </Typography>
+
+            <Typography className={classes.contactInfo}>
               <strong>Phone: </strong>
               {client.phone}
             </Typography>
 
             <Typography className={classes.contactInfo}>
               <strong>Email: </strong> {client.email}
-            </Typography>
-
-            <Typography className={classes.contactInfo}>
-              <strong>Linked Account:</strong> NOT LINKED
             </Typography>
 
             <Typography className={classes.contactInfo}>
