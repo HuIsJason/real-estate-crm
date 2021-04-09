@@ -75,7 +75,7 @@ const ProjectList: React.FC<any> = ({ clientId, title }: any) => {
     setOpenModal(false);
   };
 
-  const openProject = (projectId: string) => {
+  const openProject = (projectId: string, projectLabel: string) => {
     /* TODO: update to navigate to detailed project view */
     console.log(`Opening project ${projectId}`);
     history.push({
@@ -84,6 +84,7 @@ const ProjectList: React.FC<any> = ({ clientId, title }: any) => {
         projectId: projectId,
         clientId: clientId,
         title: title,
+        projectLabel: projectLabel
       },
     });
   };
@@ -114,7 +115,7 @@ const ProjectList: React.FC<any> = ({ clientId, title }: any) => {
                   : project.status === 'closed'
               )
               .map((project) => (
-                <tr key={project._id} onClick={() => openProject(project._id)}>
+                <tr key={project._id} onClick={() => openProject(project._id, project.title)}>
                   <td>
                     {' '}
                     <Typography className={classes.text} variant="subtitle1">
