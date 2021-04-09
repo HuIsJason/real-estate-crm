@@ -12,7 +12,7 @@ const entriesPerPage = 10;
 
 const defaultActivity: Activity = { _id: "default", title: '', description: '', date: ''}
 
-const ActivityTable: React.FC<TableProps> = ({ addActivity, activities }: TableProps) => {
+const ActivityTable: React.FC<TableProps> = ({ addActivity, activities, deleteActivity }: TableProps) => {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(0);
   const [displayPage, setDisplayPage] = useState(1);
@@ -59,7 +59,7 @@ const ActivityTable: React.FC<TableProps> = ({ addActivity, activities }: TableP
         { displayPage === 1 ? null : (<button className={classes.button} onClick={()=> setDisplayPage(displayPage - 1)}> Previous </button>) }
         { displayPage === Math.ceil(activities.length / entriesPerPage) || activities.length === 0? null : (<button className={classes.button} onClick={()=> setDisplayPage(displayPage + 1)}> Next </button>)} 
       </div>
-      <ActivityDetailModal open={openModal === 1} activity={selectedActivity} onClose={() => setOpenModal(0)}/>
+      <ActivityDetailModal open={openModal === 1} activity={selectedActivity} onClose={() => setOpenModal(0)} handleDelete={() => { deleteActivity(selectedActivity); setOpenModal(0) }} />
       <AddActivityModal open={openModal === 2} onCancel={() => setOpenModal(0)} onContinue={handleAddActivity} />
     </div>
   );

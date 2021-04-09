@@ -5,6 +5,7 @@ import AddProjectModal from './modal';
 import { useHistory } from 'react-router-dom';
 import send from '../../requests/request';
 import { Project } from '../../utils/types';
+import { TagFaces } from '@material-ui/icons';
 
 const selectorOptions = [
 {
@@ -32,13 +33,13 @@ const projects: Project[] = [
 // },
 ]
 
+/** This component represents  */
 const ProjectList: React.FC<any> = ({clientId, title}:any) => {
   const classes = useStyles();
   const history = useHistory();
 
   const [showActive, setShowActive] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
-  // TODO: Get a list of all projects (summarized) from server
   const [allProjects, setProjects] = React.useState(projects);
 
   useEffect(() => {
@@ -99,9 +100,15 @@ const ProjectList: React.FC<any> = ({clientId, title}:any) => {
           <tbody>
             { allProjects.filter(project => showActive ? project.status === "active" : project.status === "closed").map(project => (
               <tr key={project._id} onClick={() => openProject(project._id)}>
-                <td> <Typography className={classes.text} variant="subtitle1" > {project.title} </Typography> 
-                <span style={{ float: 'right', color: '#d3d5db', marginTop: 5 }}> {'>'} </span></td>
-              </tr> ))}
+                <td> 
+                  <Typography className={classes.text} variant="subtitle1" > {project.title} </Typography> 
+                  <span style={{ float: 'right', color: '#d3d5db', marginTop: 5 }}> {'>'} </span>
+                  <div>
+                    {project.tags?.map((tag, i) => (<span key={tag} className={classes.tagContainer}> {tag} </span>))} 
+                  </div>
+                </td>
+              </tr> ))
+              }
           </tbody>
         </table>
       </div>
@@ -123,29 +130,34 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(2),
     background: 'white',
     borderRadius: '10px',
-    border: '1px solid #F1F2F5',
+    border: '1px solid #0C3A77',
     boxShadow: '2px 2px #F1F2F5',
   },
   table: {
     borderCollapse: 'collapse', 
     width: '100%',
     '& td, th': {
-      borderBottom: '1px solid #F1F2F5',
       padding: '1.3rem',
       textAlign: 'left',
       color: "#0C3A77",
+      borderRadius: '10px',
     },
     '& tbody tr': {
       height: '50px',
+      borderBottom: '1px solid #F1F2F5',
+      '&:last-child': {
+        borderBottom: 'none'
+      },
       '&:hover' : {
         backgroundColor: '#fcfcfc',
-        opacity: .7,
+        opacity: 1,
       }
     }
   },
   text: {
     display: 'inline-block',
-    fontSize: '16px'
+    fontSize: '16px', 
+    marginBottom: 5,
   },
   button: {
     background: "white",
@@ -176,9 +188,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover' : {
         opacity: .7,
         
-    }
-    
-},
+    }  
+  },
+  tagContainer: {
+    background: "#e6f0ff",
+    color: '#0C3A77',
+    border: 'none',
+    padding: '4px 8px',
+    borderRadius: '10px',
+    marginLeft: 4,
+    marginRight: 4,
+    marginTop: "5px",
+  }
 }));
 
 export default ProjectList;

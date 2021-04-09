@@ -112,6 +112,13 @@ const endpoints: endpoint[] = [
     method: 'PUT',
   },
   {
+    name: 'deleteActivity',
+    endpoint: '/api/property', // /:project_id/:property_id/:activity_id
+    method: 'DELETE',
+  },
+
+  // authentication
+  {
     name: 'signup',
     endpoint: '/api/authentication/signup',
     method: 'POST',
