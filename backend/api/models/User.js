@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
   },
   specialization: {
     type: String,
-    enum: ['BUYER', 'SELLER', 'BOTH'],
+    enum: ['BUYER', 'SELLER', 'BOTH']
   },
   yearStarted: Number,
   bio: String,

@@ -27,7 +27,6 @@ const ClientSchema = mongoose.Schema({
     address: String,
     city: String,
     description: String,
-    profileImg: String,
     tags: {
         type: String,
         default: ""

@@ -4,14 +4,28 @@ const log = console.log;
 
 const { User } = require("../models/User");
 const { ObjectID } = require('mongodb');
+const { mongoose } = require('../db/mongoose');
 
-// Middleware for authentication of resources -> only agent with same username, 
-// or an admin can modify these resources
+// ========== MIDDLEWARE =============== //
+
+// middleware for mongo connection error
+const mongoChecker = (req, res, next) => {
+    // check mongoose connection established.
+    if (mongoose.connection.readyState != 1) {
+      console.log('Issue with mongoose connection');
+      res.sendStatus(500);
+      return;
+    } else {
+      next();
+    }
+  };
+
+// Middleware for authentication of resources:
+// Ensures that only agent with same username, or an admin can modify these resources
 const authenticateAgent = (req, res, next) => {
-
     const username = req.params.username;
-    log(req.session.MongoId);
-    if (req.session.MongoId) {
+    
+    if (ObjectID.isValid(req.session.MongoId) && req.session.MongoId) {
       User.findById(req.session.MongoId)
         .then((user) => {
           console.log(user);
@@ -30,55 +44,19 @@ const authenticateAgent = (req, res, next) => {
     }
 };
 
+
 function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
     return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"
 }
 
+// ======= ROUTES ========= //
+
 router
-    .route("/")  // TEMP ROUTE UNTIL JASON FINISHES
-    // .post(async(req, res) => {
-    //     log("POST /api/agent");
-
-    //     if (!req.body.username || !req.body.password) {
-    //         res.status(400).send("Some body field(s) missing");
-    //         return;
-    //     }
-
-    //     try {
-    //         const agent = new User({
-    //             username: req.body.username,
-    //             password: req.body.password,
-    //             accountType: "agent",
-    //             lastLogin: req.body.lastLogin,
-    //             firstName: req.body.firstName,
-    //             lastName: req.body.lastName,
-    //             email: req.body.email,
-    //             phone: req.body.phone,
-    //             specialization: req.body.specialization,
-    //             yearStarted: req.body.yearStarted,
-    //             bio: req.body.bio,
-    //             licenseId: req.body.licenseId,
-    //             brokerage: req.body.brokerage,
-    //             brokerageAddress: req.body.brokerageAddress,
-    //             brokeragePhone: req.body.brokeragePhone,
-    //             activated: false
-    //         }); 
-
-    //         const result = await agent.save();
-    //         res.send(result);
-
-    //     } catch (error) {
-    //         log(error);
-    //         if (isMongoError(error)) {
-    //             res.status(500).send('Internal server error: ' + error);
-    //         } else {
-    //             res.status(400).send('Bad Request: ' + error);
-    //         }
-    //     }
-    // })
-    /* Gets a list of all agent accounts, if query param inactivated=true, it
-       will get only the agents with activation requests pending. */
-    .get(async(req, res) => {
+    .route("/")
+    /*  Gets a list of all agent accounts, 
+        if query param inactivated=true, then gets a list of all accounts with activated=false
+        and if inactivated=false, then gets a list of all accounts with activated=true */
+    .get(mongoChecker, async(req, res) => {
         log("GET /api/agent");
         const inactivated = req.query.inactivated;
 
@@ -92,10 +70,12 @@ router
 
         } catch (error) {
             log(error);
-            res.sendStatus(500);
+            if (isMongoError(error)) {
+                res.sendStatus(500);
+            }
+            res.sendStatus(400);
         }
     })
-
 
 router
     .route("/:username")
@@ -113,6 +93,10 @@ router
 
         } catch (error) {
             log(error);
+            if (isMongoError(error)) {
+                res.sendStatus(500);
+            }
+            res.sendStatus(404);
         }
 
     })
@@ -120,10 +104,10 @@ router
         log("GET /api/agent/:username");
         const agentUsername = req.params.username;
 
-        // if (!ObjectID.isValid(agentId)) {
-        //     res.status(404).send();
-        //     return;
-        // }
+        if (!ObjectID.isValid(agentId)) {
+            res.sendStatus(404)
+            return;
+        }
 
         try {
             const agent = await User.findOne({ username: agentUsername });
@@ -136,12 +120,21 @@ router
 
         } catch(error) {
             log(error);
-            res.status(500).send("Internal Server Error");
+            if (isMongoError(error)) {
+                res.sendStatus(500);
+            }
+            res.sendStatus(404);
         }
     })
     .put(authenticateAgent, async(req, res) => {
         log("PUT /api/agent/:username");
         const agentUsername = req.params.username;
+        const { username, password } = req.body;
+
+        if (username || password) {
+            res.status(400).send("Request body should not include username or password.");
+        }
+        
 
         try {
             const agent = await User.findOneAndUpdate({ username: agentUsername } , req.body, {
@@ -149,14 +142,17 @@ router
             });
 
             if (!agent) {
-                res.status(404).send();
+                res.status(404).send("Username does not belong to an account");
             } else {
                 res.send(agent);
             }
 
         } catch(error) {
             log(error);
-            res.status(500).send("Internal Server Error");
+            if (isMongoError(error)) {
+                res.sendStatus(500);
+            }
+            res.sendStatus(400);
         }
     })
     .patch(authenticateAgent, async(req, res) => {
@@ -183,9 +179,13 @@ router
             if (!agent) {
                 res.status(404).send();
             } else {
-                agent.password = passwordReset;
-                result = await agent.save();   
-                res.send(result)
+                if (passwordReset) {
+                    agent.password = passwordReset;
+                    result = await agent.save();   
+                    res.send(result);
+                } else {
+                    res.send(agent);
+                }
             }
 
         } catch (error) {

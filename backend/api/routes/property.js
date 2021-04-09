@@ -4,6 +4,19 @@ const log = console.log;
 
 const { Property } = require("../models/Property");
 const { ObjectID } = require('mongodb');
+const { mongoose } = require('../db/mongoose');
+
+// middleware for mongo connection error
+const mongoChecker = (req, res, next) => {
+    // check mongoose connection established.
+    if (mongoose.connection.readyState != 1) {
+      console.log('Issue with mongoose connection');
+      res.sendStatus(500);
+      return;
+    } else {
+      next();
+    }
+};
 
 function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
     return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"
@@ -11,7 +24,7 @@ function isMongoError(error) { // checks for first error returned by promise rej
 
 router
     .route("/:project_id")
-    .post(async(req, res) => {
+    .post(mongoChecker, async(req, res) => {
         log("POST /api/property/:project_id");
         const projectId = req.params.project_id;
 
@@ -43,7 +56,7 @@ router
         }
 
     })
-    .get(async(req, res) => {
+    .get(mongoChecker, async(req, res) => {
         log("GET /api/property/:project_id");
         const projectId = req.params.project_id;
 
@@ -65,7 +78,7 @@ router
 
 router
     .route("/:project_id/:property_id")
-    .get(async(req, res) => {
+    .get(mongoChecker, async(req, res) => {
         log("GET /api/property/:project_id/:property_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
@@ -89,7 +102,7 @@ router
         }
 
     })
-    .patch(async(req, res) => {
+    .patch(mongoChecker, async(req, res) => {
         log("PATCH /api/property/:project_id/:property_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
@@ -117,10 +130,14 @@ router
             }
         } catch (error) {
             log(error)
-		    res.status(500).send('Internal Server Error');
+		    if (isMongoError(error)) {
+                res.status(500).send('Internal server error');
+            } else {
+                res.status(400).send('Bad Request');
+            }
         }
     })
-    .delete(async(req, res) => {
+    .delete(mongoChecker, async(req, res) => {
         log("DELETE /api/property/:project_id/:property_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
@@ -146,7 +163,7 @@ router
 
     })
     // This route is for adding a new activity to the project property
-    .post(async(req, res) => {
+    .post(mongoChecker, async(req, res) => {
         log("POST /api/property/:project_id/:property_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
@@ -176,15 +193,18 @@ router
 
         } catch (error) {
             log(error);
-            res.status(500).send();
+            if (isMongoError(error)) {
+                res.status(500).send('Internal server error');
+            } else {
+                res.status(400).send('Bad Request');
+            }
         }
     });
 
 
 router
     .route("/:project_id/:property_id/:activity_id")
-    .get(async(req, res) => {
-
+    .get(mongoChecker, async(req, res) => {
         log("GET /api/property/:project_id/:property_id/:activity_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
@@ -207,14 +227,12 @@ router
                     res.send(activity);
                 }
             }
-
-
         } catch(error) {
             log(error);
             res.status(500).send();
         }
     })
-    .put(async(req, res) => {
+    .put(mongoChecker, async(req, res) => {
         log("PUT /api/property/:project_id/:property_id/:activity_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
@@ -247,10 +265,14 @@ router
             }
         } catch(error) {
             log(error);
-            res.status(500).send();
+            if (isMongoError(error)) {
+                res.status(500).send('Internal server error');
+            } else {
+                res.status(400).send('Bad Request');
+            }
         }
     })
-    .delete(async(req, res) => {
+    .delete(mongoChecker, async(req, res) => {
         log("DELETE /api/property/:project_id/:property_id/:activity_id");
         const projectId = req.params.project_id;
         const propertyId = req.params.property_id;
@@ -275,7 +297,6 @@ router
                 }
 
             }
-
 
         } catch(error) {
             log(error);

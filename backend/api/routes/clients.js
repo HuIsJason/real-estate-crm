@@ -4,6 +4,19 @@ const log = console.log;
 
 const { Client } = require("../models/Client");
 const { ObjectID } = require('mongodb');
+const { mongoose } = require('../db/mongoose');
+
+  // middleware for mongo connection error for routes that need it
+const mongoChecker = (req, res, next) => {
+    // check mongoose connection established.
+    if (mongoose.connection.readyState != 1) {
+      console.log('Issue with mongoose connection');
+      res.sendStatus(500);
+      return;
+    } else {
+      next();
+    }
+  };
 
 function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
     return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"
@@ -11,7 +24,7 @@ function isMongoError(error) { // checks for first error returned by promise rej
 
 router
     .route("/:agent_id/")
-    .post(async(req, res) => {
+    .post(mongoChecker, async(req, res) => {
         log("POST /api/clients/:agent_id");
         const agent = req.params.agent_id;
 
@@ -34,7 +47,6 @@ router
                 address: req.body.address,
                 city: req.body.city,
                 description: req.body.description,
-                profileImg: req.body.profileImg,
                 tags: req.body.tags,
                 agent: agent
             }); 
@@ -51,7 +63,7 @@ router
             }
         }
     })
-    .get(async(req, res) => {
+    .get(mongoChecker, async(req, res) => {
         log("GET /api/clients/:agent_id");
         const agent = req.params.agent_id;
 
@@ -72,7 +84,7 @@ router
 
 router
     .route("/:agent_id/:client_id")
-    .get(async(req, res) => {
+    .get(mongoChecker, async(req, res) => {
         log("GET (single) /api/clients/:agent_id/:client_id");
         const clientId = req.params.client_id;
         const agentId = req.params.agent_id;
@@ -96,7 +108,7 @@ router
         }
 
     }) 
-    .put(async(req, res) => {
+    .put(mongoChecker, async(req, res) => {
         log("PUT /api/clients/:agent_id/:client_id");
         const clientId = req.params.client_id;
         const agentId = req.params.agent_id;
@@ -122,7 +134,7 @@ router
             res.status(500).send("Internal Server Error");
         }
     })
-    .delete(async(req, res) => {
+    .delete(mongoChecker, async(req, res) => {
         log("DELETE /api/clients/:agent_id/:client_id");
         const clientId = req.params.client_id;
         const agentId = req.params.agent_id;

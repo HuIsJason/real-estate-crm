@@ -8,15 +8,8 @@ const { User } = require('../models/User');
 const { mongoose } = require('../db/mongoose');
 const router = express.Router();
 
-// Our own express middleware to check for
-// an active user on the session cookie (indicating a logged in user.)
-const sessionChecker = (req, res, next) => {
-  if (req.session.user) {
-    res.send({ loggedInAs: user.username });
-  } else {
-    res.sendStatus(401);
-  }
-};
+
+// ======= MIDDLEWARE ========== //
 
 // middleware for mongo connection error for routes that need it
 const mongoChecker = (req, res, next) => {
@@ -30,6 +23,7 @@ const mongoChecker = (req, res, next) => {
   }
 };
 
+// middleware for checking that the current session user is an admin
 const adminAuthenticate = (req, res, next) => {
   if (req.session.MongoId) {
     User.findById(req.session.MongoId)
@@ -49,6 +43,27 @@ const adminAuthenticate = (req, res, next) => {
   }
 };
 
+// middleware for checking that the username is not already taken
+const uniqueUserChecker = async (req, res, next) => {
+  const username = req.body.username;
+  if (!username) {
+    res.sendStatus(400);
+    return;
+  }
+
+  try { 
+      const user = await User.findOne({ username: username });
+      if (user) {
+          res.status(400).send("Username taken");
+          return;
+      } else {
+          next();
+      }
+  } catch(err) {
+      res.sendStatus(500);
+  }
+}
+
 function isMongoError(error) {
   // checks for first error returned by promise rejection if Mongo database suddently disconnects
   return (
@@ -58,7 +73,7 @@ function isMongoError(error) {
   );
 }
 
-router.post('/signup', mongoChecker, async (req, res) => {
+router.post('/signup', mongoChecker, uniqueUserChecker, async (req, res) => {
   const {
     username,
     password,
@@ -73,7 +88,6 @@ router.post('/signup', mongoChecker, async (req, res) => {
     brokerage,
     brokerageAddress,
     brokerageNumber,
-    accountType,
   } = req.body;
   if (
     !username ||
@@ -86,8 +100,7 @@ router.post('/signup', mongoChecker, async (req, res) => {
     !licenseId ||
     !brokerage ||
     !brokerageAddress ||
-    !brokerageNumber ||
-    !accountType
+    !brokerageNumber
   ) {
     res.sendStatus(400);
   } else {
@@ -98,15 +111,16 @@ router.post('/signup', mongoChecker, async (req, res) => {
       lastName,
       email,
       phone,
-      specialization,
+      specialization: specialization || 'BOTH',
       yearStarted,
       bio,
       licenseId,
       brokerage,
       brokerageAddress,
       brokerageNumber,
-      accountType,
+      accountType: 'agent',
       activated: false,
+      lastLogin: new Date().toISOString(),
     });
 
     try {
@@ -130,7 +144,7 @@ router.post('/login', mongoChecker, async (req, res) => {
     // Use the static method on the User model to find a user
     // by their email and password.
     const user = await User.findByUsernamePassword(username, password);
-
+    console.log(user);
     if (user.activated || user.accountType === 'admin') {
       await User.findOneAndUpdate(
         { username },
@@ -150,7 +164,6 @@ router.post('/login', mongoChecker, async (req, res) => {
     } else {
       res.sendStatus(401);
     }
-    // res.redirect('/dashboard');
   } catch (err) {
     if (isMongoError(err)) {
       res.sendStatus(500);
@@ -188,13 +201,15 @@ router.patch(
   mongoChecker,
   adminAuthenticate,
   async (req, res) => {
+    log("PATCH /api/authenticate/request/:agent_id");
     const agent_id = req.params.agent_id;
-
     if (!ObjectID.isValid(agent_id)) {
       res.sendStatus(404);
       return;
     }
-
+    if (req.body.value == null) {
+      res.sendStatus(400);
+    }
     const fieldsToUpdate = { activated: req.body.value };
 
     try {
@@ -220,14 +235,10 @@ router.patch(
 
 router
   .route('/user/:username')
-  /* Admin accessible route for updating a user, including resetting passwords
-          TODO: admin authenticate middleware */
+  /* Admin accessible route for updating a user, including resetting passwords */
   .patch(mongoChecker, adminAuthenticate, async(req, res) => {
-
       log("PATCH /api/authenticate/user/:username");
       const username = req.params.username;
-
-      // Reset password
       const validFields = ["username", "password", "firstName", "lastName", "email", "phone", "specialization", 
                           "yearStarted", "licenseId", "brokerage", "brokerageAddress", "brokeragePhone"];
       
@@ -245,25 +256,28 @@ router
       });
 
       if (passwordReset === "") {
-          const password = generator.generate({
-              numbers: true,
-              symbols: true,
-          })
+        // Generate a random password to set the new password to
+        const password = generator.generate({
+            numbers: true,
+            symbols: true,
+        })
 
           passwordReset = password;
       }
 
       try {
-          let user = await User.findOneAndUpdate({username: username}, {$set: fieldsToUpdate}, {new: true, useFindAndModify: false});
+          let user = await User.findOneAndUpdate({username: username}, 
+            {$set: fieldsToUpdate}, {new: true, useFindAndModify: false});
           if (!user) {
-              res.status(404).send();
+            res.status(404).send();
           } else {
-              let result = user;
-              if (passwordReset) { 
-                  user.password = passwordReset; 
-                  result = await user.save();
-              }
-              res.send({ user: result, passwordReset: passwordReset });
+            let result = user;
+            if (passwordReset) { 
+              //Reset password
+              user.password = passwordReset; 
+              result = await user.save();
+            }
+            res.send({ user: result, passwordReset: passwordReset });
           }
 
       } catch (error) {

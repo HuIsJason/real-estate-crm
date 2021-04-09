@@ -4,16 +4,28 @@ const log = console.log;
 
 const { Project } = require("../models/Project");
 const { ObjectID } = require('mongodb');
+const { mongoose } = require('../db/mongoose');
 
-// TODO: add middleware for checking mongoose connection
+// middleware for mongo connection error
+const mongoChecker = (req, res, next) => {
+    // check mongoose connection established.
+    if (mongoose.connection.readyState != 1) {
+      console.log('Issue with mongoose connection');
+      res.sendStatus(500);
+      return;
+    } else {
+      next();
+    }
+};
 
-function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
+// checks for first error returned by promise rejection if Mongo database suddently disconnects
+function isMongoError(error) {
     return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"
 }
 
 router
     .route("/:client_id/")
-    .post(async(req, res) => {
+    .post(mongoChecker, async(req, res) => {
         log("POST /api/projects/:client_id");
         const client = req.params.client_id;
 
@@ -47,7 +59,7 @@ router
         }
 
     })
-    .get(async(req, res) => {
+    .get(mongoChecker, async(req, res) => {
         log("GET /api/projects/:client_id");
         const client = req.params.client_id;
 
@@ -68,7 +80,7 @@ router
 
 router
     .route("/:client_id/:project_id")
-    .get(async(req, res) => {
+    .get(mongoChecker, async(req, res) => {
         log("GET (single) /api/projects/:client_id/:project_id");
         const client = req.params.client_id;
         const projectId = req.params.project_id;
@@ -92,7 +104,7 @@ router
         }
 
     }) 
-    .patch(async(req, res) => {
+    .patch(mongoChecker, async(req, res) => {
         log("PATCH /api/projects/:client_id/:project_id");
         const client = req.params.client_id;
         const projectId = req.params.project_id;
@@ -122,11 +134,15 @@ router
 
         } catch (error) {
             log(error);
-            res.status(500).send('Internal Server Error');
+            if (isMongoError(error)) {
+                res.status(500).send('Internal server error');
+            } else {
+                res.status(400).send('Bad Request');
+            }
             return;
         }
     })
-    .delete(async(req, res) => {
+    .delete(mongoChecker, async(req, res) => {
         log("DELETE /api/projects/:client_id/:project_id");
         const client = req.params.client_id;
         const projectId = req.params.project_id;
@@ -146,15 +162,9 @@ router
 
         } catch (error) {
             log(error);
+            res.sendStatus(500);
         }
 
     });
     
-
-
-
-
-
-
-
 module.exports = router;
