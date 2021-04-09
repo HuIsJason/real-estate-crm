@@ -8,57 +8,12 @@ import { Agent } from "../../../utils/types";
 
 import send from "../../../requests/request";
 
-
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme } from '@material-ui/core';
 
-
-const accountSummaries = [
-    { 
-        accountEmail: 'joe@gmail.com',
-        lastLogin: '2021-01-22', 
-        accountType: 'agent'
-    },
-    { 
-        accountEmail: 'maryg@gmail.com',
-        lastLogin: '2021-02-22', 
-        accountType: 'agent'
-    },
-    {
-        accountEmail: 'jenny@hotmail.com',
-        lastLogin: '2021-02-28',
-        accountType: 'client'
-    },
-    {
-        accountEmail: 'harrym@gmail.com',
-        lastLogin: '2021-02-28',
-        accountType: 'agent'
-    },
-    {
-        accountEmail: 'georgeli@gmail.com',
-        lastLogin: '2021-02-28',
-        accountType: 'agent'
-    },
-    {
-        accountEmail: 'james@gmail.com',
-        lastLogin: '2021-02-28',
-        accountType: 'agent'
-    },
-    {
-        accountEmail: 'miranda@gmail.com',
-        lastLogin: '2021-02-28',
-        accountType: 'agent'
-    },
-    {
-        accountEmail: 'taylor.white@gmail.com',
-        lastLogin: '2021-02-28',
-        accountType: 'agent'
-    },
-]
-
 const agentAccounts: Agent[] = [];
 
-const  AccountManagerView: React.FC = () => {
+const AccountManagerView: React.FC = () => {
 
     const classes = useStyles();
 
@@ -68,7 +23,6 @@ const  AccountManagerView: React.FC = () => {
     const [openDetails, toggleOpenDetails]=  useState(false);
     const [displayPage, setDisplayPage] = useState(1);
 
-    // Need to get list of summaries of all active accounts from the server
     const [activeAccounts, setActiveAccounts] = useState<Agent[]>(agentAccounts);
     const [displayAccounts, setDisplayAccounts] = useState(activeAccounts.filter(account => account.accountType === accountType));
     
@@ -89,7 +43,7 @@ const  AccountManagerView: React.FC = () => {
     }
 
     const deleteAccount = (username: string) => {
-        // TODO: Send request to server to delete account associated with accountEmail
+        // Send request to server to delete account associated with accountEmail
         send("deleteAgent", {}, `/${username}`)
         .then(response => {
             if (response.status === 204) {
@@ -98,18 +52,16 @@ const  AccountManagerView: React.FC = () => {
 
                 const newDisplay = newAccountsList.filter(account => account.username !== username && account.accountType === accountType);
                 setDisplayAccounts(newDisplay);
+            } else {
+                throw `Could not delete... Error ${response.status}`;
             }
+        })
+        .catch(err => {
+            console.log(err);
+            alert("Account acould not be deleted at this time... please try again later.");
         });
         toggleOpenDetails(false);
     }
-
-    // const filterByType = (type: string) => {
-    //     setAccountType(type);
-    //     const newAccountsList = activeAccounts.filter(account => account.accountType === type);
-    //     setDisplayAccounts(newAccountsList);
-    //     setSearchValue('');
-    //     setDisplayPage(1);
-    // }
 
     const searchFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
@@ -130,7 +82,6 @@ const  AccountManagerView: React.FC = () => {
                 :
                 (<div> 
                     <SearchBar onChange={searchFilter} value={searchValue}/>
-                    {/* <AccountSelector selection={accountType} setSelection={filterByType}/> */}
                     <AccountListTable displayPage={displayPage} accounts={displayAccounts} 
                         onSelectRow={openAccountDetails}
                         onClickNext={() => setDisplayPage(displayPage + 1)}
@@ -142,7 +93,6 @@ const  AccountManagerView: React.FC = () => {
         </div>
 
     )
-
 }
 
 const useStyles = makeStyles((theme: Theme) => ({

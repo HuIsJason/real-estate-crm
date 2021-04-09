@@ -3,7 +3,7 @@ import ENV from './../config'
 
 const API_HOST = ENV.api_host
 
-const SERVER = API_HOST; // <-- Replace with main server URL path
+const SERVER = API_HOST; 
 
 export default function send(
   requestType: string,

@@ -1,6 +1,5 @@
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import { Agent } from '../../utils/types';
 import AccountDetailProps from './types';
 import ResetPasswordModal from '../ResetPasswordModal/index';
 import ConfirmationModal from '../ConfirmationModal/index';
@@ -104,19 +103,21 @@ const AccountDetails: React.FC<AccountDetailProps> = ({
 
   const resetPassword = () => {
     const reqBody = [{ op: 'reset', field: 'password' }];
-    // TODO: Send server request to set the password of the account with email <accountEmail> with <newPassword>
     send('resetPassword', reqBody, `/${username}`)
       .then((response) => {
         if (response.status === 200) {
           return response.json();
         } else {
-          console.log(`Could not reset password....Error ${response.status}`);
-          // throw error
+          throw `Could not reset password....Error ${response.status}`;
         }
       })
       .then((data) => {
         setNewPassword(data.passwordReset);
         setModalOpen(1);
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Could not reset password... please try again later.");
       });
   };
 

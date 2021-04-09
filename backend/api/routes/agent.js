@@ -104,11 +104,6 @@ router
         log("GET /api/agent/:username");
         const agentUsername = req.params.username;
 
-        if (!ObjectID.isValid(agentId)) {
-            res.sendStatus(404)
-            return;
-        }
-
         try {
             const agent = await User.findOne({ username: agentUsername });
             

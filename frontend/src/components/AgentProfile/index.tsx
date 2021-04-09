@@ -117,7 +117,6 @@ const AgentProfile: React.FC = () => {
 
   return (
     <div className={classes.profileInfoContainer}>
-      {/* <Avatar alt="Julia" src="/static/images/avatar/1.jpg" className={classes.large} /> */}
       <div className={classes.contactContainer}>
         <Typography
           color="primary"

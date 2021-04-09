@@ -12,7 +12,6 @@ import {
   Signup,
   ProjectDetailsPage,
   AgentProfilePage,
-  Loading,
 } from './pages';
 
 const App: React.FC = () => {

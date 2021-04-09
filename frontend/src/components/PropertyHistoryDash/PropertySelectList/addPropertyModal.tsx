@@ -89,7 +89,7 @@ const AddPropertyModal: React.FC<addPropertyProps> = ({ open, onCancel, onSave }
 
         <Modal
             open={open}
-            onClose={onCancel}
+            onClose={() => { resetFormValues(); onCancel(); }}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
             {body}

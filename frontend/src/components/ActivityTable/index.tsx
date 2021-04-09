@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { TableProps } from './types';
 import { Activity } from '../../utils/types';
-
-
 import TableRow from './tablerow';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
 import ActivityDetailModal from './modal';
