@@ -52,6 +52,7 @@ const UserProvider: React.FC<Props> = ({ children }: Props) => {
         alert('Account has not been activated yet!');
       } else {
         const responseJson = await response.json();
+        console.log(responseJson);
         setUser(responseJson);
       }
     } catch (err) {

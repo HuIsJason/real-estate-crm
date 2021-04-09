@@ -4,6 +4,7 @@ interface IState {
   loggedInAs: string;
   MongoId: string;
   username: string;
+  accountType: 'agent' | 'admin';
 }
 
 export type UserState = IState | null;
