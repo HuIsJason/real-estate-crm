@@ -46,7 +46,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      expires: 60000 * 4,
+      expires: 60000 * 30,
       httpOnly: true,
     },
     // store the sessions on the database in production
@@ -74,7 +74,8 @@ app.get('*', (req, res) => {
     "/admin/auth-requests", "/client-list", "/agent-details"];
   if (!goodPageRoutes.includes(req.url)) {
       // if url not in expected page routes, set status to 404.
-      res.status(404).send("<h1> Sorry, it looks like you reached an non-existent page </h1>");
+      res.redirect('/');
+      return;
   }
   // otherwise, send index.html
   res.sendFile(path.join(__dirname, "/../frontend/build/index.html"));
