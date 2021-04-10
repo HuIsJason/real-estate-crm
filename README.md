@@ -76,8 +76,8 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 # API Endpoints
 
-### Agent
-#### PUT `/api/agent/:agent_id`
+## Agent
+#### PUT `/api/agent/:username`
 Request body:
 {
 ```
@@ -97,15 +97,14 @@ Request body:
 ```
 }
 
-Updates an agent account
-
-Response: document of updated agent account 
+Updates an agent account.
+Response: Mongo document of updated agent account 
 
 #### GET `/api/agent/:agent_id`
 
 Gets an agent account
 
-Response: document of agent account 
+Response: Mongo document of agent account 
 
 Status Codes: 201 - retrieved, 404 - DNE
 
