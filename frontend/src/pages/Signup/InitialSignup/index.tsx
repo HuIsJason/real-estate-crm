@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { FormControl, Paper, TextField, Typography } from '@material-ui/core';
 
 import Props from './types';
@@ -21,12 +22,31 @@ const InitialSignup: React.FC<Props> = ({
       phone,
       password,
     } = signupStateValues;
-    if (!username || !phone || !firstName || !lastName || !email || !password) {
-      alert('Missing fields!');
+    if (
+      !username ||
+      !phone ||
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !validateEmail(signupStateValues.email) ||
+      !validatePhone(signupStateValues.phone)
+    ) {
+      alert('Missing fields/invalid input!');
     } else {
       nextStep();
     }
   }, [signupStateValues, nextStep]);
+
+  const validateEmail = (email: string) => {
+    const regex: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(email.toLowerCase());
+  };
+
+  const validatePhone = (phone: string) => {
+    const regex: RegExp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    return regex.test(phone);
+  };
 
   return (
     <Paper className={signupClasses.paper} elevation={5}>
@@ -35,6 +55,9 @@ const InitialSignup: React.FC<Props> = ({
       </Typography>
       <Typography variant="body1">
         Please enter your account details.
+      </Typography>
+      <Typography variant="body1">
+        <Link to="/login">Or return to Login.</Link>
       </Typography>
       <FormControl component="form" fullWidth variant="filled">
         <TextField
@@ -67,6 +90,10 @@ const InitialSignup: React.FC<Props> = ({
           onChange={(e) => handleStateChange(e, 'email')}
           label="Email"
           type="email"
+          helperText={
+            validateEmail(signupStateValues.email) ? '' : 'Invalid email.'
+          }
+          error={!validateEmail(signupStateValues.email)}
           fullWidth
           required
         />
@@ -74,7 +101,13 @@ const InitialSignup: React.FC<Props> = ({
           className={signupClasses.textField}
           value={signupStateValues.phone}
           onChange={(e) => handleStateChange(e, 'phone')}
-          label="Phone"
+          label="Phone number"
+          helperText={
+            validatePhone(signupStateValues.phone)
+              ? ''
+              : 'Invalid phone number.'
+          }
+          error={!validatePhone(signupStateValues.phone)}
           fullWidth
           required
         />
