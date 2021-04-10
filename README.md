@@ -1,5 +1,5 @@
-# Getting Started
-Our web application is built with React. To start running the application locally, you can run the terminal command `npm install` and `npm start`. Once the application loads on your localhost (default port 3000), you will encounter the login page of our application. The following section details the flow of app and functionalities from the perspective of two users: the agent user and the admin user.
+# Deployed Application
+Our web application is deployed using Heroku. You can access it [here](https://agent-service.herokuapp.com/) or by copying and pasting the following url in your browser https://agent-service.herokuapp.com/.
 
 # User Flow and Functionalities
 ## Agent User
