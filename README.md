@@ -76,7 +76,7 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 # API Endpoints
 
-## Agent
+### Agent
 #### PUT `/api/agent/:username`
 Request body:
 ```
