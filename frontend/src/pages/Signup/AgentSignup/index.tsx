@@ -52,9 +52,6 @@ const AgentSignup: React.FC<Props> = ({
         We will need to verify your real estate registration details. Please
         provide additional information below.
       </Typography>
-      <Typography variant="body1">
-        <Link to="/login">Or return to Login.</Link>
-      </Typography>
       <FormControl component="form" fullWidth variant="filled">
         <TextField
           className={signupClasses.textField}
@@ -97,6 +94,10 @@ const AgentSignup: React.FC<Props> = ({
         >
           Create account
         </Button>
+        <br/>
+        <Typography variant="caption">
+        <Link to="/login">OR RETURN TO LOGIN</Link>
+      </Typography>
       </FormControl>
     </Paper>
   );

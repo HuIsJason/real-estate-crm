@@ -56,9 +56,6 @@ const InitialSignup: React.FC<Props> = ({
       <Typography variant="body1">
         Please enter your account details.
       </Typography>
-      <Typography variant="body1">
-        <Link to="/login">Or return to Login.</Link>
-      </Typography>
       <FormControl component="form" fullWidth variant="filled">
         <TextField
           className={signupClasses.textField}
@@ -121,6 +118,10 @@ const InitialSignup: React.FC<Props> = ({
           required
         />
         <SignupNavigationButton nextStep={handleNext} />
+        <br/>
+        <Typography variant="caption">
+        <Link to="/login">OR RETURN TO LOGIN</Link>
+      </Typography>
       </FormControl>
     </Paper>
   );
