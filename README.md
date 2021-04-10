@@ -87,7 +87,7 @@ Request body:
     password: string
 }
 ```
-Response: document of created Admin account
+Response body: document of created Admin account
 
 Unique status code(s): `400` for missing fields
 
@@ -141,7 +141,6 @@ Unique status code(s): `401` for invalid credentials
 Logging out a user (either Admin or Agent).
 
 Response body: none
-
 #### GET `/api/authentication/checkSession`
 Checking the session cookie for an active session.
 
@@ -279,7 +278,7 @@ Request body:
     tags?: [ string ] 
 }
 ```
-Response body: empty
+Response body: none
 ### Projects
 #### POST `/api/projects/:client_id`
 Creates a new Project for a Client.
