@@ -76,8 +76,21 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 # API Endpoints
 
-### Agent
-#### PUT `/api/agent/:username`
+### Admin
+#### POST `/api/admin`
+Creating a new admin account.
+Request body:
+```
+{
+    username: string
+    password: string
+}
+```
+Response: document of created admin account
+Unique status code(s): `400` for missing fields
+### Authorization
+#### POST `/api/authentication/signup`
+Creating a new agent account.
 Request body:
 ```
 {
@@ -92,11 +105,93 @@ Request body:
     brokerage: string
     brokerageAddress: string
     brokerageNumber: string
+    accountType: "agent"
 }
 ```
+Response: document of created agent account
+Unique status code(s): `400` for missing fields
+#### POST `/api/authentication/login`
+Logging in a user (either admin or agent account).
+Request body:
+```
+{
+   username: string
+   password: string
+}
+```
+Response:
+```
+{
+    username: string
+    MongoId: string
+    loggedInAs: string
+    accountType: "agent" | "admin"
+}
+```
+Unique status code(s): `401` for invalid credentials/
+#### GET `/api/authentication/logout`
+Logging out a user (either admin or agent).
+#### GET `/api/authentication/checkSession`
+Checking the session cookie for an active session.
+Response:
+```
+{
+    loggedInAs: string
+    MongoId: string
+    username: string
+    accountType: "agent" | "admin"
+}
+```
+Unique status code(s): `401` for an invalid session
+#### PATCH `/api/authentication/request/:agent_id`
+Activating an agent account.
+Request body:
+```
+{
+    op: "set"
+    field: "activated"
+    value: boolean
+}
+```
+Response: document of changed agent account
+Unique status code(s): `401` if the current user logged in is not an admin
 
-Updates an agent account.
-Response: Mongo document of updated agent account 
+### Agent
+
+#### GET `/api/agent?inactivated=true`
+Returns a list of all agent accounts that are inactivated
+
+Response: list of agent account documents. Notice that for each such account object, we have the attribute `activated : false`.
+
+#### GET `/api/agent?inactivated=false`
+Returns a list of all agent accounts that are not inactivated
+
+Response: list of agent account documents. Notice that for each such account object, we have the attribute `activated : true`.
+
+
+#### PUT `/api/agent/:username`
+Updates an agent account with the given username, with the attributes defined in the request body.
+
+Request body:
+```
+{
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    yearStarted: integer
+    licenseId: string
+    brokerage: string
+    brokerageAddress: string
+    brokerageNumber: string
+}
+```
+Response: document of the updated agent account. 
+Status codes: 
+- `200` on success
+- `400` if invalid fields are specified, 
+- `404` if username does not belon to an existing account
+- `401` if user making the request is not signed in as `username`
 
 #### GET `/api/agent/:agent_id`
 
@@ -223,85 +318,6 @@ Deletes a specfific project under a client
 Request Body: ```[ { op: “update”, field: “tags”, value: [ strings ] } ]```
 Request Body: ```[ { op: “update”, field: “title” | “description” | “status”, value: string } ]```
 
-### Admin
-#### POST `/api/admin`
-Creating a new admin account.
-Request body:
-```
-{
-    username: string
-    password: string
-}
-```
-Response: document of created admin account
-Unique status code(s): `400` for missing fields
-### Authorization
-#### POST `/api/authentication/signup`
-Creating a new agent account.
-Request body:
-```
-{
-    username: string
-    password: string
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    yearStarted: integer
-    licenseId: string
-    brokerage: string
-    brokerageAddress: string
-    brokerageNumber: string
-    accountType: "agent"
-}
-```
-Response: document of created agent account
-Unique status code(s): `400` for missing fields
-#### POST `/api/authentication/login`
-Logging in a user (either admin or agent account).
-Request body:
-```
-{
-   username: string
-   password: string
-}
-```
-Response:
-```
-{
-    username: string
-    MongoId: string
-    loggedInAs: string
-    accountType: "agent" | "admin"
-}
-```
-Unique status code(s): `401` for invalid credentials/
-#### GET `/api/authentication/logout`
-Logging out a user (either admin or agent).
-#### GET `/api/authentication/checkSession`
-Checking the session cookie for an active session.
-Response:
-```
-{
-    loggedInAs: string
-    MongoId: string
-    username: string
-    accountType: "agent" | "admin"
-}
-```
-Unique status code(s): `401` for an invalid session
-#### PATCH `/api/authentication/request/:agent_id`
-Activating an agent account.
-Request body:
-```
-{
-    op: "set"
-    field: "activated"
-    value: boolean
-}
-```
-Response: document of changed agent account
-Unique status code(s): `401` if the current user logged in is not an admin
 ## Properties
 #### POST `/api/property/:project_id`
 Add a new property to a project.
