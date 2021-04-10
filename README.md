@@ -79,23 +79,21 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 ## Agent
 #### PUT `/api/agent/:username`
 Request body:
-{
 ```
+{
     username: string
     password: string
     firstName: string
     lastName: string
     email: string
     phone: string
-    specialization?: string
     yearStarted: integer
-    bio?: string
     licenseId: string
     brokerage: string
     brokerageAddress: string
     brokerageNumber: string
-```
 }
+```
 
 Updates an agent account.
 Response: Mongo document of updated agent account 
@@ -111,19 +109,18 @@ Status Codes: 201 - retrieved, 404 - DNE
 ### Clients
 #### POST `/api/clients/:agent_id `
 Request body:
-{
 ```
+{
     firstName: string
     lastName: string
-    phoneNumber?: string
-    email?: string
-    address?: string
-    city?: string
-    description?: string
-    profileImg?: image
-    tags?: [ string ] 
-```
+    phoneNumber: string
+    email: string
+    address: string
+    city: string
+    description: string
+    tags: string
 }
+```
 
 Creates a new client account, under a specific agent
 
