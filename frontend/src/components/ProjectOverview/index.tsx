@@ -15,7 +15,12 @@ import {
 import { ProjectOverviewProps } from './types';
 import { getProject, editProject } from '../../actions/project';
 
-const ProjectOverview: React.FC<any> = ({ page, projectId, clientId, projectLabel }: any) => {
+const ProjectOverview: React.FC<any> = ({
+  page,
+  projectId,
+  clientId,
+  projectLabel,
+}: any) => {
   const classes = useStyles();
   const [description, setDescription] = useState<string>('Not available');
   const [tags, setTags] = useState(['']);
@@ -66,17 +71,7 @@ const ProjectOverview: React.FC<any> = ({ page, projectId, clientId, projectLabe
     });
 
     setOpen(false);
-  }, [
-    setTags,
-    setDescription,
-    tags,
-    setOpen,
-    setOpenTag,
-    isActive,
-    setActive,
-    clientId,
-    projectId,
-  ]);
+  }, [setTags, setDescription, tags, setOpen, setActive, clientId, projectId]);
 
   const handleAdd = useCallback(() => {
     const tag = tagRef.current as any;
@@ -101,7 +96,6 @@ const ProjectOverview: React.FC<any> = ({ page, projectId, clientId, projectLabe
     setDescription,
     tags,
     setOpenTag,
-    isActive,
     setActive,
     clientId,
     projectId,
