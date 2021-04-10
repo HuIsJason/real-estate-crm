@@ -223,6 +223,138 @@ Deletes a specfific project under a client
 Request Body: ```[ { op: “update”, field: “tags”, value: [ strings ] } ]```
 Request Body: ```[ { op: “update”, field: “title” | “description” | “status”, value: string } ]```
 
+### Admin
+#### POST `/api/admin`
+Creating a new admin account.
+Request body:
+```
+{
+    username: string
+    password: string
+}
+```
+Response: document of created admin account
+Unique status code(s): `400` for missing fields
+### Authorization
+#### POST `/api/authentication/signup`
+Creating a new agent account.
+Request body:
+```
+{
+    username: string
+    password: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    yearStarted: integer
+    licenseId: string
+    brokerage: string
+    brokerageAddress: string
+    brokerageNumber: string
+    accountType: "agent"
+}
+```
+Response: document of created agent account
+Unique status code(s): `400` for missing fields
+#### POST `/api/authentication/login`
+Logging in a user (either admin or agent account).
+Request body:
+```
+{
+   username: string
+   password: string
+}
+```
+Response:
+```
+{
+    username: string
+    MongoId: string
+    loggedInAs: string
+    accountType: "agent" | "admin"
+}
+```
+Unique status code(s): `401` for invalid credentials/
+#### GET `/api/authentication/logout`
+Logging out a user (either admin or agent).
+#### GET `/api/authentication/checkSession`
+Checking the session cookie for an active session.
+Response:
+```
+{
+    loggedInAs: string
+    MongoId: string
+    username: string
+    accountType: "agent" | "admin"
+}
+```
+Unique status code(s): `401` for an invalid session
+#### PATCH `/api/authentication/request/:agent_id`
+Activating an agent account.
+Request body:
+```
+{
+    op: "set"
+    field: "activated"
+    value: boolean
+}
+```
+Response: document of changed agent account
+Unique status code(s): `401` if the current user logged in is not an admin
+## Properties
+#### POST `/api/property/:project_id`
+Add a new property to a project.
+Request body:
+```
+{
+    address: string
+    city: string
+    province: string
+    postalCode: string
+}
+```
+Response: document of property object
+#### DELETE `/api/property/:project_id/:property_id`
+Delete a property from a project.
+#### GET `/api/property/:project_id/:property_id`
+Get all properties for a project.
+Response:
+```
+{
+    properties: [ Property Objects ]
+}
+```
+#### GET `/api/property/:project_id/:property_id`
+Get specific property of a project.
+Response: Property object document
+### PATCH `/api/property/:project_id/:property_id`
+Update notes for a property.
+Request body:
+```
+{
+    op: "set"
+    field: "notes"
+    value: string
+}
+```
+#### POST `/api/property/:project_id/:property_id`
+Add new activity to a property.
+Request body:
+```
+{
+    title: string
+    date: Date
+    description?: string
+}
+```
+Response:
+```
+{
+    activity: Activity object
+    property: Property Object
+}
+```
 
 # Libraries/Frameworks used
 * React
