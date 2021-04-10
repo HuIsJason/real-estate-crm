@@ -83,6 +83,7 @@ Note: fields with `?` are optional.
 ### Admin
 #### POST `/api/admin`
 Creating a new admin account.
+
 Request body:
 ```
 {
@@ -91,11 +92,13 @@ Request body:
 }
 ```
 Response: document of created Admin account
+
 Unique status code(s): `400` for missing fields
 
 ### Authorization
 #### POST `/api/authentication/signup`
 Creating a new Agent account.
+
 Request body:
 ```
 {
@@ -114,10 +117,12 @@ Request body:
 }
 ```
 Response: document of the created Agent account
+
 Unique status code(s): `400` for missing fields
 
 #### POST `/api/authentication/login`
 Logging in a user (either admin or agent account).
+
 Request body:
 ```
 {
@@ -138,10 +143,12 @@ Unique status code(s): `401` for invalid credentials
 
 #### GET `/api/authentication/logout`
 Logging out a user (either Admin or Agent).
+
 Response body: none
 
 #### GET `/api/authentication/checkSession`
 Checking the session cookie for an active session.
+
 Response body:
 ```
 {
@@ -155,6 +162,7 @@ Unique status code(s): `401` for an invalid session
 
 #### PATCH `/api/authentication/request/:agent_id`
 Activating an agent account. Must be logged in as an Admin to send this request.
+
 Request body:
 ```
 {
@@ -405,6 +413,7 @@ Status Codes: `204` on success or `404` if project does not exist.
 ## Properties
 #### POST `/api/property/:project_id`
 Add a new Property to a Project.
+
 Request body:
 ```
 {
@@ -417,9 +426,11 @@ Request body:
 Response body: document of Property object
 #### DELETE `/api/property/:project_id/:property_id`
 Delete a Property from a Project.
+
 Response body: none
 #### GET `/api/property/:project_id/:property_id`
 Get all Properties for a Project.
+
 Response body:
 ```
 {
@@ -428,9 +439,11 @@ Response body:
 ```
 #### GET `/api/property/:project_id/:property_id`
 Get a specific Property of a Project.
+
 Response: Property object document
 ### PATCH `/api/property/:project_id/:property_id`
 Update the notes field of a Property.
+
 Request body:
 ```
 {
@@ -441,6 +454,7 @@ Request body:
 ```
 #### POST `/api/property/:project_id/:property_id`
 Add new Activity to a Property.
+
 Request body:
 ```
 {
@@ -458,9 +472,11 @@ Response body:
 ```
 #### GET `/api/property/:project_id/:property_id/:activity_id`
 Get an Activity.
+
 Response body: Activity object
 #### PUT `/api/property/:project_id/:property_id`
 Update an Activity.
+
 Request body:
 ```
 {
