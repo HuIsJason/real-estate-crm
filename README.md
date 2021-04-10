@@ -87,11 +87,13 @@ Request body:
 }
 ```
 Response: document of created Admin account
+
 Unique status code(s): `400` for missing fields
 
 ### Authorization
 #### POST `/api/authentication/signup`
 Creating a new Agent account.
+
 Request body:
 ```
 {
@@ -110,10 +112,12 @@ Request body:
 }
 ```
 Response: document of the created Agent account
+
 Unique status code(s): `400` for missing fields
 
 #### POST `/api/authentication/login`
 Logging in a user (either admin or agent account).
+
 Request body:
 ```
 {
@@ -134,10 +138,12 @@ Unique status code(s): `401` for invalid credentials
 
 #### GET `/api/authentication/logout`
 Logging out a user (either Admin or Agent).
+
 Response body: none
 
 #### GET `/api/authentication/checkSession`
 Checking the session cookie for an active session.
+
 Response body:
 ```
 {
@@ -150,6 +156,7 @@ Response body:
 Unique status code(s): `401` for an invalid session
 #### PATCH `/api/authentication/request/:agent_id`
 Activating an agent account. Must be logged in as an Admin to send this request.
+
 Request body:
 ```
 {
@@ -159,19 +166,23 @@ Request body:
 }
 ```
 Response body: document of changed Agent account
+
 Unique status code(s): `401` if the current user logged in is not an Admin
 
 ### Agent
 #### GET `/api/agent?inactivated=true`
 Returns a list of all Agent accounts that are inactivated.
+
 Response body: list of Agent account documents. Notice that for each such account object, we have the attribute `activated: false`.
 
 #### GET `/api/agent?inactivated=false`
 Returns a list of all Agent accounts that are not inactivated.
+
 Response body: list of Agent account documents. Notice that for each such account object, we have the attribute `activated: true`.
 
 #### PUT `/api/agent/:username`
 Updates an Agent account with the given username, with the attributes defined in the request body.
+
 Request body:
 ```
 {
@@ -187,6 +198,7 @@ Request body:
 }
 ```
 Response body: document of the updated Agent account. 
+
 Unique status codes: 
 - `200` on success
 - `400` if invalid fields are specified, 
@@ -195,11 +207,14 @@ Unique status codes:
 
 #### GET `/api/agent/:agent_id`
 Gets an Agent account.
+
 Response body: Mongo document of Agent account
+
 Status code(s): `201` - retrieved, `404` - DNE
 ### Clients
 #### POST `/api/clients/:agent_id`
 Creates a new Client account, under a specific Agent.
+
 Request body:
 ```
 {
@@ -216,6 +231,7 @@ Request body:
 Response body: document of created Client
 #### GET `/api/clients/:agent_id`
 Gets a list of all Clients under an Agent.
+
 Response body: 
 ```
 {
@@ -224,9 +240,11 @@ Response body:
 ```
 #### GET `/api/clients/:agent_id/:client_id`
 Gets a single specific Client under an Agent.
+
 Response body: document of client object
 #### PUT ` /api/clients/:agent_id/:client_id`
 Updates a Client account thats under a specific Agent.
+
 Request body:
 
 ```
@@ -245,6 +263,7 @@ Request body:
 Response body: document of updated Client
 #### DELETE `/api/clients/:agent_id/:client_id`
 Deletes a Client account thats under a specific Agent
+
 Request body:
 ```
 {
@@ -260,10 +279,10 @@ Request body:
 }
 ```
 Response body: empty
-
 ### Projects
 #### POST `/api/projects/:client_id`
 Creates a new Project for a Client.
+
 Request body:
 ```
 {
@@ -272,9 +291,11 @@ Request body:
 }
 ```
 Response body: document of Project object
+
 Status Codes: `200` on success or `404` if Client does not exist.
 #### GET ` /api/projects/:client_id`
 Gets all projects for a specific Client.
+
 Request body:
 ```
 {
@@ -290,14 +311,19 @@ Response body:
 ```
 #### GET `/api/projects/:client_id/:project_id`
 Gets the specified Project with `_id: project_id` under the specified Client.
+
 Response body: Project object document
+
 Status Codes: `200` on success or `404` if project does not exist.
 #### DELETE `/api/projects/:client_id/:project_id`
 Deletes a specfied Project with `_id: project_id` under the specified Client.
+
 Response body: none
+
 Status codes: `204` on success or `404` if project does not exist.
 #### PATCH `/api/projects/:client_id/:project_id`
 Updates specific fields of the Project with `project_id`.
+
 Request body: 
 ```
 [ 
@@ -307,11 +333,14 @@ Request body:
 ]
 ```
 Note that you can specify any attributes that you wish to modify out of `tags, title, description, status`. `tags` require a list of strings as the value, and `status` only takes a value of `active` or `closed`.
+
 Response body: Updated project document.
+
 Status codes: `200` on success, `404` if project does not exist, or `400` if invalid `field` types are specified. 
 ## Properties
 #### POST `/api/property/:project_id`
 Add a new Property to a Project.
+
 Request body:
 ```
 {
@@ -324,9 +353,11 @@ Request body:
 Response body: document of Property object
 #### DELETE `/api/property/:project_id/:property_id`
 Delete a Property from a Project.
+
 Response body: none
 #### GET `/api/property/:project_id/:property_id`
 Get all Properties for a Project.
+
 Response body:
 ```
 {
@@ -335,9 +366,11 @@ Response body:
 ```
 #### GET `/api/property/:project_id/:property_id`
 Get a specific Property of a Project.
+
 Response: Property object document
 ### PATCH `/api/property/:project_id/:property_id`
 Update the notes field of a Property.
+
 Request body:
 ```
 {
@@ -348,6 +381,7 @@ Request body:
 ```
 #### POST `/api/property/:project_id/:property_id`
 Add new Activity to a Property.
+
 Request body:
 ```
 {
@@ -365,9 +399,11 @@ Response body:
 ```
 #### GET `/api/property/:project_id/:property_id/:activity_id`
 Get an Activity.
+
 Response body: Activity object
 #### PUT `/api/property/:project_id/:property_id`
 Update an Activity.
+
 Request body:
 ```
 {
