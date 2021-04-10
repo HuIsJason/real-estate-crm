@@ -263,6 +263,7 @@ Status Codes: `200` on success, or `404` if agent account does not exist for `ag
 Returns the client with `client_id` under the agent with `agent_id`.
 
 Response: `Client Object` (single client object)
+
 Client Object Schema:
 ```
 {
@@ -283,8 +284,9 @@ Status Codes: `200` on success or `404` if `client_id` or `agent_id` do not exis
 #### PUT ` /api/clients/:agent_id/:client_id`
 Updates the client under the specified agent
 Request body:
-{
+
 ```
+{
     firstName: string
     lastName?: string
     phoneNumber?: string
@@ -293,63 +295,75 @@ Request body:
     city?: string
     description?: string
     tags?: string
-```
 }
+```
 
 Response: updated client document
+
 Status Codes: `200` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
 
 #### DELETE `/api/clients/:agent_id/:client_id`
 Deletes the specified client account thats under  the specified agent with `_id: agent_id`.
 
 Response: None
+
 Status Codes: `204` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
 
 ### Projects
 #### POST `/api/projects/:client_id`
-Request body:
-{
-```
-    title: string
-    description: string
-```
-}
+Creates a new project under the client with `_id: client_id`.
 
-Creates a new project for a client
+Request body:
+```
+{
+    title: string
+    description?: string
+}
+```
+
+Note: fields with `?` are optional
 
 Response Body: Project Object created from Mongo Document
 
+Status Code: `201` on successful creation or `400` if `title` not specified or `404` if client does not exist.
+
 #### GET ` /api/projects/:client_id`
-Request body:
-{
-```
-    title: string
-    description: string
-```
-}
+Gets all projects for the specified client with `client_id`. 
 
-Gets all projects for a specific client
+Response Body: `{projects : [ Property Objects ]`
 
-Response Body: {projects : [ Property ]} 
+Status Codes: `200` on success or `404` if client does not exist.
 
 #### GET `/api/projects/:client_id/:project_id`
 
-Gets a specififc project under a client
+Gets the specified project with `_id: project_id` under the specified client.
 
-Response Body: Project object stored in Mongo
+Response Body: Project object document
+
+Status Codes: `200` on success or `404` if project does not exist.
+
+#### PATCH `/api/projects/:client_id/:project_id`
+Updates specific fields of the project with `project_id`.
+
+Request Body: 
+```[ 
+    { op: “update”, field: “tags”, value: [ strings ] }, 
+    { op: “update”, field: “title” | “description” , value: string },
+    { op: "update“, field: "status”, value: "active" | "closed" } ]
+```
+Note that you can specify any attributes that you wish to modify out of `tags, title, description, status`. `tags` require a list of strings as the value, and `status` only takes a value of `active` or `closed`.
+
+Response: Updated project document.
+
+Status Codes: `200` on success, `404` if project does not exist, or `400` if invalid `field` types are specified. 
 
 #### DELETE `/api/projects/:client_id/:project_id`
 
-Deletes a specfific project under a client
+Deletes a specfied project with `_id: project_id` under the specified client.
 
-Response Body: empty body
+Response Body: None
 
-#### PATCH `/api/projects/:client_id/:project_id`
-
-Deletes a specfific project under a client
-
-Request Body: ```[ { op: “update”, field: “tags”, value: [ strings ] } ]```
-Request Body: ```[ { op: “update”, field: “title” | “description” | “status”, value: string } ]```
+Status Codes: `204` on success or `404` if project does not exist.
 
 ## Properties
 #### POST `/api/property/:project_id`
@@ -364,6 +378,7 @@ Request body:
 }
 ```
 Response: document of property object
+
 #### DELETE `/api/property/:project_id/:property_id`
 Delete a property from a project.
 #### GET `/api/property/:project_id/:property_id`
