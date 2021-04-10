@@ -80,6 +80,8 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 To utilize the our API, simply take `https://agent-service.herokuapp.com`, append the following endpoints, and use the specified request method.
 
 Note: fields with `?` are optional.
+
+If a response body is not defined, there will not be a response body.
 ### Admin
 #### POST `/api/admin`
 Creating a new admin account.
@@ -91,7 +93,7 @@ Request body:
     password: string
 }
 ```
-Response: document of created Admin account
+Response body: document of created Admin account
 
 Unique status code(s): `400` for missing fields
 
@@ -145,7 +147,6 @@ Unique status code(s): `401` for invalid credentials
 Logging out a user (either Admin or Agent).
 
 Response body: none
-
 #### GET `/api/authentication/checkSession`
 Checking the session cookie for an active session.
 
