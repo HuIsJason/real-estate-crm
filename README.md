@@ -79,6 +79,7 @@ Note: fields with `?` are optional.
 ### Admin
 #### POST `/api/admin`
 Creating a new admin account.
+
 Request body:
 ```
 {
