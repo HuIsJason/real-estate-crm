@@ -74,6 +74,10 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 - The user can also click LOGOUT button on the bar at the top of the screen to log out of the application. This takes them to the login page. 
 
 
+# API Endpoints
+
+
+
 # Libraries/Frameworks used
 * React
 * React Router
