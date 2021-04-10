@@ -28,8 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       margin: 10,
-      // width: '100%',
-      // borderBottom: '1px solid grey'
     }, 
     buttonContainer: {
       display: 'inline-block',

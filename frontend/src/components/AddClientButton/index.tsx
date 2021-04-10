@@ -12,7 +12,6 @@ import {
 } from '@material-ui/core';
 
 import AddClientButtonProps from './types';
-
 import useStyles from './styles';
 
 import { useUserContext } from '../../contexts/UserContext';

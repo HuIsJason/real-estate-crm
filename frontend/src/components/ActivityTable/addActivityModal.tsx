@@ -24,6 +24,12 @@ const AddActivityModal: React.FC<AddModalProps> = ({ open, onCancel, onContinue 
 
     const [warning, setWarning] = React.useState(false);
 
+    const resetValues = () => {
+      setTitle('');
+      setDescription('');
+      setSelectedDate(new Date());
+    }
+
     const saveActivity = () => {
       if (title === '') {
         setWarning(true);
@@ -31,19 +37,19 @@ const AddActivityModal: React.FC<AddModalProps> = ({ open, onCancel, onContinue 
       }
 
       const newActivity = {
-        id: 10,
         title: title,
         description: description,
         date: formatDate(selectedDate),
       }
 
       onContinue(newActivity);
+      resetValues();
 
-      // Reset Modal values
-      setTitle('');
-      setDescription('');
-      setSelectedDate(new Date());
+    }
 
+    const cancel = () => {
+      resetValues();
+      onCancel();
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +87,7 @@ const AddActivityModal: React.FC<AddModalProps> = ({ open, onCancel, onContinue 
               <input id="description-field" className={classes.inputField} type='text' placeholder="Description" value={description} onChange={handleChange} />
             </div> 
             
-            <button type="button" onClick={onCancel}><Typography variant='button'> Cancel </Typography> </button>
+            <button type="button" onClick={cancel}><Typography variant='button'> Cancel </Typography> </button>
             <button type="button" onClick={saveActivity} style={{ marginLeft: 10 }}><Typography variant='button' > Add </Typography> </button>
         </div>
 
@@ -91,7 +97,7 @@ const AddActivityModal: React.FC<AddModalProps> = ({ open, onCancel, onContinue 
 
         <Modal
             open={open}
-            onClose={onCancel}
+            onClose={cancel}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
             {body}

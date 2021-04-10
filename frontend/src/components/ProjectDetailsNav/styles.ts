@@ -13,7 +13,6 @@ export default makeStyles((theme: Theme) => ({
       nav :{
         width: "80%",
         transform: 'translate(20%, 180%)',
-        // boxShadow: "0px 10px 10px -10px",
         boxShadow: "0px 0px 0px 0px",
         borderBottom: "2px solid lightgrey",
         

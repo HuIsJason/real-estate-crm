@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,20 +8,6 @@ import Button from '@material-ui/core/Button';
 
 import AppBarProps from './types';
 import { useUserContext } from '../../contexts/UserContext';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  })
-);
 
 export default function AdminAppBar({ showDashboardbtn }: AppBarProps) {
   const classes = useStyles();
@@ -56,3 +42,17 @@ export default function AdminAppBar({ showDashboardbtn }: AppBarProps) {
     </div>
   );
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    title: {
+      flexGrow: 1,
+    },
+  })
+);

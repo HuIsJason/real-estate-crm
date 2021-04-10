@@ -10,39 +10,6 @@ import { makeStyles, Theme, Typography } from '@material-ui/core';
 
 import send from '../../requests/request';
 
-const properties:Property[] = [
-    {
-        _id: "123",
-       address: '75 Terra Crescent',
-       city: 'Toronto', 
-       province: 'ON',
-       postalCode: 'L6X6X6', 
-       favourited: true,
-       activities: [{ _id: "1", title: 'Showing', description: '', date: '2021-02-21' }],
-       notes: 'Really liked this house. Should follow up in a week.',
-    },
-    {
-        _id: "234",
-        address: '99 Fern Blvd',
-        city: 'Toronto', 
-        province: 'ON',
-        postalCode: 'L6X6X6', 
-        favourited: false,
-        activities: [{ _id: "1", title: 'Follow-up', description: '', date: '2021-02-01' }],
-        notes: 'Not too sure if this is the best option. Lots of renovation required. Contact contractor for estimates!',
-    },
-    {
-        _id: "5674",
-        address: '123 John Street',
-        city: 'Toronto', 
-        province: 'ON',
-        postalCode: 'L6X6X6',  
-        favourited: true,
-        activities: [{ _id: "1", title: 'Phone Call w/ Client', description: '', date: '2021-01-01' }],
-        notes: '',
-    }
-]
-
 const dummyProperty: Property = {
     _id: "",
     address: "",
@@ -70,7 +37,7 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
     const [showFav, setShowFav] = React.useState(false);
 
     useEffect(() => {
-        // TODO: Get a list of all properties (w/ detailed info) for this project from server
+        // Get a list of all properties (w/ detailed info) for this project from server
         send('getAllProperties', {}, `/${projectId}`)
         .then((response ) => response.json())
         .then(json => {
@@ -78,28 +45,31 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
             setAllProperties(properties);
             setDisplayedProperties(properties);
             setSelectedProperty(properties[0] || null);
+        })
+        .catch(error => {
+            console.log(error);
+            alert("Could not load properties... please try again.");
         });
     }, []);
 
     const saveProperty = async(property: Property) => {
-        // TODO: send request to server to add a new property to this project
+        // Send request to server to add a new property to this project
         send("addProperty", property, `/${projectId}`)
         .then(response => {
             if (response.status === 201) {
                 console.log("Property was saved.");
                 return response.json();
-                // allProperties.push(property);
-                // setAllProperties(prevProperties => [...prevProperties, property]);
-                // displayedProperties.push(property);
-                // setDisplayedProperties(prevProperties => [...prevProperties, property]);
             } else {
-                console.log(`Property was not saved... ${response.status}`);
-                // throw error
+                throw `Property was not saved... ${response.status}`;
             }
         })
         .then(property => {
             setAllProperties(prevProperties => [...prevProperties, property]);
             setDisplayedProperties(prevProperties => [...prevProperties, property]);
+        })
+        .catch(error => {
+            console.log(error);
+            alert("Property could not be saved... please try again later");
         });
         
         setModalOpen(0);
@@ -118,11 +88,14 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
                     }
                     return p;
                 })
-        
                 setAllProperties(updatedProperties);
-
+            } else {
+                throw `Property could not be updated... ${response.status}`;
             }
-
+        })
+        .catch(error => {
+            console.log(error);
+            alert("Property could not be updated... try again later");
         }); 
     }
 
@@ -162,32 +135,18 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
 
     const addActivity = (activity: Activity) => {
     
-        // activity.id = selectedProperty.activities.length + 1;
-        // TODO: send request to server to add <activity> to <selectedProperty>'s activity list
         send("addActivity", activity, `/${projectId}/${selectedProperty._id}`)
         .then((response) => {
             if (response.status === 201) {
                 console.log("New activity added");
                 return response.json();
-
-                // Sort by reverse chronological order
-                // TODO: update Date object??
-                // selectedProperty.activities.sort((a, b) => {
-                //     const aDateParts = a.date.split('-').map(part => parseInt(part));
-                //     const aDate = new Date(aDateParts[0], aDateParts[1] - 1, aDateParts[2]);
-            
-                //     const bDateParts = b.date.split('-').map(part => parseInt(part));
-                //     const bDate = new Date(bDateParts[0], bDateParts[1] - 1, bDateParts[2]);
-            
-                //     return aDate < bDate ? 1 : -1;
-                // });
    
             } else {
                 console.log(`Activity not added... Error ${response.status}`);
             }
         })
         .then(json => {
-            const { activity, property } = json;
+            const { activity } = json;
             
             const updatedProperties = allProperties.map( property => {
                 if (property._id === selectedProperty._id) {
@@ -207,7 +166,7 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
     }
 
     const updateNotes = (notes: string) => {
-        // TODO: send request to server to update the notes for <selectedProperty>
+        // Send request to server to update the notes
         const req_content = [{ op: "update", field: "notes", value: notes }]
         send('updateProperty', req_content, `/${projectId}/${selectedProperty._id}`)
         .then((response) => {
@@ -216,8 +175,13 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
                 setSelectedProperty(selectedProperty);
                 setAllProperties(allProperties);
 
+            } else {
+                throw `Notes could not be updated... Error ${response.status}.`
             }
-
+        })
+        .catch(error => {
+            console.log(error);
+            alert("Notes could not be saved... try again later.");
         }); 
         
     }
@@ -229,8 +193,6 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
 
     const deleteSelectedProperty = () => {
 
-        // TODO: send request to server to delete <selectedProperty> and
-        // get an updated list of the remaining properties
         send("deleteProperty", {}, `/${projectId}/${selectedProperty._id}`)
         .then(response => {
             if (response.status === 200) {
@@ -246,6 +208,10 @@ const ProjectHistory: React.FC<Props> = ({ projectId }: Props) => {
             } else {
                 console.log(`Property not deleted... ${response.status}`);
             }
+        })
+        .catch(error => {
+            console.log(error);
+            alert("Property would not be deleted at this time... try again later");
         });
         setModalOpen(0);
 
@@ -335,7 +301,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginTop: 5,
         paddingTop: '5px',
         width: '200px',
-        // display: 'inline-block',
     },
     clearBtn: {
         border: 'none',

@@ -16,8 +16,6 @@ const NotesSection: React.FC<Props> = ({ notes, onSave } : Props) => {
                 cols={80} rows={30} defaultValue={notes} />
         </div>
     )
-
-
 } 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -35,7 +33,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         width: '100%',
         resize: 'none',
         fontFamily: 'Roboto',
-        // color: "#a2a6b0", 
         "&::placeholder": {
             color: "#d5d9e3"
         }

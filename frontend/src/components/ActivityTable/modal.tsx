@@ -33,8 +33,6 @@ const ActivityDetailModal: React.FC<ActivityDetailModalProps> = ({ open, handleD
         </Modal>
 
     )
-
-
 }
 
 const useStyles = makeStyles((theme: Theme) =>

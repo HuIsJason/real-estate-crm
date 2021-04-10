@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState, useCallback, useRef } from 'react';
 
-import { getClient, editClient } from '../../actions/client';
+import { editClient } from '../../actions/client';
 
 import useStyles from './styles';
 import {
@@ -14,8 +13,6 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import { ClientProfileProps, clientType } from './types';
-import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
 import { useUserContext } from '../../contexts/UserContext';
@@ -70,7 +67,6 @@ const ClientProfile: React.FC<any> = ({
     <>
       {render && (
         <div className={classes.profileInfoContainer}>
-          {/* <Avatar alt="Joey" src="/static/images/avatar/1.jpg" className={classes.large} /> */}
           <div className={classes.contactContainer}>
             <Typography
               color="primary"

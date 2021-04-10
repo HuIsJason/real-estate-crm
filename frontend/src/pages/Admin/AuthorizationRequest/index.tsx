@@ -8,80 +8,9 @@ import { makeStyles, Theme, Typography } from '@material-ui/core';
 import { Agent } from "../../../utils/types";
 import send from "../../../requests/request";
 
-const mockAccounts = [
-  
-  { email: "joe@gmail.com",
-    firstName: "joe",
-    lastName: "brown",
-    licenseId: "H123456",
-    phone: "647-123-4567",
-    brokerage: "Royal LePage",
-    brokerageAddress: "123 Sesame St",
-    brokeragePhone: "905-798-1000"
-  },
-  { email: "maryg@gmail.com",
-    firstName: "Mary",
-    lastName: "Green",
-    licenseId: "H898009",
-    phone: "905-888-9999",
-    brokerage: "Homelife Miracle",
-    brokerageAddress: "88 Pacific Ave",
-    brokeragePhone: "905-798-2222"
-  },
-  { email: "harrym@gmail.com",
-      firstName: "Harry",
-      lastName: "Mills",
-      licenseId: "H987654",
-      phone: "647-999-8888",
-      brokerage: "Homelife Miracle",
-      brokerageAddress: "88 Pacific Ave",
-      brokeragePhone: "905-798-2222",
-    },
-    { email: "georgeli@gmail.com",
-      firstName: "George",
-      lastName: "Li",
-      licenseId: "H5613576",
-      phone: "647-777-1234",
-      brokerage: "Homelife Miracle",
-      brokerageAddress: "88 Pacific Ave",
-      brokeragePhone: "905-798-2222",
-    },
-    { email: "james@gmail.com",
-      firstName: "James",
-      lastName: "Li",
-      licenseId: "H823910",
-      phone: "416-000-0001",
-      brokerage: "Homelife Miracle",
-      brokerageAddress: "88 Pacific Ave",
-      brokeragePhone: "905-798-2222",
-    },
-    { email: "miranda@gmail.com",
-      firstName: "Miranda",
-      lastName: "Redwood",
-      licenseId: "H162751",
-      phone: "416-882-9829",
-      brokerage: "Homelife Miracle",
-      brokerageAddress: "88 Pacific Ave",
-      brokeragePhone: "905-798-2222"
-    },
-    { email: "taylor.white@gmail.com",
-      firstName: "Taylor",
-      lastName: "White",
-      licenseId: "H128926",
-      phone: "647-345-678",
-      brokerage: "Remax",
-      brokerageAddress: "456 Sesame St",
-      brokeragePhone: "905-111-2021",
-    },
-
-]
-
 const dummyAgents: Agent[] = [];
 
 const AuthRequestsView: React.FC = () => {
-
-  // Get all active account authorization requests from server
-
   const [displayRequests, setDisplayRequests] = useState(dummyAgents);
   
   const [accounts, setAccounts] = useState(dummyAgents);
@@ -99,6 +28,10 @@ const AuthRequestsView: React.FC = () => {
     .then(data => {
       setAccounts(data.agents);
       setDisplayRequests(data.agents);
+    })
+    .catch(error => {
+      console.log(error);
+      alert("Could not get authorization requests from server... Please try again later.");
     });
 
   }, [])

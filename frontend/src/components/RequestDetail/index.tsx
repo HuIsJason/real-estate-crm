@@ -16,29 +16,35 @@ const RequestDetails: React.FC<RequestDetailProps> = ({
 
   const handleDenyRequest = () => {
     setOpenModal(0);
-    // TODO: Send request to server to delete the account <account>
+    // Send request to server to delete the account
     send('deleteAgent', {}, `/${username}`).then((response) => {
       if (response.status === 204) {
         deleteRequest(username);
       } else {
-        console.log(`Account could not be deleted... Error ${response.status}`);
+        throw `Account could not be deleted... Error ${response.status}`;
       }
+    })
+    .catch(err => {
+      console.log(err);
+      alert("Account could not be deleted at this time... try again later.")
     });
     setOpenModal(0);
   };
 
   const activateAccount = () => {
-    // TODO: Send request to server to update the account <account> to be activated --> endpoint incomplete @JASON
+    // Send request to server to update the account to be activated
     if (account) {
       const reqBody = { op: 'set', field: 'activated', value: true };
       send('activateAccount', reqBody, `/${account._id}`).then((response) => {
         if (response.status === 200) {
           deleteRequest(username);
         } else {
-          console.log(
-            `Failed to activate account on server... Error ${response.status}`
-          );
+          throw `Failed to activate account on server... Error ${response.status}`
         }
+      })
+      .catch( err => {
+        console.log(err);
+        alert("Account could not be activated at this time... please try again later");
       });
     }
     setOpenModal(0);

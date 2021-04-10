@@ -1,8 +1,7 @@
-import { makeStyles, Theme, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import Props from './types';
 
 export default function PropertySelectList ( { properties, selected, onSelect } : Props) { 
-
     const classes = useStyles();
 
     return (

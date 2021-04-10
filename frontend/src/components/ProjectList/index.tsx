@@ -5,7 +5,6 @@ import AddProjectModal from './modal';
 import { useHistory } from 'react-router-dom';
 import send from '../../requests/request';
 import { Project } from '../../utils/types';
-import { TagFaces } from '@material-ui/icons';
 
 const selectorOptions = [
   {
@@ -18,22 +17,7 @@ const selectorOptions = [
   },
 ];
 
-const projects: Project[] = [
-  // {
-  //   _id: "734987439",
-  //   title: 'Investment Condo in Downtown',
-  //   status: "active"
-  // }, {
-  //   _id: "8764232",
-  //   title: 'Dream House',
-  //   status: "closed",
-  // },
-  // {
-  //   _id: "190",
-  //   title: 'Commercial Investment Property',
-  //   status: "active",
-  // },
-];
+const projects: Project[] = [];
 
 const ProjectList: React.FC<any> = ({ clientId, title }: any) => {
   const classes = useStyles();
@@ -44,40 +28,44 @@ const ProjectList: React.FC<any> = ({ clientId, title }: any) => {
   const [allProjects, setProjects] = React.useState(projects);
 
   useEffect(() => {
-    // TODO: Get a list of all projects (summarized) from server
+    // Get a list of projects
     send('getAllProjects', {}, `/${clientId}`)
       .then((response) => response.json())
       .then((json) => {
         const { projects } = json;
         setProjects(projects);
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Could not get projects...");
       });
   }, [clientId]);
 
   const addProject = (projectName: string) => {
-    // const newId = allProjects[allProjects.length - 1].id + 1;
-    // allProjects.push({id: newId, name: projectName, active: true});
-    // setProjects(allProjects);
-    // TODO: send request to server to add a new empty project with name <projectName>
+    
+    // Send request to server to add a new empty project
     send('addProject', { title: projectName }, `/${clientId}`)
       .then((response) => {
         if (response.status === 201) {
           console.log(`Project added`);
           return response.json();
         } else {
-          console.log(`Project could not be added.. Error ${response.status}`);
-          // throw
+          throw(`Project could not be added.. Error ${response.status}`);
         }
       })
       .then((data) => {
         setProjects([...allProjects, data]);
-      });
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Project could not be added... try again later");
+      }) ;
 
     setOpenModal(false);
   };
 
   const openProject = (projectId: string, projectLabel: string) => {
-    /* TODO: update to navigate to detailed project view */
-    console.log(`Opening project ${projectId}`);
+    /* Navigate to detailed project view */
     history.push({
       pathname: '/client-details/' + clientId + '/project-details',
       state: {

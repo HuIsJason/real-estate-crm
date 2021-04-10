@@ -12,7 +12,6 @@ import {
   Chip,
 } from '@material-ui/core';
 
-import { ProjectOverviewProps } from './types';
 import { getProject, editProject } from '../../actions/project';
 
 const ProjectOverview: React.FC<any> = ({

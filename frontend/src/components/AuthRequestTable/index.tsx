@@ -36,7 +36,11 @@ const SimpleTable: React.FC<Props> = ({ accounts, selectRequest, displayPage, on
 
       </table>
       <br/>
-      <span style={{ float: 'right', marginRight: 10}}> <Typography variant='caption'> Displaying {accounts.length / entriesPerPage < displayPage ? accounts.length % entriesPerPage : entriesPerPage} of {accounts.length} entries. </Typography> </span> 
+      <span className={classes.display}> 
+      <Typography variant='caption'> Displaying 
+        {accounts.length / entriesPerPage < displayPage ? accounts.length % entriesPerPage : entriesPerPage} of {accounts.length} entries. 
+      </Typography> 
+      </span> 
       <div className={classes.buttonContainer}>
         { displayPage === 1 ? null : (<button className={classes.button} onClick={onClickPrev}> Previous </button>) }
         { displayPage === Math.ceil(accounts.length / entriesPerPage) || accounts.length === 0 ? null : (<button className={classes.button} onClick={onClickNext}> Next </button>)} 
@@ -67,6 +71,10 @@ const useStyles = makeStyles((theme: Theme) => ({
         opacity: .7,
       }
     }
+  },
+  display: {
+    float: 'right', 
+    marginRight: 10,
   },
   text: {
     color: '#98A0A7, 100%',
