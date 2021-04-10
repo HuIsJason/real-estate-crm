@@ -43,6 +43,7 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 ### Agent profile page
 - This page consists of information regarding the agent.
 - The agent user can click on the edit button to edit any of this information.
+- The user can also click on `Change Password`, which will open a modal that prompts them to enter a new password. If the length is less than 4 characters, or the password confirmation does not match, they will not be able to change the password (and an appropriate warning will appear when they click `Confirm Change`).
 
 ### Sidebar 
 - On every page, the user can click on the menu icon on the bar at the top left to pop open the sidebar. 
@@ -143,6 +144,7 @@ Response:
 }
 ```
 Unique status code(s): `401` for an invalid session
+
 #### PATCH `/api/authentication/request/:agent_id`
 Activating an agent account.
 Request body:
@@ -154,7 +156,33 @@ Request body:
 }
 ```
 Response: document of changed agent account
-Unique status code(s): `401` if the current user logged in is not an admin
+
+Unique status code(s): `401` if the current user making the request is not logged in as an admin
+
+#### PATCH `/api/authentication/user/:username`
+Resetting the password for the agent user account with  `username`.
+
+Request body:
+```
+[ 
+    { op: "reset", field: "password" }
+]
+```
+Response: 
+```
+{
+    user: modified Agent document,
+    passwordReset: newly generated password (string)
+}
+```
+The agent with username `username` can now use `passwordReset` to sign into their account. 
+
+Status codes: 
+- `200` on success
+- `401` if the current user logged in is not an admin account (make sure to login as an admin first before testing this route)
+- `400` if incorrect request body
+- `404` if agent account does not exist for `username`
+
 
 ### Agent
 
