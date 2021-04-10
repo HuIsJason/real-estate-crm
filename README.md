@@ -83,3 +83,5 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 * Material-UI icons
 * Material-UI-search-bar
 * UUID
+* date-and-time
+* Joi
