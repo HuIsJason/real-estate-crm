@@ -73,6 +73,9 @@ function isMongoError(error) {
   );
 }
 
+
+// ===== Routes ====== //
+
 router.post('/signup', mongoChecker, uniqueUserChecker, async (req, res) => {
   const {
     username,

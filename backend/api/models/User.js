@@ -51,7 +51,13 @@ const UserSchema = new mongoose.Schema({
   licenseId: String,
   brokerage: String,
   brokerageAddress: String,
-  brokeragePhone: String,
+  brokerageNumber: {
+    type: String,
+    validate: {
+      validator: validator.isMobilePhone,
+      message: 'Not valid phone number',
+    },
+  },
   activated: Boolean,
 });
 

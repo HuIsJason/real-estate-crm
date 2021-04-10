@@ -189,88 +189,121 @@ Request body:
 Response: document of the updated agent account. 
 Status codes: 
 - `200` on success
-- `400` if invalid fields are specified, 
+- `400` if invalid fields are specified
 - `404` if username does not belon to an existing account
-- `401` if user making the request is not signed in as `username`
+- `401` if user making the request is not signed in as `username` (make sure to login as `username` before testing this route)
 
-#### GET `/api/agent/:agent_id`
+#### GET `/api/agent/:username`
+Returns the agent account with the specified username.
 
-Gets an agent account
+Response: document of agent account 
 
-Response: Mongo document of agent account 
+Status Codes: `200` on success or `404` if account does not exist
 
-Status Codes: 201 - retrieved, 404 - DNE
+#### PATCH `/api/agent/:username`
+Update the password of the agent account with the specified username.
+
+Request body:
+```
+[
+    { field: "password", value: "<new-password>"}
+]
+```
+Response: document of updated agent account.
+Status Codes:
+- `200` on success
+- `400` if invalid fields are specified
+- `401` if user making the request is not signed in as `username` (make sure to login as `username` before testing this route)
+- `404` if username does not belon to an existing account
+
+#### DELETE `/api/agent/:username`
+Delete the agent account with the specified username.
+
+Response: None
+Status Codes:
+- `204` on success
+- `401` if the user making the request is not signed in as `username` or is not an admin user (make sure to login as `username` or as an admin before testing this route)
+- `404` if username does not belon to an existing account
+
 
 ### Clients
 #### POST `/api/clients/:agent_id `
+Creates a new client, under the specified agent with `_id: agent_id`.
+
 Request body:
 ```
 {
-    firstName: string
-    lastName: string
-    phoneNumber: string
-    email: string
-    address: string
-    city: string
-    description: string
-    tags: string
+    firstName: string,
+    lastName?: string,
+    phoneNumber?: string,
+    email?: string,
+    address?: string,
+    city?: string,
+    description?: string,
+    tags?: string
 }
 ```
+Note that fields with `?` are optional.
 
-Creates a new client account, under a specific agent
+Response: document of the newly created client. 
+Status Codes: 
+- `201` on success
+- `400` if invalid fields specified
+- `404` if agent account does not exist for `agent_id`
 
-Response: document of created client
 
 #### GET `/api/clients/:agent_id`
+Returns a list of all clients under the specified agent with `agent_id`.
 
-Gets a list of all clients under an agent
+Response: `{ clients : [ Client Objects ] }` (list of clients)
 
-Response: { clients : [ Client Objects ] } (list of clients under a single agent)
+Status Codes: `200` on success, or `404` if agent account does not exist for `agent_id`.
 
 #### GET `/api/clients/:agent_id/:client_id`
+Returns the client with `client_id` under the agent with `agent_id`.
 
-Gets a single specific client under an agent
-
-Response: { Client Object } (single client)
+Response: `Client Object` (single client object)
+Client Object Schema:
+```
+{
+    _id: ObjectId,
+    firstName: string,
+    lastName?: string,
+    phoneNumber?: string,
+    email?: string,
+    address?: string,
+    city?: string,
+    description?: string,
+    tags?: string,
+    agent: ObjectId
+}
+```
+Status Codes: `200` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
 
 #### PUT ` /api/clients/:agent_id/:client_id`
+Updates the client under the specified agent
 Request body:
 {
 ```
     firstName: string
-    lastName: string
+    lastName?: string
     phoneNumber?: string
     email?: string
     address?: string
     city?: string
     description?: string
-    profileImg?: image
-    tags?: [ string ] 
+    tags?: string
 ```
 }
 
-Updates a client account thats under a specific agent
-
-Response: document of updated client
+Response: updated client document
+Status Codes: `200` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
 
 #### DELETE `/api/clients/:agent_id/:client_id`
-Request body:
-{
-```
-    firstName: string
-    lastName: string
-    phoneNumber?: string
-    email?: string
-    address?: string
-    city?: string
-    description?: string
-    profileImg?: image
-    tags?: [ string ] 
-```
-}
-Deletes a client account thats under a specific agent
+Deletes the specified client account thats under  the specified agent with `_id: agent_id`.
 
-Response: empty body
+Response: None
+Status Codes: `204` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
 
 ### Projects
 #### POST `/api/projects/:client_id`
