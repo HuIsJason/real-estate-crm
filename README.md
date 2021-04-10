@@ -76,6 +76,156 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 # API Endpoints
 
+### Agent
+#### PUT `/api/agent/:agent_id`
+Request body:
+{
+```
+    username: string
+    password: string
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    specialization?: string
+    yearStarted: integer
+    bio?: string
+    licenseId: string
+    brokerage: string
+    brokerageAddress: string
+    brokerageNumber: string
+```
+}
+
+Updates an agent account
+
+Response: document of updated agent account 
+
+#### GET `/api/agent/:agent_id`
+
+Gets an agent account
+
+Response: document of agent account 
+
+Status Codes: 201 - retrieved, 404 - DNE
+
+### Clients
+#### POST `/api/clients/:agent_id `
+Request body:
+{
+```
+    firstName: string
+    lastName: string
+    phoneNumber?: string
+    email?: string
+    address?: string
+    city?: string
+    description?: string
+    profileImg?: image
+    tags?: [ string ] 
+```
+}
+
+Creates a new client account, under a specific agent
+
+Response: document of created client
+
+#### GET `/api/clients/:agent_id`
+
+Gets a list of all clients under an agent
+
+Response: { clients : [ Client Objects ] } (list of clients under a single agent)
+
+#### GET `/api/clients/:agent_id/:client_id`
+
+Gets a single specific client under an agent
+
+Response: { Client Object } (single client)
+
+#### PUT ` /api/clients/:agent_id/:client_id`
+Request body:
+{
+```
+    firstName: string
+    lastName: string
+    phoneNumber?: string
+    email?: string
+    address?: string
+    city?: string
+    description?: string
+    profileImg?: image
+    tags?: [ string ] 
+```
+}
+
+Updates a client account thats under a specific agent
+
+Response: document of updated client
+
+#### DELETE `/api/clients/:agent_id/:client_id`
+Request body:
+{
+```
+    firstName: string
+    lastName: string
+    phoneNumber?: string
+    email?: string
+    address?: string
+    city?: string
+    description?: string
+    profileImg?: image
+    tags?: [ string ] 
+```
+}
+Deletes a client account thats under a specific agent
+
+Response: empty body
+
+### Projects
+#### POST `/api/projects/:client_id`
+Request body:
+{
+```
+    title: string
+    description: string
+```
+}
+
+Creates a new project for a client
+
+Response Body: Project Object created from Mongo Document
+
+#### GET ` /api/projects/:client_id`
+Request body:
+{
+```
+    title: string
+    description: string
+```
+}
+
+Gets all projects for a specific client
+
+Response Body: {projects : [ Property ]} 
+
+#### GET `/api/projects/:client_id/:project_id`
+
+Gets a specififc project under a client
+
+Response Body: Project object stored in Mongo
+
+#### DELETE `/api/projects/:client_id/:project_id`
+
+Deletes a specfific project under a client
+
+Response Body: empty body
+
+#### PATCH `/api/projects/:client_id/:project_id`
+
+Deletes a specfific project under a client
+
+Request Body: ```[ { op: “update”, field: “tags”, value: [ strings ] } ]```
+Request Body: ```[ { op: “update”, field: “title” | “description” | “status”, value: string } ]```
 
 
 # Libraries/Frameworks used
