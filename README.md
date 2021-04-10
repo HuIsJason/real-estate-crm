@@ -77,6 +77,8 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 # API Endpoints
 
+To utilize the our API, simply take `https://agent-service.herokuapp.com`, append the following endpoints, and use the specified request method.
+
 ### Admin
 #### POST `/api/admin`
 Creating a new admin account.
