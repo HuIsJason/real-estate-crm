@@ -48,8 +48,12 @@ const Login: React.FC = () => {
 
   return (
     <Paper className={classes.paper} elevation={5}>
-      <Typography color="primary" variant="h3">
-        Login
+      <Typography color="primary" variant="h4">
+        Welcome to Agents Service
+      </Typography>
+      <br/>
+      <Typography color="primary" variant="h5">
+        <strong> Login</strong>
       </Typography>
       <FormControl
         onSubmit={handleSubmit}
