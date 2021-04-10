@@ -81,7 +81,8 @@ To utilize the our API, simply take `https://agent-service.herokuapp.com`, appen
 
 Note: fields with `?` are optional.
 
-If a response body is not defined, there will not be a response body.
+If a response body is not specified, then there will not be a response body for that particular endpoint/method.
+
 ### Admin
 #### POST `/api/admin`
 Creating a new admin account.
