@@ -461,7 +461,7 @@ Request body:
 ```
 {
     title: string
-    date: Date
+    date: string
     description?: string
 }
 ```
@@ -483,7 +483,7 @@ Request body:
 ```
 {
     title: string
-    date: Date
+    date: string
     description?: string
 }
 ```
