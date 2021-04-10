@@ -43,6 +43,7 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 ### Agent profile page
 - This page consists of information regarding the agent.
 - The agent user can click on the edit button to edit any of this information.
+- The user can also click on `Change Password`, which will open a modal that prompts them to enter a new password. If the length is less than 4 characters, or the password confirmation does not match, they will not be able to change the password (and an appropriate warning will appear when they click `Confirm Change`).
 
 ### Sidebar 
 - On every page, the user can click on the menu icon on the bar at the top left to pop open the sidebar. 
@@ -75,6 +76,9 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 
 # API Endpoints
+
+To utilize the our API, simply take `https://agent-service.herokuapp.com`, append the following endpoints, and use the specified request method.
+
 Note: fields with `?` are optional.
 
 If a response body is not defined, there will not be a response body.
@@ -156,6 +160,7 @@ Response body:
 }
 ```
 Unique status code(s): `401` for an invalid session
+
 #### PATCH `/api/authentication/request/:agent_id`
 Activating an agent account. Must be logged in as an Admin to send this request.
 
@@ -167,9 +172,33 @@ Request body:
     value: boolean
 }
 ```
-Response body: document of changed Agent account
+Response: document of changed Agent account
 
-Unique status code(s): `401` if the current user logged in is not an Admin
+Unique status code(s): `401` if the current user making the request is not logged in as an Admin
+
+#### PATCH `/api/authentication/user/:username`
+Resetting the password for the agent user account with  `username`.
+
+Request body:
+```
+[ 
+    { op: "reset", field: "password" }
+]
+```
+Response: 
+```
+{
+    user: modified Agent document,
+    passwordReset: newly generated password (string)
+}
+```
+The agent with username `username` can now use `passwordReset` to sign into their account. 
+
+Status codes: 
+- `200` on success
+- `401` if the current user logged in is not an admin account (make sure to login as an admin first before testing this route)
+- `400` if incorrect request body
+- `404` if agent account does not exist for `username`
 
 ### Agent
 #### GET `/api/agent?inactivated=true`
@@ -201,144 +230,187 @@ Request body:
 ```
 Response body: document of the updated Agent account. 
 
-Unique status codes: 
+Status codes: 
 - `200` on success
 - `400` if invalid fields are specified, 
 - `404` if username does not belon to an existing account
 - `401` if user making the request is not signed in as `username`
 
-#### GET `/api/agent/:agent_id`
-Gets an Agent account.
+#### GET `/api/agent/:username`
+Returns the agent account with the specified username.
 
-Response body: Mongo document of Agent account
+Response: document of agent account 
 
-Status code(s): `201` - retrieved, `404` - DNE
+Status Codes: `200` on success or `404` if account does not exist
+
+#### PATCH `/api/agent/:username`
+Update the password of the agent account with the specified username.
+
+Request body:
+```
+[
+    { field: "password", value: "<new-password>"}
+]
+```
+Response: document of updated agent account.
+Status Codes:
+- `200` on success
+- `400` if invalid fields are specified
+- `401` if user making the request is not signed in as `username` (make sure to login as `username` before testing this route)
+- `404` if username does not belon to an existing account
+
+#### DELETE `/api/agent/:username`
+Delete the agent account with the specified username.
+
+Response: None
+
+Status Codes:
+- `204` on success
+- `401` if the user making the request is not signed in as `username` or is not an admin user (make sure to login as `username` or as an admin before testing this route)
+- `404` if username does not belon to an existing account
+
+
 ### Clients
-#### POST `/api/clients/:agent_id`
-Creates a new Client account, under a specific Agent.
+#### POST `/api/clients/:agent_id `
+Creates a new client, under the specified agent with `_id: agent_id`.
 
 Request body:
 ```
 {
-    firstName: string
-    lastName: string
-    phoneNumber: string
-    email: string
-    address: string
-    city: string
-    description: string
-    tags: string
+    firstName: string,
+    lastName?: string,
+    phoneNumber?: string,
+    email?: string,
+    address?: string,
+    city?: string,
+    description?: string,
+    tags?: string
 }
 ```
-Response body: document of created Client
+Note that fields with `?` are optional.
+
+Response: document of the newly created client.
+
+Status Codes: 
+- `201` on success
+- `400` if invalid fields specified
+- `404` if agent account does not exist for `agent_id`
+
+
 #### GET `/api/clients/:agent_id`
-Gets a list of all Clients under an Agent.
+Returns a list of all clients under the specified agent with `agent_id`.
 
-Response body: 
-```
-{
-    clients : [ Client Objects ]
-}
-```
+Response: `{ clients : [ Client Objects ] }` (list of clients)
+
+Status Codes: `200` on success, or `404` if agent account does not exist for `agent_id`.
+
 #### GET `/api/clients/:agent_id/:client_id`
-Gets a single specific Client under an Agent.
+Returns the client with `client_id` under the agent with `agent_id`.
 
-Response body: document of client object
+Response: `Client Object` (single client object)
+
+Client Object Schema:
+```
+{
+    _id: ObjectId,
+    firstName: string,
+    lastName?: string,
+    phoneNumber?: string,
+    email?: string,
+    address?: string,
+    city?: string,
+    description?: string,
+    tags?: string,
+    agent: ObjectId
+}
+```
+Status Codes: `200` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
+
 #### PUT ` /api/clients/:agent_id/:client_id`
-Updates a Client account thats under a specific Agent.
+Updates the client with `_id: client_id` under the specified agent.
 
 Request body:
 
 ```
 {
     firstName: string
-    lastName: string
+    lastName?: string
     phoneNumber?: string
     email?: string
     address?: string
     city?: string
     description?: string
-    profileImg?: image
-    tags?: [ string ] 
+    tags?: string
 }
 ```
-Response body: document of updated Client
+
+Response: updated client document
+
+Status Codes: `200` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
+
 #### DELETE `/api/clients/:agent_id/:client_id`
-Deletes a Client account thats under a specific Agent
+Deletes the specified client account thats under  the specified agent with `_id: agent_id`.
 
-Request body:
-```
-{
-    firstName: string
-    lastName: string
-    phoneNumber?: string
-    email?: string
-    address?: string
-    city?: string
-    description?: string
-    profileImg?: image
-    tags?: [ string ] 
-}
-```
-Response body: none
+Response: None
+
+Status Codes: `204` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
+
 ### Projects
 #### POST `/api/projects/:client_id`
-Creates a new Project for a Client.
+Creates a new project under the client with `_id: client_id`.
 
 Request body:
 ```
 {
     title: string
-    description: string
+    description?: string
 }
 ```
-Response body: document of Project object
 
-Status Codes: `200` on success or `404` if Client does not exist.
+Note: fields with `?` are optional
+
+Response Body: Project Object created from Mongo Document
+
+Status Code: `201` on successful creation or `400` if `title` not specified or `404` if client does not exist.
+
 #### GET ` /api/projects/:client_id`
-Gets all projects for a specific Client.
+Gets all projects for the specified client with `client_id`. 
 
-Request body:
-```
-{
-    title: string
-    description: string
-}
-```
-Response body:
-```
-{
-    projects : [ Property ]
-} 
-```
+Response Body: `{projects : [ Property Objects ]`
+
+Status Codes: `200` on success or `404` if client does not exist.
+
 #### GET `/api/projects/:client_id/:project_id`
-Gets the specified Project with `_id: project_id` under the specified Client.
 
-Response body: Project object document
+Gets the specified project with `_id: project_id` under the specified client.
+
+Response Body: Project object document
 
 Status Codes: `200` on success or `404` if project does not exist.
-#### DELETE `/api/projects/:client_id/:project_id`
-Deletes a specfied Project with `_id: project_id` under the specified Client.
 
-Response body: none
-
-Status codes: `204` on success or `404` if project does not exist.
 #### PATCH `/api/projects/:client_id/:project_id`
-Updates specific fields of the Project with `project_id`.
+Updates specific fields of the project with `project_id`.
 
-Request body: 
-```
-[ 
+Request Body: 
+```[ 
     { op: “update”, field: “tags”, value: [ strings ] }, 
     { op: “update”, field: “title” | “description” , value: string },
-    { op: "update“, field: "status”, value: "active" | "closed" }
-]
+    { op: "update“, field: "status”, value: "active" | "closed" } ]
 ```
 Note that you can specify any attributes that you wish to modify out of `tags, title, description, status`. `tags` require a list of strings as the value, and `status` only takes a value of `active` or `closed`.
 
-Response body: Updated project document.
+Response: Updated project document.
 
-Status codes: `200` on success, `404` if project does not exist, or `400` if invalid `field` types are specified. 
+Status Codes: `200` on success, `404` if project does not exist, or `400` if invalid `field` types are specified. 
+
+#### DELETE `/api/projects/:client_id/:project_id`
+
+Deletes a specfied project with `_id: project_id` under the specified client.
+
+Response Body: None
+
+Status Codes: `204` on success or `404` if project does not exist.
+
 ## Properties
 #### POST `/api/property/:project_id`
 Add a new Property to a Project.
