@@ -76,6 +76,8 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 # API Endpoints
 Note: fields with `?` are optional.
+
+If a response body is not defined, there will not be a response body.
 ### Admin
 #### POST `/api/admin`
 Creating a new admin account.
