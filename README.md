@@ -79,6 +79,7 @@ Our web application is deployed using Heroku. You can access it [here](https://a
 
 To utilize the our API, simply take `https://agent-service.herokuapp.com`, append the following endpoints, and use the specified request method.
 
+Note: fields with `?` are optional.
 ### Admin
 #### POST `/api/admin`
 Creating a new admin account.
@@ -89,11 +90,12 @@ Request body:
     password: string
 }
 ```
-Response: document of created admin account
+Response: document of created Admin account
 Unique status code(s): `400` for missing fields
+
 ### Authorization
 #### POST `/api/authentication/signup`
-Creating a new agent account.
+Creating a new Agent account.
 Request body:
 ```
 {
@@ -111,8 +113,9 @@ Request body:
     accountType: "agent"
 }
 ```
-Response: document of created agent account
+Response: document of the created Agent account
 Unique status code(s): `400` for missing fields
+
 #### POST `/api/authentication/login`
 Logging in a user (either admin or agent account).
 Request body:
@@ -131,12 +134,15 @@ Response:
     accountType: "agent" | "admin"
 }
 ```
-Unique status code(s): `401` for invalid credentials/
+Unique status code(s): `401` for invalid credentials
+
 #### GET `/api/authentication/logout`
-Logging out a user (either admin or agent).
+Logging out a user (either Admin or Agent).
+Response body: none
+
 #### GET `/api/authentication/checkSession`
 Checking the session cookie for an active session.
-Response:
+Response body:
 ```
 {
     loggedInAs: string
@@ -148,18 +154,18 @@ Response:
 Unique status code(s): `401` for an invalid session
 
 #### PATCH `/api/authentication/request/:agent_id`
-Activating an agent account.
+Activating an agent account. Must be logged in as an Admin to send this request.
 Request body:
 ```
 {
-    op: "set"
-    field: "activated"
+    op: "set",
+    field: "activated",
     value: boolean
 }
 ```
-Response: document of changed agent account
+Response: document of changed Agent account
 
-Unique status code(s): `401` if the current user making the request is not logged in as an admin
+Unique status code(s): `401` if the current user making the request is not logged in as an Admin
 
 #### PATCH `/api/authentication/user/:username`
 Resetting the password for the agent user account with  `username`.
@@ -185,22 +191,19 @@ Status codes:
 - `400` if incorrect request body
 - `404` if agent account does not exist for `username`
 
-
 ### Agent
-
 #### GET `/api/agent?inactivated=true`
-Returns a list of all agent accounts that are inactivated
+Returns a list of all Agent accounts that are inactivated.
 
-Response: list of agent account documents. Notice that for each such account object, we have the attribute `activated : false`.
+Response body: list of Agent account documents. Notice that for each such account object, we have the attribute `activated: false`.
 
 #### GET `/api/agent?inactivated=false`
-Returns a list of all agent accounts that are not inactivated
+Returns a list of all Agent accounts that are not inactivated.
 
-Response: list of agent account documents. Notice that for each such account object, we have the attribute `activated : true`.
-
+Response body: list of Agent account documents. Notice that for each such account object, we have the attribute `activated: true`.
 
 #### PUT `/api/agent/:username`
-Updates an agent account with the given username, with the attributes defined in the request body.
+Updates an Agent account with the given username, with the attributes defined in the request body.
 
 Request body:
 ```
@@ -216,12 +219,13 @@ Request body:
     brokerageNumber: string
 }
 ```
-Response: document of the updated agent account. 
+Response body: document of the updated Agent account. 
+
 Status codes: 
 - `200` on success
-- `400` if invalid fields are specified
+- `400` if invalid fields are specified, 
 - `404` if username does not belon to an existing account
-- `401` if user making the request is not signed in as `username` (make sure to login as `username` before testing this route)
+- `401` if user making the request is not signed in as `username`
 
 #### GET `/api/agent/:username`
 Returns the agent account with the specified username.
@@ -250,6 +254,7 @@ Status Codes:
 Delete the agent account with the specified username.
 
 Response: None
+
 Status Codes:
 - `204` on success
 - `401` if the user making the request is not signed in as `username` or is not an admin user (make sure to login as `username` or as an admin before testing this route)
@@ -275,7 +280,8 @@ Request body:
 ```
 Note that fields with `?` are optional.
 
-Response: document of the newly created client. 
+Response: document of the newly created client.
+
 Status Codes: 
 - `201` on success
 - `400` if invalid fields specified
@@ -312,7 +318,8 @@ Client Object Schema:
 Status Codes: `200` on success or `404` if `client_id` or `agent_id` do not exist or `client_id` does not belong to `agent_id`.
 
 #### PUT ` /api/clients/:agent_id/:client_id`
-Updates the client under the specified agent
+Updates the client with `_id: client_id` under the specified agent.
+
 Request body:
 
 ```
@@ -397,7 +404,7 @@ Status Codes: `204` on success or `404` if project does not exist.
 
 ## Properties
 #### POST `/api/property/:project_id`
-Add a new property to a project.
+Add a new Property to a Project.
 Request body:
 ```
 {
@@ -407,33 +414,33 @@ Request body:
     postalCode: string
 }
 ```
-Response: document of property object
-
+Response body: document of Property object
 #### DELETE `/api/property/:project_id/:property_id`
-Delete a property from a project.
+Delete a Property from a Project.
+Response body: none
 #### GET `/api/property/:project_id/:property_id`
-Get all properties for a project.
-Response:
+Get all Properties for a Project.
+Response body:
 ```
 {
     properties: [ Property Objects ]
 }
 ```
 #### GET `/api/property/:project_id/:property_id`
-Get specific property of a project.
+Get a specific Property of a Project.
 Response: Property object document
 ### PATCH `/api/property/:project_id/:property_id`
-Update notes for a property.
+Update the notes field of a Property.
 Request body:
 ```
 {
-    op: "set"
-    field: "notes"
+    op: "set",
+    field: "notes",
     value: string
 }
 ```
 #### POST `/api/property/:project_id/:property_id`
-Add new activity to a property.
+Add new Activity to a Property.
 Request body:
 ```
 {
@@ -442,14 +449,33 @@ Request body:
     description?: string
 }
 ```
-Response:
+Response body:
 ```
 {
     activity: Activity object
     property: Property Object
 }
 ```
-
+#### GET `/api/property/:project_id/:property_id/:activity_id`
+Get an Activity.
+Response body: Activity object
+#### PUT `/api/property/:project_id/:property_id`
+Update an Activity.
+Request body:
+```
+{
+    title: string
+    date: Date
+    description?: string
+}
+```
+Response body:
+```
+{
+    activity: Activity object
+    property: parent Property object
+}
+```
 # Libraries/Frameworks used
 * React
 * React Router
